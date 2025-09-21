@@ -1,0 +1,112 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+nav {
+    background-color: black;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#logoImagen{
+    height: 55px;
+}
+.logoNav{
+    margin-left: 25px;
+}
+
+.IconoPerfil{
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex; /* Ayuda a la alineación interna */
+    margin-right: 2%;
+    margin-top: 0;
+}
+.IconoPerfil img {
+
+    width: 40px;
+    height: 40px;
+}
+.content {
+    flex: 1; 
+    color: white;
+    background-size: cover;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.content h2 {
+    color: #fac800;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.content h1 {
+    font-size: 32px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.buttons button {
+    background: #fac800;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.buttons button:hover {
+    background: #fac800;
+}
+
+footer {
+    width: 100vw;
+    min-height: 170px;
+    background-color: black;
+    color: white;
+    font-family: 'poppins';
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;    
+    clip-path: none;
+}
+
+
+#logoFooter{
+    border-right: 1px solid white;
+    padding-right: 5%;
+    width: 20%;
+}
+#parrafoFooter{
+    padding-left: 5%;
+}
