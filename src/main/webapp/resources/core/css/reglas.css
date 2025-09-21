@@ -1,0 +1,194 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #123822;
+    color: white;
+}
+
+
+.rules-container {
+    padding: 40px 30px;
+    max-width: 1000px;
+    margin: 40px auto 60px auto;
+}
+
+.rules-container h1 {
+    text-align: center;
+    color: #fac800;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.objetivo {
+    background: #3c1010;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 35px;
+    line-height: 1.5;
+    font-size: 14px;
+    color: #ddd;
+}
+
+.objetivo strong,
+.objetivo b {
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.rules-content {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.rules-content section {
+    flex: 1;
+    min-width: 280px;
+}
+
+.valores ul,
+.apuestas ul,
+.opciones-turno ul {
+    list-style: none;
+    padding: 0 0 0 10px;
+    margin: 10px 0;
+    color: #ddd;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.valores li,
+.apuestas li,
+.opciones-turno li {
+    margin: 12px 0;
+}
+
+.como-jugar ol {
+    padding-left: 20px;
+    margin-top: 8px;
+    color: #ddd;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.como-jugar ul {
+    list-style: disc inside;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ddd;
+}
+
+
+.apuestas {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 6px;
+    background: #1a523b;
+    color: #eee;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+.opciones-turno {
+    margin-top: 30px;
+    background: #1a523b;
+    padding: 20px;
+    border-radius: 6px;
+    color: #ddd;
+    font-size: 14px;
+}
+
+.opciones-turno ul {
+    list-style: disc inside;
+    padding-left: 20px;
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+.opciones-turno li {
+    margin: 10px 0;
+}
+
+.icon-text {
+    width: 40px;
+    height: auto;
+}
+
+.valores ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.valores li {
+    display: flex;
+    align-items: center;
+}
+
+.valores b {
+    font-size: 1.1em;
+    margin-right: 8px;
+
+}
+
+.valores img {
+    width: 48px;
+    height: auto;
+    margin-right: 18px;
+}
+
+footer{
+    width: 100%;
+    height: 170px;
+    background-color: black;
+    color: white;
+    font-family: 'poppins';
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#logoFooter{
+    border-right: 1px solid white;
+    padding-right: 5%;
+    width: 20%;
+}
+#parrafoFooter{
+    padding-left: 5%;
+}
+
+nav{
+    background-color: black;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#logoImagen{
+    height: 55px;
+}
+.logoNav{
+    margin-left: 25px;
+}
+
+.IconoPerfil{
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex; /* Ayuda a la alineación interna */
+    margin-right: 2%;
+    margin-top: 0;
+}
+.IconoPerfil img {
+
+    width: 40px;
+    height: 40px;
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/reglas.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>Reglas - BlackJack</title>
+</head>
+<body>
+
+<nav>
+    <div class="logoNav">
+        <img th:src="@{/resources/core/images/logo.png}" id="logoImagen"  alt="logo">
+    </div>
+
+    <div class="menu-icono-perfil">
+        <button class="IconoPerfil">
+            <img th:src="@{/resources/core/images/icono-perfil.png}" alt="Icono perfil">
+        </button>
+    </div>
+
+</nav>
+
+<main class="rules-container">
+    <h1>REGLAS DEL JUEGO</h1>
+
+    <section class="objetivo">
+        <h2>OBJETIVO DEL JUEGO</h2>
+        <p>EL OBJETIVO PRINCIPAL ES SIMPLE: CONSEGUIR UNA MANO CON UN VALOR TOTAL LO MÁS CERCANO POSIBLE A 21, SIN
+            PASARSE, Y QUE SEA MAYOR QUE LA MANO DEL CRUPIER.
+            SI TU MANO SUPERA 21, PIERDES AUTOMÁTICAMENTE.</p>
+    </section>
+
+    <div class="rules-content">
+
+        <section class="valores">
+            <h2>VALORES DE CARTAS</h2>
+            <ul>
+                <li>
+                    <img th:src="@{/resources/core/images/2-corazon.png}" alt="carta"><b>CARTAS NUMÉRICAS (2-10):</b> VALEN SU VALOR NOMINAL. POR EJEMPLO, EL 4
+                    VALE 4 PUNTOS, EL 9 VALE 9 PUNTOS.</li>
+                <li><img th:src="@{/resources/core/images/a-corazon.png}" alt="carta"> <b>FIGURAS (J, Q, K):</b> CADA UNA VALE 10 PUNTOS.</li>
+                <li><img th:src="@{/resources/core/images/k-diamantes.png}" alt="carta"> <b>AS (A):</b> ESTA ES LA CARTA MÁS FLEXIBLE. EL AS PUEDE VALER 1 O 11
+                    PUNTOS, LO QUE SEA MÁS CONVENIENTE PARA TU MANO. POR EJEMPLO, UN AS Y UN 6 PUEDEN SER 7 O 17.
+                </li>
+            </ul>
+        </section>
+
+        <section class="como-jugar">
+            <h2>¿CÓMO SE JUEGA?</h2>
+            <ol>
+                <li><b>APUESTA INICIAL:</b> ANTES DE QUE COMIENCE LA PARTIDA, CADA JUGADOR REALIZA SU APUESTA.</li>
+                <li><b>REPARTO DE CARTAS:</b> EL CRUPIER REPARTE DOS CARTAS BOCA ARRIBA A CADA JUGADOR Y DOS CARTAS
+                    PARA SÍ MISMO, PERO CON UNA DIFERENCIA IMPORTANTE: UNA DE SUS CARTAS ESTÁ BOCA ARRIBA Y LA OTRA
+                    BOCA ABAJO.</li>
+                <li><b>BLACKJACK:</b> SI EN EL REPARTO INICIAL TUS DOS CARTAS SUMAN 21 (UN AS Y CUALQUIER CARTA CON
+                    VALOR 10), HAS CONSEGUIDO UN BLACKJACK NATURAL, GANAS LA PARTIDA.</li>
+                <li><b>TURNOS DE LOS JUGADORES:</b> SI NADIE TIENE BLACKJACK, TIENES LAS SIGUIENTES OPCIONES:
+                </li>
+            </ol>
+        </section>
+    </div>
+    <section class="opciones-turno">
+        <ul>
+            <li><b>PEDIR CARTA:</b> PIDES UNA CARTA ADICIONAL PARA MEJORAR TU MANO. PUEDES SEGUIR PIDIENDO
+                CARTAS HASTA QUE DECIDAS PLANTARTE O TE PASES DE 21.</li>
+            <li><b>PLANTARSE:</b> DECIDES NO PEDIR MÁS CARTAS PORQUE TU MANO ES LO SUFICIENTEMENTE BUENA.</li>
+            <li><b>DOBLAR:</b> PUEDES DUPLICAR TU APUESTA INICIAL Y RECIBIR SOLO UNA CARTA MÁS. ESTA ES UNA
+                JUGADA ARRIESGADA, PERO PUEDE SER MUY LUCRATIVA. SOLO PUEDES DOBLAR AL INICIO DE TU TURNO.</li>
+            <li><b>DIVIDIR:</b> SI TUS DOS CARTAS INICIALES SON DEL MISMO VALOR (POR EJEMPLO, DOS 8), PUEDES
+                DIVIDIRLAS EN DOS MANOS SEPARADAS. REALIZAS UNA APUESTA ADICIONAL PARA LA SEGUNDA MANO Y JUEGAS
+                CADA UNA DE FORMA INDEPENDIENTE.</li>
+        </ul>
+    </section>
+
+    <p><b>5. TURNO DEL CRUPIER:</b> UNA VEZ QUE TODOS LOS JUGADORES HAN TERMINADO SUS TURNOS, EL CRUPIER
+        REVELA SU CARTA OCULTA. EL CRUPIER DEBE SEGUIR UNA REGLA ESTRICTA: DEBE PEDIR CARTA SI SU MANO
+        ES DE 16 O MENOS Y PLANTARSE CON 17 O MÁS. SI EL CRUPIER SE PASA DE 21, TODOS LOS JUGADORES QUE
+        SIGUEN EN LA PARTIDA GANAN.</p>
+
+
+    <section class="apuestas">
+        <h2>APUESTAS Y PAGOS</h2>
+        <ul>
+            <li><b>GANAR LA MANO:</b> Si tu mano es más alta que la del crupier (sin pasarte de 21), se te paga 1:1 (recuperas tu apuesta más una cantidad igual).</li>
+            <li><b>EMPATE:</b> Si tu mano tiene el mismo valor que la del crupier, es un empate. Recuperas tu apuesta, pero no ganas ni pierdes dinero.</li>
+            <li><b>BLACKJACK:</b> Si consigues un Blackjack natural, se te paga 1.5:1 (1.5 veces tu apuesta inicial).</li>
+            <li><b>PASARSE:</b> Si te pasas de 21, pierdes tu apuesta inmediatamente.</li>
+        </ul>
+    </section>
+</main>
+
+<footer>
+
+    <img id="logoFooter" th:src="@{/resources/core/images/logo.png}" alt="logoFooter">
+
+    <p id="parrafoFooter">© Todos los derechos reservados</p>
+</footer>
+
+</body>
+</html>
