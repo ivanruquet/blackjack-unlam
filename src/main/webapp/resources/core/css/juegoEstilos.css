@@ -1,0 +1,165 @@
+
+
+main{
+    height: 100%;
+}
+.iconos-section-crupier{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+
+.cartas-score{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    padding-right: 45px ;
+}
+.cartas{
+    display: flex;
+}
+.carta {
+    width: 80px;
+    height: 80px;
+
+}
+
+.score{
+    font-family: 'poppins';
+    color: white;
+    font-weight: 600;
+    font-size: 24px;
+    background-color: #360D0D;
+    border-radius: 3px;
+    width: 40%;
+    display: flex;
+    justify-content: center; /* Centra el hijo horizontalmente */
+    align-items: center;
+}
+.score p{
+    margin:0;
+}
+.contenedorIconos{
+    width:10%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-right: 5%;
+
+}
+
+.iconos-juego{
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.iconos-juego img{
+    width: 40px;
+    height: 40px;
+}
+
+.pozo-de-apuesta{
+    font-family: 'poppins';
+    color: white;
+    font-size: 30px;
+    background-color: #360D0D;
+    width: 12%;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    border-radius: 20px;
+    margin-bottom: 4%;
+
+}
+#valor-apuesta{
+    margin: 0;
+    padding-left: 15px;
+}
+.pozo-de-apuesta img{
+    width: 40px;
+}
+
+.contenedor-desiciones{
+    border: 1px solid white;
+    border-radius: 30px;
+    padding: 7px 20px 7px 20px;
+
+    width: 28%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.boton-desicion img{
+    width: 50px;
+    height: 50px;
+}
+
+.centro-de-mesa{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 25px 0px 25px 0px;
+
+}
+
+#sectionJuegador{
+    padding-right:0 ;
+    width: 55%;
+}
+#score-jugador{
+    width: 61px;
+    height: 35px;
+}
+
+.boton-ficha-apuesta img{
+    width: 45px;
+    height: 45px;
+}
+
+#mazo{
+    width: 70px;
+    height: 102px;
+}
+.todo-sola-hago{
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 10px;
+}
+
+.contenedor-mazo-fichas{
+    margin-left: 25px;
+}
+
+
+
+
+
+
+
+
+.boton-deshabilitado {
+    filter: grayscale(90%);
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+
+
+
+
+
+.boton-deshabilitado {
+    filter: grayscale(90%);
+    opacity: 0.5;
+    cursor: not-allowed;
+}

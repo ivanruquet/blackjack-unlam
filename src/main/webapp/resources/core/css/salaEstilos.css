@@ -95,6 +95,7 @@ main{
 }
 
 .saldo{
+    height: 25%;
     margin-left: 5%;
     font-family: 'poppins', serif;
     color: white;
