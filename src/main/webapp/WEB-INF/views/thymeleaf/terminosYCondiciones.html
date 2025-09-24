@@ -12,7 +12,7 @@
 
 <main>
     <div class="contenedor">
-        <h1>TÉRMINOS Y CONDICIONES DE USO – BLACKJACK ONLINE</h1>
+        <h1>TÉRMINOS Y CONDICIONES DE USO:  BLACKJACK ONLINE</h1>
 
         <div class="alerta">
             <h2>Aceptación de los Términos</h2>
@@ -98,8 +98,12 @@
         </div>
 
         <div class="botones">
-            <button class="btn volver" onclick="volver()">VOLVER</button>
-            <button class="btn jugar" id="jugarBtn" disabled>JUGAR</button>
+            <a href="home.html" target="_self">
+                <button class="btn volver">VOLVER</button>
+            </a>
+            <a href="sala.html" target="_self">
+                <button class="btn jugar" id="jugarBtn" disabled>JUGAR</button>
+            </a>
         </div>
     </div>
 </main>
@@ -108,22 +112,7 @@
     <img th:src="@{/resources/core/images/logo.png}" id="logoImagen"  alt="logo">
     <p>© TODOS LOS DERECHOS RESERVADOS</p>
 </footer>
+<script th:src="@{/resources/core/js/terminosYCondiciones.js}"></script>
 
-<script>
-    const checkbox = document.getElementById("acepto");
-    const jugarBtn = document.getElementById("jugarBtn");
-
-    checkbox.addEventListener("change", function() {
-        jugarBtn.disabled = !this.checked;
-    });
-
-    function volver() {
-        window.location.href = "sala.html";
-    }
-
-    jugarBtn.addEventListener("click", function() {
-        window.location.href = "sala.html";
-    });
-</script>
 </body>
 </html>

@@ -24,10 +24,10 @@
         </div>
 
         <div class="perfil">
-            <h2>NOMBRE DE USUARIO</h2>
-            <p>Nombre y apellido: </p>
-            <p>Email: </p>
-            <p>Se unió en </p>
+            <h2 id="nombreDeUsuario" contenteditable="true">NOMBRE DE USUARIO</h2>
+            <p id="nombreYApellido" contenteditable="true">Nombre y apellido: </p>
+            <p id="email" contenteditable="true">Email: </p>
+            <p id="fecha" >Se unió en</p>
 
             <div class="estadisticas1">
                 <div class="nivel">0<br>Saldo actual</div>
@@ -63,7 +63,9 @@
                 </ul>
             </div>
 
-            <button class="btn">VOLVER</button>
+            <a href="sala.html" target="_self">
+                <button class="btn">VOLVER</button>
+            </a>
         </div>
     </div>
 </main>
@@ -71,26 +73,6 @@
     <img th:src="@{/resources/core/images/logo.png}">
     <p>© TODOS LOS DERECHOS RESERVADOS</p>
 </footer>
-
-<script>
-    const fileInput = document.getElementById("file");
-    const profileImage = document.getElementById("idUs");
-
-    fileInput.addEventListener("change", function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                profileImage.src = e.target.result;
-            };
-
-            reader.readAsDataURL(file);
-        }
-    });
-    function volver() {
-        window.location.href = "sala.html";
-    }
-</script>
+<script th:src="@{/resources/core/js/perfil.js}"></script>
 </body>
 </html>
