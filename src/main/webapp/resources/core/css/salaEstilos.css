@@ -67,14 +67,20 @@ main{
     border: none;
     cursor: pointer;
 }
-
+.botones-form{
+    width: 35%;
+    height: 50px;
+}
 .textoBoton{
     width: 100%;
     font-size: 16px;
     margin:0px;
 }
 
-
+#boton-jugar-crupier{
+    width: 100%;
+    height:100%;
+}
 
 
 .contenedorSaldoYRecompenzas{
@@ -89,6 +95,7 @@ main{
 }
 
 .saldo{
+    height: 25%;
     margin-left: 5%;
     font-family: 'poppins', serif;
     color: white;
@@ -166,3 +173,4 @@ footer{
     margin-right: 2%;
 
 }
+

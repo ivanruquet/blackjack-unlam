@@ -16,7 +16,7 @@
 
     <div class="menu-icono-perfil">
         <ul class="opcionesNav">
-            <li><a href="">Reglas del juego</a></li>
+            <li><a href="reglas.html" target="_blank">Reglas del juego</a></li>
         </ul>
         <button class="IconoPerfil">
             <img th:src="@{/resources/core/images/icono-perfil.png}" alt="Icono perfil">
@@ -43,7 +43,9 @@
         <img th:src="@{/resources/core/images/logo gigante.png}" alt="logo gigante" id="logoGigante">
 
         <div class="contenedorBotonesPlay">
-            <button class="botonPlay" type="submit"><p class="textoBoton">JUGAR CONTRA <br>CRUPIER</br></p></button>
+            <form class="botones-form" th:action="@{/juego}" method="post">
+            <button class="botonPlay" id="boton-jugar-crupier" type="submit"><p class="textoBoton">JUGAR CONTRA <br>CRUPIER</br></p></button>
+            </form>
             <button class="botonPlay" type="submit"><p class="textoBoton">JUGAR ONLINE</p></button>
         </div>
     </div>
@@ -56,7 +58,6 @@
 
     <p id="parrafoFooter">© Todos los derechos reservados</p>
 </footer>
-
 
 </body>
 </html>
