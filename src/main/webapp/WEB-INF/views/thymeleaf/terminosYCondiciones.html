@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Términos y Condiciones - Blackjack</title>
+    <link rel="stylesheet" th:href="@{/css/terminosYCondiciones.css}">
+</head>
+<body>
+<header>
+    <img th:src="@{/resources/core/images/logo.png}" id="logo"  alt="logo">
+</header>
+
+<main>
+    <div class="contenedor">
+        <h1>TÉRMINOS Y CONDICIONES DE USO – BLACKJACK ONLINE</h1>
+
+        <div class="alerta">
+            <h2>Aceptación de los Términos</h2>
+            <p>
+                Al acceder y utilizar Blackjack Online (en adelante, “el Juego”), el usuario acepta expresamente los presentes
+                Términos y Condiciones de Uso, que tienen carácter obligatorio y vinculante conforme a lo establecido por el
+                Código Civil y Comercial de la Nación Argentina. Si el usuario no está de acuerdo con alguna de las disposiciones
+                aquí establecidas, deberá abstenerse de utilizar el Juego.
+            </p>
+        </div>
+
+        <div class="terminos">
+            <h2>1. Naturaleza del Juego</h2>
+            <p>
+                El Juego es una plataforma digital de entretenimiento que simula la dinámica del blackjack.<br>
+                Salvo que se indique expresamente lo contrario, las partidas se realizan con fichas o monedas virtuales sin valor monetario.<br>
+                Las fichas, monedas o recompensas virtuales no constituyen dinero real y no pueden canjearse por moneda de curso legal ni transferirse fuera del Juego.
+            </p>
+
+            <h2>2. Registro y Cuenta de Usuario</h2>
+            <p>
+                Para acceder a determinadas funciones, el usuario deberá registrarse proporcionando datos veraces, completos y actualizados.<br>
+                El usuario será el único responsable de mantener la confidencialidad de sus credenciales de acceso y de todas las actividades realizadas en su cuenta.<br>
+                La administración del Juego podrá suspender o eliminar cuentas en caso de incumplimiento de los presentes Términos.
+            </p>
+
+            <h2>3. Uso Permitido</h2>
+            <p>
+                El usuario se obliga a:<br>
+                • Utilizar el Juego exclusivamente con fines recreativos y personales.<br>
+                • Abstenerse de emplear software, scripts, bots, exploits o cualquier método que altere el funcionamiento del Juego.<br>
+                • No llevar a cabo conductas fraudulentas, abusivas, ofensivas o que perjudiquen a otros usuarios o a la plataforma.
+            </p>
+
+            <h2>4. Limitación de Responsabilidad</h2>
+            <p>
+                El Juego se ofrece “tal cual” y la administración no garantiza su funcionamiento ininterrumpido, libre de errores o seguro frente a terceros.<br>
+                La administración no será responsable por daños directos, indirectos, incidentales o consecuentes derivados del uso o imposibilidad de uso del Juego.<br>
+                El usuario reconoce que juega bajo su propia responsabilidad.
+            </p>
+
+            <h2>5. Reglas del Juego</h2>
+            <p>
+                Las reglas de blackjack aplicables estarán disponibles en la sección “Reglas” dentro de la plataforma.
+                El usuario acepta expresamente que dichas reglas forman parte integrante de los presentes Términos y Condiciones.
+            </p>
+
+            <h2>6. Protección de Datos Personales</h2>
+            <p>
+                La administración del Juego se compromete a proteger los datos personales de los usuarios conforme a la Ley N.º 25.326 de
+                Protección de Datos Personales y sus normas complementarias.<br>
+                Los datos recabados serán utilizados únicamente para fines relacionados con la prestación del servicio y no serán cedidos a
+                terceros sin consentimiento previo del titular.<br>
+                El usuario podrá ejercer sus derechos de acceso, rectificación y supresión de datos conforme a la normativa vigente.
+            </p>
+
+            <h2>7. Propiedad Intelectual</h2>
+            <p>
+                Todos los contenidos del Juego (incluyendo, sin carácter limitativo, gráficos, logotipos, interfaces, diseños, software y
+                código fuente) son propiedad exclusiva de la administración o de sus respectivos licenciantes, y se encuentran protegidos
+                por la Ley de Propiedad Intelectual N.º 11.723. Queda prohibida su reproducción, distribución o modificación sin autorización expresa.
+            </p>
+
+            <h2>8. Modificaciones</h2>
+            <p>
+                La administración podrá modificar los presentes Términos y Condiciones en cualquier momento. Dichas modificaciones entrarán
+                en vigor desde su publicación en la plataforma. El uso continuado del Juego por parte del usuario implicará la aceptación
+                de las nuevas condiciones.
+            </p>
+
+            <h2>9. Legislación Aplicable y Jurisdicción</h2>
+            <p>
+                Estos Términos y Condiciones se rigen por las leyes de la República Argentina.<br>
+                Toda controversia será sometida a la competencia de los tribunales ordinarios de la Ciudad Autónoma de Buenos Aires,
+                con renuncia expresa a cualquier otro fuero o jurisdicción.
+            </p>
+        </div>
+
+        <div class="checkbox-contenedor">
+            <label>
+                <input type="checkbox" id="acepto"> Acepto los términos y condiciones
+            </label>
+        </div>
+
+        <div class="botones">
+            <button class="btn volver" onclick="volver()">VOLVER</button>
+            <button class="btn jugar" id="jugarBtn" disabled>JUGAR</button>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <img th:src="@{/resources/core/images/logo.png}" id="logoImagen"  alt="logo">
+    <p>© TODOS LOS DERECHOS RESERVADOS</p>
+</footer>
+
+<script>
+    const checkbox = document.getElementById("acepto");
+    const jugarBtn = document.getElementById("jugarBtn");
+
+    checkbox.addEventListener("change", function() {
+        jugarBtn.disabled = !this.checked;
+    });
+
+    function volver() {
+        window.location.href = "sala.html";
+    }
+
+    jugarBtn.addEventListener("click", function() {
+        window.location.href = "sala.html";
+    });
+</script>
+</body>
+</html>
