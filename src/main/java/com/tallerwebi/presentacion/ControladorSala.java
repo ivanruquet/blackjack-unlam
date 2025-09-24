@@ -16,7 +16,7 @@ public class ControladorSala {
 
         return new ModelAndView("sala", modelo);
     }
-    @RequestMapping(path = "/jugar", method = RequestMethod.POST)
+    @RequestMapping(path = "/juego", method = RequestMethod.POST)
     public ModelAndView irAlJuego() {
         ModelMap modelo = new ModelMap();
         return new ModelAndView("juego", modelo);
