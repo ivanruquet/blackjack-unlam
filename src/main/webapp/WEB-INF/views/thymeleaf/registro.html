@@ -1,10 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Jack</title>
+
+    <link rel="stylesheet" th:href="@{/css/registroEstilos.css}">
 </head>
 <body>
-$END$
+
+<main>
+    <div class="fondo">
+
+        <img alt="" id="imagen-mesa" th:src="@{/resources/core/images/background.png}"  >
+    </div>
+
+    <div class="form-container">
+        <div class="header">
+            <img alt="" class="logo" th:src="@{/resources/core/images/logo.png}" >
+
+
+        </div>
+
+        <h3 style="color: white; font-family: Arial, Helvetica, sans-serif; font-size: 24px;">Crea una cuenta en black jack</h3>
+
+        <form>
+            <div class="input-group">
+                <label>Nombre:</label>
+                <input type="text" required>
+            </div>
+            <div class="input-group">
+                <label>Apellido:</label>
+                <input type="text" required>
+            </div>
+            <div class="input-group">
+                <label>Edad:</label>
+                <input type="number" required>
+            </div>
+            <div class="input-group">
+                <label>Email:</label>
+                <input type="email" required>
+            </div>
+            <div class="input-group">
+                <label>Nombre de usuario:</label>
+                <input type="text" required>
+            </div>
+            <div class="input-group">
+                <label>Contraseña:</label>
+                <input type="password" required>
+            </div>
+            <div class="input-group">
+                <label>Repetir contraseña:</label>
+                <input type="password" required>
+            </div>
+
+            <div class="checkbox">
+                <input type="checkbox" required>
+                <label>Acepto los <b>Términos y Condiciones</b></label>
+            </div>
+
+            <button type="submit" class="btn">REGISTRARME</button>
+        </form>
+    </div>
+</main>
+
+
+<footer id="pie-pagina">
+
+    <div id="elementos-pie">
+
+        <img alt="" id="logo-imagen-pie" th:src="@{/resources/core/images/logo.png}"
+        >
+        <h4 id="texto-pie">@ Todos los derechos reservados</h4>
+
+    </div>
+
+
+</footer>
 </body>
 </html>
