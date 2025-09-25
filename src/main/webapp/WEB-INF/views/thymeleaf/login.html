@@ -1,49 +1,77 @@
-<!DOCTYPE HTML>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>Taller Web I</title>
-
-    <!-- Boostrap core css -->
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-
-    <!-- custom style -->
-    <link rel="stylesheet" th:href="@{/css/main.css}"/>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Jack</title>
+    <link rel="stylesheet" th:href="@{/css/loginEstilos.css}">
 </head>
-
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="#">UNLAM</a>
-</nav>
+<div id="LoginPrincipal">
 
-<main role="main" class="container">
+    <div id="img">
+        <img th:src="@{/resources/core/images/background.png}"  alt="" id="imagenFondo">
+        <div id="ingresoDatos">
 
-    <div class = "container">
-        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-            <form action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
-                <h3 class="form-signin-heading">Taller Web I</h3>
-                <hr class="colorgraph"><br>
+            <div id="datos">
+                <div id="logo">
+                    <img th:src="@{/resources/core/images/logo.png}" alt="" id="logopng" style="margin-top: 20px">
+                </div>
 
-                <input th:field="*{email}" id="email" type="email" class="form-control" required/>
-                <input th:field="*{password}" type="password" id="password" class="form-control" required/>
+                <h3 style="color: white; font-family: Arial, Helvetica, sans-serif; font-size: 24px;">Ingresa a tu cuenta de Black Jack</h3>
 
-                <button id="btn-login" class="btn btn-lg btn-primary btn-block" Type="Submit" disabled>Login</button>
 
-                <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
-                </p>
-            </form>
-            <a id="btn-register" href="nuevo-usuario">Registrarme</a>
+
+
+                <p style="color: white; " id="nombre-usuario">Nombre de usuario:</p>
+                <input type="text" placeholder="Ingrese nombre de usuario..." id="rectangulo-nombre-usaurio">
+
+
+                <br>
+
+                <p style="color: white;" id="contraseña">Contraseña:</p>
+                <input type="password" placeholder="Ingrese su contraseña..." id="rectangulo-contraseña">
+
+                <br>
+
+                <input type="button" name="" id="boton-ingresar" value="Ingresar">
+
+
+
+                <p style="color: white;">_</p>
+
+                <h4 style="color: white; margin-top: 5px; font-size: 20px;">¿Nuevo en Black Jack?</h4>
+
+                <a style="color: #FAC800; text-decoration: none;  font-size: 20px; margin-bottom: 40px;" href="abrir-cuenta"> Abrir cuenta</a>
+
+
+
+
+
+            </div>
+
+
+
         </div>
     </div>
-</main>
-<!-- /.container -->
 
-<!-- Boostrap core js -->
-<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-<script type="module" th:src="@{js/login.js}"></script>
+
+
+    <div id="pie-pagina">
+
+        <div id="elementos-pie">
+
+            <img th:src="@{/resources/core/images/logo.png}" alt="" id="logo-imagen-pie">
+
+            <h4 id="texto-pie">@ Todos los derechos reservados</h4>
+
+        </div>
+
+
+    </div>
+
+</div>
+
 </body>
 </html>
