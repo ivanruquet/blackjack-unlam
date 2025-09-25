@@ -183,7 +183,7 @@ nav{
     border: none;
     padding: 0;
     cursor: pointer;
-    display: inline-flex; /* Ayuda a la alineación interna */
+    display: inline-flex;
     margin-right: 2%;
     margin-top: 0;
 }
