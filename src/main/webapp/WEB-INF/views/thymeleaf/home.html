@@ -13,7 +13,7 @@
 <nav>
     <div class="logoNav">
         <img th:src="@{/resources/core/images/logo.png}" id="logoImagen"  alt="logo">
-    </div>
+    </div>z
 
     <div class="menu-icono-perfil">
         <button class="IconoPerfil">
@@ -26,18 +26,17 @@
 <div class="content"><h2>ÚNETE A LA MESA Y JUEGA AHORA</h2>
     <h1>BLACK JACK ONLINE: APUESTA, GANA Y DISFRUTA</h1>
     <div class="buttons">
-        <button>Registrarse</button>
-        <button>Iniciar sesión</button>
+        <a th:href="@{/registro}" class="btn">Registrarse</a>
+        <a th:href="@{/login}" class="btn">Iniciar Sesión </a>
     </div>
 
 </div>
 
 <footer>
-
     <img id="logoFooter" th:src="@{/resources/core/images/logo.png}" alt="logoFooter">
 
     <p id="parrafoFooter">© Todos los derechos reservados</p>
-</footer>>
+</footer>
 
 </body>
 

@@ -12,35 +12,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
-nav {
-    background-color: black;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
 
-#logoImagen{
-    height: 55px;
-}
-.logoNav{
-    margin-left: 25px;
-}
-
-.IconoPerfil{
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    display: inline-flex; /* Ayuda a la alineación interna */
-    margin-right: 2%;
-    margin-top: 0;
-}
-.IconoPerfil img {
-
-    width: 40px;
-    height: 40px;
-}
 .content {
     flex: 1; 
     color: white;
@@ -71,7 +43,7 @@ nav {
     gap: 20px;
 }
 
-.buttons button {
+.buttons .btn {
     background: #fac800;
     border: none;
     padding: 12px 24px;
@@ -82,13 +54,18 @@ nav {
     transition: 0.3s;
 }
 
-.buttons button:hover {
+.buttons .btn:hover {
     background: #fac800;
 }
 
-footer {
-    width: 100vw;
-    min-height: 170px;
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+footer{
+    width: 100%;
+    height: 170px;
     background-color: black;
     color: white;
     font-family: 'poppins';
@@ -96,9 +73,6 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    z-index: 2;    
-    clip-path: none;
 }
 
 
@@ -109,4 +83,34 @@ footer {
 }
 #parrafoFooter{
     padding-left: 5%;
+}
+
+nav{
+    background-color: black;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#logoImagen{
+    height: 55px;
+}
+.logoNav{
+    margin-left: 25px;
+}
+
+.IconoPerfil{
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex;
+    margin-right: 2%;
+    margin-top: 0;
+}
+.IconoPerfil img {
+
+    width: 40px;
+    height: 40px;
 }
