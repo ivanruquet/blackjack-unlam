@@ -43,7 +43,7 @@ body {
     gap: 20px;
 }
 
-.buttons button {
+.buttons .btn {
     background: #fac800;
     border: none;
     padding: 12px 24px;
@@ -54,8 +54,13 @@ body {
     transition: 0.3s;
 }
 
-.buttons button:hover {
+.buttons .btn:hover {
     background: #fac800;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
 footer{
