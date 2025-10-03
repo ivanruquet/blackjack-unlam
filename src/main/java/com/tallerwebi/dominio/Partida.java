@@ -6,8 +6,6 @@ public class Partida {
     private Integer apuesta;
 
     public Partida(){
-        this.estadoPartida = EstadoPartida.APUESTA;
-        this.apuesta = 0;
     }
 
 
