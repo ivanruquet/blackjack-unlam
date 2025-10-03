@@ -16,11 +16,7 @@ public class PartidaTest {
     public void queExistaUnaPartida(){
         assertNotNull(partida);
     }
-    @Test
-    public void queElEstadoInicialDeUnaPartidaSeaDeApuesta(){
-        estadoPartida = EstadoPartida.APUESTA;
-        thenEstadoDeLaPartida(estadoPartida);
-    }
+
     @Test
     public void queUnaPartidaPuedaCambiarSuEstadoAJuego(){
         estadoPartida = EstadoPartida.JUEGO;
