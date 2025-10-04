@@ -1,5 +1,11 @@
 package com.tallerwebi.dominio;
 
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
+@Service
+@Transactional
 public class ServicioPartidaImpl implements ServicioPartida {
     Partida partida;
 
