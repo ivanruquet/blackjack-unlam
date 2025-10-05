@@ -7,7 +7,11 @@
 </head>
 <body>
 <header>
-    <img th:src="@{/resources/core/images/logo.png}">
+    <div class="logo">
+        <a th:href="@{/home}">
+            <img th:src="@{/resources/core/images/logo.png}" alt="Logo">
+        </a>
+    </div>
     <div class="perfil"><p>Mi perfil</p> </div>
     <img th:src="@{/resources/core/images/usuario.png}" id="logoImagen"  alt="logo">
 </header>
@@ -40,12 +44,12 @@
             </div>
 
             <p>¡Faltan 5 partidas ganadas para subir de nivel!</p>
-            <p>Leer <a href="terminosYCondiciones.html" >Términos y condiciones</a></p>
+            <p>Leer <a th:href="@{/terminosYCondiciones}">Términos y condiciones</a></p>
         </div>
 
         <div class="estadisticas">
             <div class="est">
-                <img class="cofre" th:src="@{/resources/core/images/cofre-del-tesoro 1.png}">
+                <img class="cofre" th:src="@{/resources/core/images/cofre-del-tesoro 1.png}" alt="logo">
                 <h3>ESTADÍSTICAS</h3>
                 <p>Partidas totales: </p>
                 <p>Partidas ganadas: </p>
@@ -56,21 +60,24 @@
             <div class="estadisticas">
                 <ul class="logros">
                     <h3>LOGROS</h3>
-                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20"> Ganar 1 mano con black jack</li>
-                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20"> Apostar la cantidad máxima permitida y ganar</li>
-                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20"> Ganar 10 manos consecutivas</li>
-                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20"> Completar 100 partidas</li>
+                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20" alt="check"> Ganar 1 mano con black jack</li>
+                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20" alt="check"> Apostar la cantidad máxima permitida y ganar</li>
+                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20" alt="check"> Ganar 10 manos consecutivas</li>
+                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20" alt="check"> Completar 100 partidas</li>
                 </ul>
             </div>
 
-            <a href="sala.html" target="_self">
-                <button class="btn">VOLVER</button>
-            </a>
+            <div class="botones">
+                <form th:action="@{/sala}" method="post">
+                    <button class="btn" id="boton" type="submit">VOLVER</button>
+                </form>
+            </div>
+
         </div>
     </div>
 </main>
 <footer>
-    <img th:src="@{/resources/core/images/logo.png}">
+    <img th:src="@{/resources/core/images/logo.png}" alt="logo">
     <p>© TODOS LOS DERECHOS RESERVADOS</p>
 </footer>
 <script th:src="@{/resources/core/js/perfil.js}"></script>

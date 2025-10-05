@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Juego | Black Jack</title>
@@ -11,17 +11,21 @@
 </head>
 <body>
 <nav>
-    <div class="logoNav">
-        <img th:src="@{/resources/core/images/logo.png}" id="logoImagen"  alt="logo">
+    <div class="logo">
+        <a th:href="@{/home}">
+            <img th:src="@{/resources/core/images/logo.png}" alt="Logo">
+        </a>
     </div>
 
     <div class="menu-icono-perfil">
         <ul class="opcionesNav">
             <li><a href="">Reglas del juego</a></li>
         </ul>
-        <button class="IconoPerfil">
-            <img th:src="@{/resources/core/images/icono-perfil.png}" alt="Icono perfil">
-        </button>
+        <a th:href="@{/perfil}">
+            <button class="IconoPerfil">
+                <img th:src="@{/resources/core/images/icono-perfil.png}" alt="Icono perfil">
+            </button>
+        </a>
     </div>
 </nav>
 

@@ -188,12 +188,18 @@ main {
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
+    transition: background 0.3s ease; /* para una animación suave */
 }
 
 .btn:hover {
     background: #e6b800;
 }
 
+.botones {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
 footer {
     display: flex;
     justify-content: space-between;
