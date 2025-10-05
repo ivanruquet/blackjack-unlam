@@ -11,16 +11,20 @@
 <body>
 <nav>
     <div class="logoNav">
-        <img th:src="@{/resources/core/images/logo.png}" id="logoImagen"  alt="logo">
+        <a th:href="@{/home}">
+            <img th:src="@{/resources/core/images/logo.png}" alt="Logo">
+        </a>
     </div>
 
     <div class="menu-icono-perfil">
         <ul class="opcionesNav">
             <li><a href="reglas.html" target="_blank">Reglas del juego</a></li>
         </ul>
+        <a th:href="@{/perfil}">
         <button class="IconoPerfil">
             <img th:src="@{/resources/core/images/icono-perfil.png}" alt="Icono perfil">
         </button>
+        </a>
     </div>
 
 </nav>

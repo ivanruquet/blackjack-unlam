@@ -7,7 +7,11 @@
 </head>
 <body>
 <header>
-    <img th:src="@{/resources/core/images/logo.png}" alt="logo">
+    <div class="logo">
+        <a th:href="@{/home}">
+            <img th:src="@{/resources/core/images/logo.png}" alt="Logo">
+        </a>
+    </div>
     <div class="perfil"><p>Mi perfil</p> </div>
     <img th:src="@{/resources/core/images/usuario.png}" id="logoImagen"  alt="logo">
 </header>
