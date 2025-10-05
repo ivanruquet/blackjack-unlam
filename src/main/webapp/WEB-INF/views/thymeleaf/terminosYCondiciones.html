@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Términos y Condiciones - Blackjack</title>
@@ -17,7 +17,7 @@
         <div class="alerta">
             <h2>Aceptación de los Términos</h2>
             <p>
-                Al acceder y utilizar Blackjack Online (en adelante, “el Juego”), el usuario acepta expresamente los presentes
+                Al acceder y utilizar Blackjack Online (en adelante, el Juego), el usuario acepta expresamente los presentes
                 Términos y Condiciones de Uso, que tienen carácter obligatorio y vinculante conforme a lo establecido por el
                 Código Civil y Comercial de la Nación Argentina. Si el usuario no está de acuerdo con alguna de las disposiciones
                 aquí establecidas, deberá abstenerse de utilizar el Juego.
@@ -91,20 +91,15 @@
             </p>
         </div>
 
-        <div class="checkbox-contenedor">
+        <form th:action="@{/aceptarTerminos}" method="post" id="terminosForm">
             <label>
-                <input type="checkbox" id="acepto"> Acepto los términos y condiciones
+                <input type="checkbox" id="acepto" name="acepto" value="true" th:checked="${aceptado}">Aceptar terminos y condiciones
             </label>
-        </div>
-
-        <div class="botones">
-            <a href="home.html" target="_self">
-                <button class="btn volver">VOLVER</button>
-            </a>
-            <a href="sala.html" target="_self">
-                <button class="btn jugar" id="jugarBtn" disabled>JUGAR</button>
-            </a>
-        </div>
+            <div class="botones">
+                <a th:href="@{/home}" class="btn volver">VOLVER</a>
+                <button class="btn jugar" id="jugarBtn" type="submit" th:attr="disabled=${!aceptado}">JUGAR</button>
+            </div>
+        </form>
     </div>
 </main>
 
@@ -112,7 +107,6 @@
     <img th:src="@{/resources/core/images/logo.png}" id="logoImagen"  alt="logo">
     <p>© TODOS LOS DERECHOS RESERVADOS</p>
 </footer>
-<script th:src="@{/resources/core/js/terminosYCondiciones.js}"></script>
-
+<script th:src="@{/js/terminosYCondiciones.js}"></script>
 </body>
 </html>

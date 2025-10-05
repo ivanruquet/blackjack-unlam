@@ -15,6 +15,7 @@ public class Usuario {
     private String password;
     private String rol;
     private Boolean activo = false;
+    private Boolean terminosAceptados = false;
 
     public Long getId() {
         return id;
@@ -54,4 +55,8 @@ public class Usuario {
     public void activar() {
         activo = true;
     }
+
+
+    public Boolean getTerminosAceptados() { return terminosAceptados; }
+    public void setTerminosAceptados(boolean terminosAceptados) { this.terminosAceptados = terminosAceptados; }
 }

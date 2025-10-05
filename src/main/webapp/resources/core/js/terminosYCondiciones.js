@@ -1,6 +1,8 @@
-const checkbox = document.getElementById("acepto");
-const jugarBtn = document.getElementById("jugarBtn");
+const checkbox = document.getElementById('acepto');
+const boton = document.getElementById('jugarBtn');
 
-checkbox.addEventListener("change", function() {
-    jugarBtn.disabled = !this.checked;
+boton.disabled = !checkbox.checked;
+
+checkbox.addEventListener('change', () => {
+    boton.disabled = !checkbox.checked;
 });
