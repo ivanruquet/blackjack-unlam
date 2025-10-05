@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/salaEstilos.css}">
+    <link rel="stylesheet" th:href="@{/css/popup.css}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -37,9 +39,29 @@
             <p class="saldoDiponible">$00.00</p>
         </div>
 
-        <button class="BotonCofre">
+        <button id="btnCofre" class="btn-cofre">
             <img th:src="@{/resources/core/images/cofre-del-tesoro 1.png}" alt="Recompensas diarias - Cofre">
         </button>
+
+        <div id="overlay" class="overlay">
+            <div class="popup-recompensa">
+                <h2 class="titulo">
+                    <span class="icono"><img th:src="@{/resources/core/images/cofre-del-tesoro 1.png}" alt=""></span>
+                    RECOMPENSA DIARIA
+                </h2>
+                <div class="dias">
+                    <div class="dia"><img th:src="@{/resources/core/images/dolar 25.png}" alt=""><p>DÍA 1</p><span>$300</span></div>
+                    <div class="dia"><img th:src="@{/resources/core/images/dolar 25.png}" alt=""><p>DÍA 2</p><span>$500</span></div>
+                    <div class="dia"><img th:src="@{/resources/core/images/dolar 25.png}" alt=""><p>DÍA 3</p><span>$750</span></div>
+                    <div class="dia"><img th:src="@{/resources/core/images/dolar 25.png}" alt=""><p>DÍA 4</p><span>$1000</span></div>
+                    <div class="dia"><img th:src="@{/resources/core/images/dolar 25.png}" alt=""><p>DÍA 5</p><span>$1250</span></div>
+                    <div class="dia"><img th:src="@{/resources/core/images/dolar 25.png}" alt=""><p>DÍA 6</p><span>$1500</span></div>
+                    <div class="dia"><img th:src="@{/resources/core/images/dolar 25.png}" alt=""><p>DÍA 7</p><span>$2000</span></div>
+                </div>
+                <button id="btnCerrar" class="btn-cerrar">CERRAR</button>
+            </div>
+        </div>
+
 
     </div>
 
@@ -55,13 +77,12 @@
     </div>
 
 </main>
-
 <footer>
 
     <img id="logoFooter" th:src="@{/resources/core/images/logo.png}" alt="logoFooter">
 
     <p id="parrafoFooter">© Todos los derechos reservados</p>
 </footer>
-
+<script th:src="@{/js/popupCofre.js}"></script>
 </body>
 </html>
