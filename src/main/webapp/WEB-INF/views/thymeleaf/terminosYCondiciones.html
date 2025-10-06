@@ -8,9 +8,7 @@
 <body>
 <header>
     <div class="logo">
-        <a th:href="@{/sala}">
             <img th:src="@{/resources/core/images/logo.png}" alt="Logo">
-        </a>
     </div>
 </header>
 
@@ -95,14 +93,10 @@
             </p>
         </div>
 
-        <form th:action="@{/aceptarTerminos}" method="post" id="terminosForm">
+        <form method="post" id="terminosForm">
             <label>
-                <input type="checkbox" id="acepto" name="acepto" value="true" th:checked="${aceptado}">Aceptar terminos y condiciones
+                <input type="checkbox" id="acepto" name="acepto" value="true">Aceptar terminos y condiciones
             </label>
-            <div class="botones">
-                <a th:href="@{/home}" class="btn volver">VOLVER</a>
-                <button class="btn jugar" id="jugarBtn" type="submit" th:attr="disabled=${!aceptado}">JUGAR</button>
-            </div>
         </form>
     </div>
 </main>
@@ -111,6 +105,5 @@
     <img th:src="@{/resources/core/images/logo.png}" id="logoImagen"  alt="logo">
     <p>© TODOS LOS DERECHOS RESERVADOS</p>
 </footer>
-<script th:src="@{/js/terminosYCondiciones.js}"></script>
 </body>
 </html>
