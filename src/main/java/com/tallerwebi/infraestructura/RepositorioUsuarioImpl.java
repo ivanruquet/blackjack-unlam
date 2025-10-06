@@ -41,22 +41,8 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     }
 
     @Override
-    public void modificar(Usuario usuario) { sessionFactory.getCurrentSession().update(usuario);
+    public void modificar(Usuario usuario) {
+
     }
-
-    @Override
-    public void actualizarTerminosAceptados(String email, boolean aceptado) {
-        final Session session = sessionFactory.getCurrentSession();
-
-        Usuario usuario = (Usuario) session.createCriteria(Usuario.class)
-                .add(Restrictions.eq("email", email))
-                .uniqueResult();
-
-        if (usuario != null) {
-            usuario.setTerminosAceptados(aceptado);
-            session.update(usuario);
-        }
-    }
-
 
 }
