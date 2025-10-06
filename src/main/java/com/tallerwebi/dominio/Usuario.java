@@ -56,7 +56,6 @@ public class Usuario {
         activo = true;
     }
 
-
     public Boolean getTerminosAceptados() { return terminosAceptados; }
     public void setTerminosAceptados(boolean terminosAceptados) { this.terminosAceptados = terminosAceptados; }
 }

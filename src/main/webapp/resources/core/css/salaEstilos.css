@@ -84,7 +84,7 @@ main{
 
 
 .contenedorSaldoYRecompenzas{
-    height: 70px;
+    height: 200px;
     display: flex;
     justify-content: space-between;
     align-items: center;
