@@ -6,13 +6,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class ControladorHome {
+public class ControladorRegistro {
 
-    @RequestMapping("/home")
-    public ModelAndView irHome(){
+    @RequestMapping("/registro")
+    public ModelAndView registro(){
+
         ModelMap modelo = new ModelMap();
-        return new ModelAndView("home", modelo);
+        return new ModelAndView("registro", modelo);
 
-    }
+}
+
+
+
+
 
 }
