@@ -19,7 +19,6 @@ public class ControladorSala {
         this.servicioPartida = servicioPartida;
     }
 
-
     @RequestMapping("/sala")
     public ModelAndView irASala() {
 

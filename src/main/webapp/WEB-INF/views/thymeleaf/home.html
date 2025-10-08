@@ -34,6 +34,14 @@
 
 </div>
 
+<div class="cartas">
+    <h3>Cartas del jugador</h3>
+    <div th:each="carta : ${cartas}">
+        <img th:src="${carta.image}" alt="Carta" style="width:120px; margin:5px;"/>
+        <p th:text="${carta.value + ' de ' + carta.suit}"></p>
+    </div>
+</div>
+
 <footer>
     <img id="logoFooter" th:src="@{/resources/core/images/logo.png}" alt="logoFooter">
 
