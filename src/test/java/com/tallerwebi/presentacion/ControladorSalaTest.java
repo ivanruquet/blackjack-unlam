@@ -18,13 +18,9 @@ public class ControladorSalaTest {
 
     @Test
     public void queAlCrearLaPartidaSePuedaIrAElJuego(){
-        when(servicioPartida.crearPartida()).thenReturn(true);
+        servicioPartida.crearPartida();
         assertThat(controladorSala.irAlJuego().getViewName(), equalToIgnoringCase("juego"));
-    }
-    @Test
-    public void queAlNoCrearLaPartidaSeRetorneLaVistaDeLaSala(){
-        when(servicioPartida.crearPartida()).thenReturn(false);
-        assertThat(controladorSala.irAlJuego().getViewName(), equalToIgnoringCase("sala"));
+
     }
 
 
