@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,21 +22,14 @@
                 <h3 style="color: white; font-family: Arial, Helvetica, sans-serif; font-size: 24px;">Ingresa a tu cuenta de Black Jack</h3>
 
 
-
-
-                <p style="color: white; " id="nombre-usuario">Nombre de usuario:</p>
-                <input type="text" placeholder="Ingrese nombre de usuario..." id="rectangulo-nombre-usaurio">
-
-
-                <br>
-
-                <p style="color: white;" id="contraseña">Contraseña:</p>
-                <input type="password" placeholder="Ingrese su contraseña..." id="rectangulo-contraseña">
-
-                <br>
-
-                <input type="button" name="" id="boton-ingresar" value="Ingresar">
-
+                <form th:action="@{/validar-login}" th:object="${datosLogin}" method="post">
+                    <p style="color: white;" id="nombre-usuario">Email:</p>
+                    <input type="text" th:field="*{email}" id="rectangulo-nombre-usuario" placeholder="Ingrese su email...">
+                    <br>
+                    <p style="color: white;" id="contraseña">Contraseña:</p>
+                    <input type="password" th:field="*{password}" id="rectangulo-contraseña" placeholder="Ingrese su contraseña...">
+                    <input type="submit" id="boton-ingresar" value="Ingresar">
+                </form>
 
 
                 <p style="color: white;">_</p>

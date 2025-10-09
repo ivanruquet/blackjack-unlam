@@ -12,24 +12,23 @@ public class ServicioLoginImpl implements ServicioLogin {
 
     private RepositorioUsuario repositorioUsuario;
 
-    @Autowired
-    public ServicioLoginImpl(RepositorioUsuario repositorioUsuario){
+    @Autowired public ServicioLoginImpl(RepositorioUsuario repositorioUsuario){
         this.repositorioUsuario = repositorioUsuario;
     }
 
-    @Override
-    public Usuario consultarUsuario (String email, String password) {
+    @Override public Usuario consultarUsuario (String email, String password) {
         return repositorioUsuario.buscarUsuario(email, password);
     }
 
-    @Override
-    public void registrar(Usuario usuario) throws UsuarioExistente {
-        Usuario usuarioBuscado = repositorioUsuario.buscarUsuario(usuario.getEmail(), usuario.getPassword());
+    @Override public void registrar(Usuario usuario) throws UsuarioExistente{
+        Usuario usuarioBuscado = repositorioUsuario.buscarUsuario(usuario.getEmail(),
+                usuario.getPassword());
         if(usuarioBuscado != null){
-            throw new UsuarioExistente();
+                    throw new UsuarioExistente();
         }
         repositorioUsuario.guardar(usuario);
     }
-
 }
+
+
 

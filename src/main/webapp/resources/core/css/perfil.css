@@ -188,7 +188,7 @@ main {
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s ease; /* para una animación suave */
+    transition: background 0.3s ease;
 }
 
 .btn:hover {

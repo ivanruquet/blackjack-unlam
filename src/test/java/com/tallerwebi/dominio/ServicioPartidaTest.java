@@ -13,6 +13,7 @@ public class ServicioPartidaTest {
     RepositorioPartida repositorioPartida = mock(RepositorioPartida.class);
     ServicioPartida servicioPartida = new ServicioPartidaImpl(repositorioPartida);
 
+
     @Test
     public void queElServicioPartidaAlInstanciarUnaPartidaSeteeSuEstadoAApuesta() throws PartidaExistenteException {
         assertEquals(EstadoPartida.APUESTA, servicioPartida.getPartidaNueva().getEstadoPartida());
