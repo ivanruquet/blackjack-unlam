@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,43 +24,35 @@
 
         <h3 style="color: white; font-family: Arial, Helvetica, sans-serif; font-size: 24px;">Crea una cuenta en black jack</h3>
 
-        <form>
+        <form th:action="@{/registrarse}" th:object="${usuario}" method="post">
             <div class="input-group">
                 <label>Nombre:</label>
-                <input type="text" required>
+                <input type="text" th:field="*{nombre}" required>
             </div>
             <div class="input-group">
                 <label>Apellido:</label>
-                <input type="text" required>
+                <input type="text" th:field="*{apellido}" required>
             </div>
             <div class="input-group">
                 <label>Fecha de nacimiento:</label>
-                <input type="date" required>
+                <input type="date" th:field="*{fechaNacimiento}" required>
             </div>
             <div class="input-group">
                 <label>Email:</label>
-                <input type="email" required>
+                <input type="email" th:field="*{email}" required>
             </div>
             <div class="input-group">
                 <label>Nombre de usuario:</label>
-                <input type="text" required>
+                <input type="text" th:field="*{username}" required>
             </div>
             <div class="input-group">
                 <label>Contraseña:</label>
-                <input type="password" required>
+                <input type="password" th:field="*{password}" required>
             </div>
-            <div class="input-group">
-                <label>Repetir contraseña:</label>
-                <input type="password" required>
-            </div>
-
-            <div class="checkbox">
-                <input type="checkbox" required>
-                <p>Leer <a th:href="@{/terminosYCondiciones}" target="_blank">Términos y condiciones</a></p>
-            </div>
-
             <button type="submit" class="btn">REGISTRARME</button>
         </form>
+
+
     </div>
 </main>
 
@@ -75,7 +67,8 @@
 
     </div>
 
-
 </footer>
+<script th:src="@{/resources/core/js/registro.js}"></script>
+
 </body>
 </html>

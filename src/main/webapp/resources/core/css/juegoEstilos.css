@@ -1,35 +1,34 @@
-
-
-main{
+main {
     height: 100%;
 }
-.iconos-section-crupier{
+
+/* === SECCIÓN CRUPIER === */
+.iconos-section-crupier {
     display: flex;
     justify-content: space-between;
     padding-top: 10px;
 }
 
-
-.cartas-score{
-
+.cartas-score {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 12px;
-    padding-right: 45px ;
+    padding-right: 45px;
 }
-.cartas{
+
+.cartas {
     display: flex;
 }
+
 .carta {
     width: 80px;
     height: 80px;
-
 }
 
-.score{
-    font-family: 'poppins';
+.score {
+    font-family: 'Poppins';
     color: white;
     font-weight: 600;
     font-size: 24px;
@@ -37,36 +36,39 @@ main{
     border-radius: 3px;
     width: 40%;
     display: flex;
-    justify-content: center; /* Centra el hijo horizontalmente */
+    justify-content: center;
     align-items: center;
 }
-.score p{
-    margin:0;
+
+.score p {
+    margin: 0;
 }
-.contenedorIconos{
-    width:10%;
+
+/* === ICONOS DE JUEGO === */
+.contenedorIconos {
+    width: 10%;
     height: 10%;
     display: flex;
     align-items: center;
     justify-content: space-around;
     margin-right: 5%;
-
 }
 
-.iconos-juego{
+.iconos-juego {
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
 }
 
-.iconos-juego img{
+.iconos-juego img {
     width: 40px;
     height: 40px;
 }
 
-.pozo-de-apuesta{
-    font-family: 'poppins';
+/* === POZO DE APUESTA === */
+.pozo-de-apuesta {
+    font-family: 'Poppins';
     color: white;
     font-size: 30px;
     background-color: #360D0D;
@@ -78,88 +80,166 @@ main{
     justify-content: center;
     border-radius: 20px;
     margin-bottom: 4%;
-
 }
-#valor-apuesta{
+
+#valor-apuesta {
     margin: 0;
     padding-left: 15px;
 }
-.pozo-de-apuesta img{
+
+.pozo-de-apuesta img {
     width: 40px;
 }
 
-.contenedor-desiciones{
+/* === CONTENEDOR DE DECISIONES === */
+.contenedor-desiciones {
     border: 1px solid white;
     border-radius: 30px;
-    padding: 7px 20px 7px 20px;
-
-    width: 28%;
+    padding: 15px 25px;
+    width: 35%;
     display: flex;
     justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.boton-desicion img{
+/* Cada botón dentro de un form */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px; /* espacio entre botón e info */
+}
+
+.boton-desicion {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.boton-desicion:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+.boton-desicion img {
     width: 50px;
     height: 50px;
 }
 
-.centro-de-mesa{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 25px 0px 25px 0px;
-
+.boton-desicion .descripcion-boton {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: white;
+    text-align: center;
+    line-height: 1.2;
 }
 
-#sectionJuegador{
-    padding-right:0 ;
-    width: 55%;
-}
-#score-jugador{
-    width: 61px;
-    height: 35px;
+/* === BOTONES DE FICHAS === */
+.boton-ficha-apuesta {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-.boton-ficha-apuesta img{
+.boton-ficha-apuesta:hover {
+    transform: scale(1.15);
+    filter: brightness(1.2);
+}
+
+.boton-ficha-apuesta img {
     width: 45px;
     height: 45px;
 }
 
-#mazo{
+.contenedor-ficha-apuesta {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+/* === TEXTO DE DESCRIPCIÓN GENERAL === */
+.descripcion-boton {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: white;
+    text-align: center;
+    max-width: 90px;
+    line-height: 1.2;
+}
+
+/* === CENTRO DE MESA === */
+.centro-de-mesa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 25px 0;
+}
+
+#sectionJuegador {
+    padding-right: 0;
+    width: 55%;
+}
+
+#score-jugador {
+    width: 61px;
+    height: 35px;
+}
+
+/* === MAZO Y FICHAS === */
+#mazo {
     width: 70px;
     height: 102px;
 }
-.todo-sola-hago{
+
+.todo-sola-hago {
     display: flex;
     flex-direction: row;
     padding-bottom: 10px;
 }
 
-.contenedor-mazo-fichas{
+.contenedor-mazo-fichas {
     margin-left: 25px;
 }
 
+/* === BOTONES GENERALES === */
+.btn {
+    margin-top: 20px;
+    background: #ffcc00;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
 
+.btn:hover {
+    background: #e6b800;
+}
 
+.botones {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
 
-
-
-
-
+/* === BOTONES DESHABILITADOS === */
 .boton-deshabilitado {
     filter: grayscale(90%);
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-
-
-
-
-
-
-.boton-deshabilitado {
-    filter: grayscale(90%);
-    opacity: 0.5;
-    cursor: not-allowed;
+.texto-descripcion{
+color: white;
 }

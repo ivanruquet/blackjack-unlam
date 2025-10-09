@@ -35,7 +35,12 @@
             <p id="fecha" >Se unió en</p>
 
             <div class="estadisticas1">
-                <div class="nivel">0<br>Saldo actual</div>
+                <div class="estadisticas1">
+                    <div class="nivel">
+                        <span>1000.0</span>
+                        Saldo actual
+                    </div>
+                </div>
                 <div class="nivel">0<br>Nivel</div>
                 <div class="partidasG">0<br>Partidas ganadas</div>
             </div>
@@ -88,8 +93,8 @@
             </div>
 
             <div class="botones">
-                <form th:action="@{/home}" method="post">
-                    <button class="btn" id="boton" type="submit">CERRAR SESION</button>
+                <form th:action="@{/cerrar-sesion}" method="post">
+                    <button class="btn" id="boton" type="submit">CERRAR SESIÓN</button>
                 </form>
             </div>
 

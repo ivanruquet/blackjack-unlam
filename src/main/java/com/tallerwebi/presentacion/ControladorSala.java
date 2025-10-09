@@ -26,6 +26,8 @@ public class ControladorSala {
 
         return new ModelAndView("sala");
     }
+
+
     @RequestMapping(path = "/juego", method = RequestMethod.POST)
     public ModelAndView irAlJuego() {
         servicioPartida.crearPartida();
