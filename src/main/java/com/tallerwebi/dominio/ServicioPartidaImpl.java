@@ -1,20 +1,24 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.dominio.excepcion.PartidaExistenteException;
+import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
+import com.tallerwebi.infraestructura.RepositorioJugadorImpl;
 import com.tallerwebi.infraestructura.RepositorioUsuarioImpl;
-import net.bytebuddy.implementation.bytecode.Throw;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+
+import static java.util.Objects.isNull;
 
 @Service
 @Transactional
 public class ServicioPartidaImpl implements ServicioPartida {
 
-    private RepositorioPartida respositorioPartida;
+    private RepositorioPartida repositorioPartida;
     private  ServicioUsuario servicioUsuario;
+    private RepositorioUsuarioImpl repositorioUsuario;
+    private RepositorioJugador repositorioJugador;
 
     public ServicioPartidaImpl(){
     }
@@ -24,48 +28,57 @@ public class ServicioPartidaImpl implements ServicioPartida {
     }
 
     @Autowired
-    public ServicioPartidaImpl(RepositorioPartida respositorioPartida){
-        this.respositorioPartida=respositorioPartida;
-
+    public ServicioPartidaImpl(RepositorioPartida respositorioPartida, RepositorioUsuarioImpl repositorioUsuario, RepositorioJugadorImpl repositorioJugador){
+        this.repositorioPartida=respositorioPartida;
+        this.repositorioUsuario = repositorioUsuario;
+        this.repositorioJugador = repositorioJugador;
     }
 
-    @Override
-    public void crearPartida(){
-        try {
-            Partida p = buscarPartida();
-        }catch (PartidaExistenteException e){
-            //Si existe una partida que se encuentra en estadoPartida.APUESTA, la borro
-            borrarPartida(respositorioPartida.buscarPartida());
+    public ServicioPartidaImpl(RepositorioPartida repositorioPartida) {
+        this.repositorioPartida= repositorioPartida;
+    }
+
+    public ServicioPartidaImpl(RepositorioPartida repositorioPartida, RepositorioJugador repositorioJugador) {
+        this.repositorioJugador = repositorioJugador;
+        this.repositorioPartida = repositorioPartida;
+    }
+
+
+    public Partida crearPartida(Usuario usuario) throws PartidaNoCreadaException {
+        corroborarExistenciaDePartidaActiva(usuario);
+        Jugador jugador = crearJugador(usuario);
+        Partida partida = instanciarPartida(jugador);
+        if(isNull(partida)){
+            throw new PartidaNoCreadaException();
         }
-        //instancio la partida
-        Partida partidaNueva = getPartidaNueva();
-        //la guardo en el repo de Partida
-        guardarPartida(partidaNueva);
-    }
-    @Override
-    public Partida getPartidaNueva() {
-        Partida partidaNueva = new Partida();
-        partidaNueva.cambiarEstadoDeLaPartida(EstadoPartida.APUESTA);
-        partidaNueva.setApuesta(0);
-        return partidaNueva;
+        return partida;
     }
 
-    public void borrarPartida(Partida partidaBorrada) {
-        respositorioPartida.borrarPartida(partidaBorrada);
+    private Partida instanciarPartida(Jugador jugador) {
+        Partida partida =  new Partida();
+        partida.setJugador(jugador);
+        partida.setEstadoPartida(EstadoPartida.ACTIVA);
+        partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
+
+        return repositorioPartida.guardar(partida);
     }
 
-
-    @Override
-    public void guardarPartida(Partida p) {
-        respositorioPartida.guardar(p);
+    private Jugador crearJugador(Usuario usuario) {
+        Jugador jugador = new Jugador();
+        jugador.setUsuario(usuario);
+        repositorioJugador.guardar(jugador);
+        return jugador;
     }
 
-    @Override
-    public Partida buscarPartida() throws PartidaExistenteException {
-        if(respositorioPartida.buscarPartida() != null){
-            throw new PartidaExistenteException();
+    private void corroborarExistenciaDePartidaActiva(Usuario usuario) {
+        List<Partida> partidasActivas = repositorioPartida.buscarPartidaActiva(usuario);
+        if(!partidasActivas.isEmpty()){
+            for(Partida partidaActiva: partidasActivas){
+                partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.ABANDONADO);
+                partidaActiva.setEstadoPartida(EstadoPartida.INACTIVA);
+            }
         }
-        return null;
     }
+
 
 }
