@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Test Deck</title></head>
+<body>
+<h2>Mazo ID: [[${deckId}]]</h2>
+<div th:each="carta : ${cartas}">
+    <img th:src="${carta.image}" alt="Carta"/>
+    <p th:text="${carta.value + ' de ' + carta.suit}"></p>
+</div>
+</body>
+</html>
