@@ -1,30 +1,32 @@
 package com.tallerwebi.dominio;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Partida {
 
-    private EstadoPartida estadoPartida;
-    private Integer apuesta;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
+    private EstadoDeJuego estadoJuego;
+    @Enumerated(EnumType.STRING)
+    private EstadoPartida estadoPartida;
+    private Integer apuesta;
 
-    public Partida(){
+    @OneToOne(cascade = CascadeType.ALL)
+    private Jugador jugador;
+
+
+    public Partida(){}
+
+
+    public EstadoDeJuego getEstadoJuego() {
+        return estadoJuego;
     }
 
-
-    public EstadoPartida getEstadoPartida() {
-        return estadoPartida;
-    }
-
-    public void cambiarEstadoDeLaPartida(EstadoPartida estadoPartida) {
-        this.estadoPartida = estadoPartida;
+    public void cambiarEstadoDeJuego(EstadoDeJuego estadoJuego) {
+        this.estadoJuego = estadoJuego;
     }
 
     public void setApuesta(Integer apuesta) {
@@ -41,5 +43,21 @@ public class Partida {
 
     public Long getId() {
         return id;
+    }
+
+    public void setJugador(Jugador jugador) {
+        this.jugador = jugador;
+    }
+
+    public Jugador getJugador(){
+        return this.jugador;
+    }
+
+    public void setEstadoPartida(EstadoPartida estadoPartida) {
+        this.estadoPartida=estadoPartida;
+    }
+
+    public EstadoPartida getEstadoPartida() {
+        return this.estadoPartida;
     }
 }

@@ -14,35 +14,78 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class HibernateConfig {
 
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//    @Bean
+//    public DataSource dataSource() {
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//
+//        String dbHost = System.getenv("DB_HOST");
+//        String dbPort = System.getenv("DB_PORT");
+//        String dbName = System.getenv("DB_NAME");
+//        String dbUser = System.getenv("DB_USER");
+//        String dbPassword = System.getenv("DB_PASSWORD");
+//
+//        if (dbHost == null) dbHost = "localhost";
+//        if (dbPort == null) dbPort = "3306";
+//        if (dbName == null) dbName = "tallerwebi";
+//        if (dbUser == null) dbUser = "user";
+//        if (dbPassword == null) dbPassword = "user";
+//
+////        String url = String.format("jdbc:mysql://%s:%s/%s?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true",
+////                                 dbHost, dbPort, dbName);
+//
+////        dataSource.setUrl(url);
+//        dataSource.setUsername("sa");
+//        dataSource.setPassword("");
+//        dataSource.setUrl("jdbc:hsqldb:mem:db_");
+//        dataSource.setUsername(dbUser);
+//        dataSource.setPassword(dbPassword);
+////        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//        dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
+//        return dataSource;
+//    }
+//
+//    @Bean
+//    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
+//        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+//        sessionFactory.setDataSource(dataSource);
+//        sessionFactory.setPackagesToScan("com.tallerwebi.dominio");
+//        sessionFactory.setHibernateProperties(hibernateProperties());
+//        return sessionFactory;
+//    }
+//
+//    @Bean
+//    public HibernateTransactionManager transactionManager() {
+//        return new HibernateTransactionManager(sessionFactory(dataSource()).getObject());
+//    }
+//
+//    private Properties hibernateProperties() {
+//        Properties properties = new Properties();
+////        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+//        properties.setProperty("hibernate.show_sql", "true");
+//        properties.setProperty("hibernate.format_sql", "true");
+//        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+//        properties.setProperty("hibernate.connection.characterEncoding", "utf8");
+//        properties.setProperty("hibernate.connection.CharSet", "utf8");
+//        properties.setProperty("hibernate.connection.useUnicode", "true");
+//        return properties;
+//    }
 
-        String dbHost = System.getenv("DB_HOST");
-        String dbPort = System.getenv("DB_PORT");
-        String dbName = System.getenv("DB_NAME");
-        String dbUser = System.getenv("DB_USER");
-        String dbPassword = System.getenv("DB_PASSWORD");
+  //-----------------------------
+@Bean
+public DataSource dataSource() {
+    DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-        if (dbHost == null) dbHost = "localhost";
-        if (dbPort == null) dbPort = "3306";
-        if (dbName == null) dbName = "tallerwebi";
-        if (dbUser == null) dbUser = "user";
-        if (dbPassword == null) dbPassword = "user";
+    // Cada test tendrá una base diferente usando UUID
+    String dbName = "db_" + java.util.UUID.randomUUID();
 
-//        String url = String.format("jdbc:mysql://%s:%s/%s?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true",
-//                                 dbHost, dbPort, dbName);
+    dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
+    dataSource.setUrl("jdbc:hsqldb:mem:" + dbName + ";DB_CLOSE_DELAY=-1");
+    dataSource.setUsername("sa");
+    dataSource.setPassword("");
 
-//        dataSource.setUrl(url);
-        dataSource.setUsername("sa");
-        dataSource.setPassword("");
-        dataSource.setUrl("jdbc:hsqldb:mem:db_");
-        dataSource.setUsername(dbUser);
-        dataSource.setPassword(dbPassword);
-//        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
-        return dataSource;
-    }
+    return dataSource;
+}
 
     @Bean
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
@@ -54,13 +97,12 @@ public class HibernateConfig {
     }
 
     @Bean
-    public HibernateTransactionManager transactionManager() {
-        return new HibernateTransactionManager(sessionFactory(dataSource()).getObject());
+    public HibernateTransactionManager transactionManager(LocalSessionFactoryBean sessionFactory) {
+        return new HibernateTransactionManager(sessionFactory.getObject());
     }
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("hibernate.format_sql", "true");
@@ -71,3 +113,12 @@ public class HibernateConfig {
         return properties;
     }
 }
+
+
+
+
+
+
+
+
+
