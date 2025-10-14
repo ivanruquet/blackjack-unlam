@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class PartidaTest {
 
     Partida partida = new Partida();
-    EstadoPartida estadoPartida;
+    EstadoDeJuego estadoJuego;
 
 
     @Test
@@ -18,16 +18,16 @@ public class PartidaTest {
     }
 
     @Test
-    public void queUnaPartidaPuedaCambiarSuEstadoAJuego(){
-        estadoPartida = EstadoPartida.JUEGO;
-        whenCambioElEstadoDeLaPartida(estadoPartida);
-        thenEstadoDeLaPartida(estadoPartida);
+    public void queUnaPartidaPuedaCambiarSuEstadoDeJuegoAJuego(){
+        estadoJuego = EstadoDeJuego.JUEGO;
+        whenCambioElEstadoDeLaPartida(estadoJuego);
+        thenEstadoDeLaPartida(estadoJuego);
     }
     @Test
-    public void queUnaPartidaPuedaCambiarSuEstadoAFinalizado(){
-        estadoPartida = EstadoPartida.FINALIZADA;
-        whenCambioElEstadoDeLaPartida(estadoPartida);
-        thenEstadoDeLaPartida(estadoPartida);
+    public void queUnaPartidaPuedaCambiarSuEstadoDeJuegoAFinalizado(){
+        estadoJuego = EstadoDeJuego.FINALIZADA;
+        whenCambioElEstadoDeLaPartida(estadoJuego);
+        thenEstadoDeLaPartida(estadoJuego);
     }
     @Test
     public void queSePuedaAsignarUnValorDeApuestaAUnaPartida(){
@@ -36,16 +36,32 @@ public class PartidaTest {
         thenLaApuestaTieneMismoValorQueElEsperado(apuesta);
     }
 
+    @Test
+    public void queSePuedaSetearUnJugador(){
+        Jugador jugador = new Jugador();
+        partida.setJugador(jugador);
+        assertEquals(jugador, partida.getJugador());
+    }
 
-//----------------------------------------------------------------
-
-    private void whenCambioElEstadoDeLaPartida(EstadoPartida estadoPartida) {
-        partida.cambiarEstadoDeLaPartida(this.estadoPartida);
+    @Test
+    public void queSePuedaSetearElEstadoDeLaPartida(){
+      partida.setEstadoPartida(EstadoPartida.ACTIVA);
+      assertEquals(EstadoPartida.ACTIVA, partida.getEstadoPartida());
     }
 
 
-    private void thenEstadoDeLaPartida(EstadoPartida estadoPartida) {
-        assertEquals(estadoPartida, partida.getEstadoPartida());
+
+
+
+//----------------------------------------------------------------
+
+    private void whenCambioElEstadoDeLaPartida(EstadoDeJuego estadoJuego) {
+        partida.cambiarEstadoDeJuego(this.estadoJuego);
+    }
+
+
+    private void thenEstadoDeLaPartida(EstadoDeJuego estadoDeJuego) {
+        assertEquals(estadoDeJuego, partida.getEstadoJuego());
     }
 
     private void whenSeAsignaUnValorALaApuesta(Integer apuesta) {
