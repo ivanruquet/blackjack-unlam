@@ -1,10 +1,9 @@
 package com.tallerwebi.dominio;
 
+import java.util.List;
+
 public interface RepositorioPartida {
-    void guardar(Partida p);
-
-
-    Partida buscarPartida();
-
+    Partida guardar(Partida p)  ;
+    List<Partida> buscarPartidaActiva(Usuario usuario);
     void borrarPartida(Partida p);
 }

@@ -51,7 +51,7 @@
             </div>
             <div class="checkbox-container">
                 <input type="checkbox" th:field="*{aceptoTerminos}" required>
-                <span>Acepto términos y condiciones</span>
+                <span>Acepto <a th:href="@{/terminosYCondiciones}" target="_blank">términos y condiciones</a></span>
             </div>
 
             <button type="submit" class="btn">REGISTRARME</button>
