@@ -57,6 +57,34 @@ public class ServicioPartidaImpl implements ServicioPartida {
         return partida;
     }
 
+    @Override
+    public void resetearPartida(Usuario usuario) {
+
+        List<Partida> partidasActivas = repositorioPartida.buscarPartidaActiva(usuario);
+
+        if (!partidasActivas.isEmpty()) {
+
+            Partida partida = partidasActivas.get(0);
+
+
+            partida.setApuesta(0);
+            partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
+            partida.setEstadoPartida(EstadoPartida.ACTIVA);
+
+
+            repositorioPartida.guardar(partida);
+
+        } else {
+
+            try {
+                crearPartida(usuario);
+            } catch (PartidaNoCreadaException e) {
+                throw new RuntimeException("No se pudo resetear la partida.");
+            }
+        }
+    }
+
+
     private Partida instanciarPartida(Jugador jugador) {
         Partida partida =  new Partida();
         partida.setJugador(jugador);
@@ -81,6 +109,18 @@ public class ServicioPartidaImpl implements ServicioPartida {
                 partidaActiva.setEstadoPartida(EstadoPartida.INACTIVA);
             }
         }
+    }
+
+    @Override
+    public void apostar(Usuario usuario, int monto) {
+
+        List<Partida> partidas = repositorioPartida.buscarPartidaActiva(usuario);
+        if (!partidas.isEmpty()) {
+            Partida partida = partidas.get(0);
+            partida.setApuesta(partida.getApuesta() + monto);
+            repositorioPartida.guardar(partida);
+        }
+
     }
 
 
