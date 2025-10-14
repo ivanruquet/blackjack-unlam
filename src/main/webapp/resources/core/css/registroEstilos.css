@@ -97,8 +97,6 @@ form {
 
 
 .checkbox {
-    display: flex;
-    align-items: center;
     gap: 8px;
     font-size: 13px;
     text-align: left;
@@ -115,7 +113,13 @@ form {
 }
 
 .btn:hover {
-    background: #FAC800;
+    background: #e6b800;
+}
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
 }
 
 #pie-pagina {

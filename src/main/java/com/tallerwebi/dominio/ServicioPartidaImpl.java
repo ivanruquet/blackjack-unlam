@@ -14,14 +14,6 @@ import javax.transaction.Transactional;
 public class ServicioPartidaImpl implements ServicioPartida {
 
     private RepositorioPartida respositorioPartida;
-    private  ServicioUsuario servicioUsuario;
-
-    public ServicioPartidaImpl(){
-    }
-
-    public ServicioPartidaImpl(ServicioUsuario servicioUsuario) {
-        this.servicioUsuario = servicioUsuario;
-    }
 
     @Autowired
     public ServicioPartidaImpl(RepositorioPartida respositorioPartida){
