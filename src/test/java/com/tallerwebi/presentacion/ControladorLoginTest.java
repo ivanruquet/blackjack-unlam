@@ -10,6 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.time.LocalDate;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
@@ -32,7 +34,7 @@ public class ControladorLoginTest {
 		requestMock = mock(HttpServletRequest.class);
 		sessionMock = mock(HttpSession.class);
 		servicioLoginMock = mock(ServicioLogin.class);
-		controladorLogin = new ControladorLogin(servicioLoginMock);
+        controladorLogin = new ControladorLogin(servicioLoginMock);
 	}
 
 	@Test
@@ -90,6 +92,22 @@ public class ControladorLoginTest {
         // validacion
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
         assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
+    }
+
+    @Test
+    public void alRegistrarUsuarioDeberiaGuardarTodosSusAtributos() throws UsuarioExistente {
+        Usuario nuevo = new Usuario();
+        nuevo.setEmail("nuevo@unlam.com");
+        nuevo.setPassword("123");
+        nuevo.setNombre("Usr");
+        nuevo.setApellido("Usuario");
+        nuevo.setUsername("usuario1");
+        nuevo.setFechaNacimiento(LocalDate.of(2000, 5, 10));
+
+        ModelAndView mv = controladorLogin.registrarme(nuevo);
+
+        assertThat(mv.getViewName(), equalToIgnoringCase("redirect:/login"));
+        verify(servicioLoginMock, times(1)).registrar(nuevo);
     }
 }
 

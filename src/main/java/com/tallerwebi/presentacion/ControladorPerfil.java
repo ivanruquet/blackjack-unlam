@@ -1,25 +1,22 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioUsuario;
+import com.tallerwebi.dominio.ServicioLogin;
 import com.tallerwebi.dominio.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
 @Controller
 public class ControladorPerfil {
-    private final ServicioUsuario servicioUsuario;
+    private final ServicioLogin servicioLogin;
 
     @Autowired
-    public ControladorPerfil(ServicioUsuario servicioUsuario) {
-        this.servicioUsuario = servicioUsuario;
+    public ControladorPerfil(ServicioLogin servicioLogin) {
+        this.servicioLogin = servicioLogin;
     }
 
     @GetMapping("/perfil")
@@ -29,7 +26,7 @@ public class ControladorPerfil {
             return new ModelAndView("redirect:/login");
         }
 
-        Usuario usuarioActualizado = servicioUsuario.buscarPorEmail(usuarioSesion.getEmail());
+        Usuario usuarioActualizado = servicioLogin.buscarPorEmail(usuarioSesion.getEmail());
         if (usuarioActualizado == null) {
             session.invalidate();
             return new ModelAndView("redirect:/login");

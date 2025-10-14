@@ -15,6 +15,9 @@ import static java.util.Objects.isNull;
 @Transactional
 public class ServicioPartidaImpl implements ServicioPartida {
 
+
+    private RepositorioPartida respositorioPartida;
+
     private RepositorioPartida repositorioPartida;
     private  ServicioUsuario servicioUsuario;
     private RepositorioUsuarioImpl repositorioUsuario;

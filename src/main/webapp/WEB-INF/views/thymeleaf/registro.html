@@ -49,6 +49,11 @@
                 <label>Contraseña:</label>
                 <input type="password" th:field="*{password}" required>
             </div>
+            <div class="checkbox-container">
+                <input type="checkbox" th:field="*{aceptoTerminos}" required>
+                <span>Acepto términos y condiciones</span>
+            </div>
+
             <button type="submit" class="btn">REGISTRARME</button>
         </form>
 

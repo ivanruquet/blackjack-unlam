@@ -29,10 +29,19 @@
         </div>
 
         <div class="perfil">
-            <h2 id="nombreDeUsuario" contenteditable="true">NOMBRE DE USUARIO</h2>
-            <p id="nombreYApellido" contenteditable="true">Nombre y apellido: </p>
-            <p id="email" contenteditable="true">Email: </p>
-            <p id="fecha" >Se unió en</p>
+            <h2 id="nombreDeUsuario" th:text="${usuario.username}">NOMBRE DE USUARIO</h2>
+
+            <p id="nombreYApellido">
+                Nombre y apellido: <span th:text="${usuario.nombre} + ' ' + ${usuario.apellido}">Nombre Apellido</span>
+            </p>
+
+            <p id="email">
+                Email: <span th:text="${usuario.email}">email@example.com</span>
+            </p>
+
+            <p id="fecha">
+                Fecha de nacimiento: <span th:text="${usuario.fechaNacimiento}"></span>
+            </p>
 
             <div class="estadisticas1">
                 <div class="estadisticas1">
@@ -95,6 +104,9 @@
             <div class="botones">
                 <form th:action="@{/cerrar-sesion}" method="post">
                     <button class="btn" id="boton" type="submit">CERRAR SESIÓN</button>
+                </form>
+                <form th:action="@{/sala}" method="post">
+                    <button class="btn" id="boton1" type="submit">IR A SALA</button>
                 </form>
             </div>
 
