@@ -80,7 +80,7 @@ public class ControladorLoginTest {
         // ejecucion
         ModelAndView modelAndView = controladorLogin.registrarme(usuarioMock);
         // validacion
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("registro"));
         assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("El usuario ya existe")); }
 
     @Test public void errorEnRegistrarmeDeberiaVolverAFormularioYMostrarError() throws UsuarioExistente {
@@ -90,7 +90,7 @@ public class ControladorLoginTest {
         // ejecucion
         ModelAndView modelAndView = controladorLogin.registrarme(usuarioMock);
         // validacion
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("registro"));
         assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
     }
 

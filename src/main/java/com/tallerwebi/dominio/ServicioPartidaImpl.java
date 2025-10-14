@@ -19,14 +19,14 @@ public class ServicioPartidaImpl implements ServicioPartida {
     private RepositorioPartida respositorioPartida;
 
     private RepositorioPartida repositorioPartida;
-    private  ServicioUsuario servicioUsuario;
+    private ServicioUsuarioImpl servicioUsuario;
     private RepositorioUsuarioImpl repositorioUsuario;
     private RepositorioJugador repositorioJugador;
 
     public ServicioPartidaImpl(){
     }
 
-    public ServicioPartidaImpl(ServicioUsuario servicioUsuario) {
+    public ServicioPartidaImpl(ServicioUsuarioImpl servicioUsuario) {
         this.servicioUsuario = servicioUsuario;
     }
 
