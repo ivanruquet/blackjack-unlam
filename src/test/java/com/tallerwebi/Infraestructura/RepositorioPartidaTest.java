@@ -41,7 +41,6 @@ public class RepositorioPartidaTest {
 
        List<Partida> partidasBuscadas = whenBuscoPartidasActivas(usuario);
 
-
        thenEncuentroUnaSolaPartida(partidasBuscadas);
 
    }
@@ -58,7 +57,7 @@ public class RepositorioPartidaTest {
     }
 
     private void givenQueExisteUnUsuarioConUnaPartidaInactiva(EstadoPartida estadoPartida) {
-        Usuario usuario2 = new Usuario("","","","", LocalDate.now(), "");
+        Usuario usuario2 = new Usuario("email1","pass1","nombre1","apellido1", LocalDate.now(), "user1");
         sessionFactory.getCurrentSession().save(usuario2);
         Jugador j2 = new Jugador();
         j2.setUsuario(usuario2);
@@ -69,7 +68,7 @@ public class RepositorioPartidaTest {
    }
 
     private Usuario givenQueExisteUnUsuarioConUnaPartidaActiva(EstadoPartida e) {
-      Usuario usuario = new Usuario("","","","", LocalDate.now(), "");
+        Usuario usuario = new Usuario("email2","pass2","nombre2","apellido2", LocalDate.now(), "user2");
         sessionFactory.getCurrentSession().save(usuario);
         Jugador j = new Jugador();
         j.setUsuario(usuario);
