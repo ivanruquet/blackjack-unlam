@@ -29,7 +29,7 @@ public void init(){
     @Test
     public void SeVerificaIrAVistaJuegoCuandoSeAccedeAJuego() {
         ModelAndView mv = controladorJuego.iraJuego();
-        assertEquals("juego", mv.getViewName());
+        assertEquals("juegoConCrupier", mv.getViewName());
     }
 
 
@@ -41,7 +41,7 @@ public void init(){
 
         ModelAndView modelAndView = controladorJuego.resetearPartida(request);
 
-        assertEquals("redirect:/juego", modelAndView.getViewName());
+        assertEquals("redirect:/juegoConCrupier", modelAndView.getViewName());
     }
 
 

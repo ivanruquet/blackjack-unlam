@@ -25,10 +25,10 @@ public class ControladorJuego {
     }
 
 
-    @RequestMapping("/juego")
+    @RequestMapping("/juegoConCrupier")
     public ModelAndView iraJuego() {
         ModelMap modelo = new ModelMap();
-        return new ModelAndView("juego", modelo);
+        return new ModelAndView("juegoConCrupier", modelo);
     }
 
 
@@ -43,7 +43,7 @@ public class ControladorJuego {
                 return new ModelAndView("redirect:/sala");
             }
         }
-        return new ModelAndView("redirect:/juego");
+        return new ModelAndView("redirect:/juegoConCrupier");
     }
 
     @PostMapping("/apostar")
@@ -52,7 +52,7 @@ public class ControladorJuego {
         if (usuario != null) {
             servicioPartida.apostar(usuario, monto);
         }
-        return new ModelAndView("redirect:/juego");
+        return new ModelAndView("redirect:/juegoConCrupier");
     }
 
     @PostMapping("/reset")
@@ -61,7 +61,7 @@ public class ControladorJuego {
         if (usuario != null) {
             servicioPartida.resetearPartida(usuario);
         }
-        return new ModelAndView("redirect:/juego");
+        return new ModelAndView("redirect:/juegoConCrupier");
     }
 
 
