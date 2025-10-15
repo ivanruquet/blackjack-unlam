@@ -9,4 +9,9 @@ public interface ServicioPartida {
   void comenzarPartida(Partida partida);
   void empezarPartida(Partida partida);
 
+
+
+    void resetearPartida(Usuario usuario);
+
+  void apostar(Usuario usuario, int monto);
 }

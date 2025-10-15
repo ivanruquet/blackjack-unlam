@@ -109,5 +109,37 @@ public class ServicioPartidaImpl implements ServicioPartida {
         }
     }
 
+    @Override
+    public void apostar(Usuario usuario, int monto) {
+
+        List<Partida> partidas = repositorioPartida.buscarPartidaActiva(usuario);
+        if (!partidas.isEmpty()) {
+            Partida partida = partidas.get(0);
+            partida.setApuesta(partida.getApuesta() + monto);
+            repositorioPartida.guardar(partida);
+        }
+
+    }
+
+    @Override
+    public void resetearPartida(Usuario usuario) {
+
+        List<Partida> partidasActivas = repositorioPartida.buscarPartidaActiva(usuario);
+
+        if (!partidasActivas.isEmpty()) {
+
+            Partida partida = partidasActivas.get(0);
+
+            partida.setApuesta(0);
+            partida.cambiarEstadoDeJuego(EstadoDeJuego.ABANDONADO);
+            partida.setEstadoPartida(EstadoPartida.INACTIVA);
+
+            repositorioPartida.guardar(partida);
+
+        }
+
+    }
+
+
 
 }

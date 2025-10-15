@@ -49,12 +49,20 @@
         </section>
 
         <div class="contenedorIconos">
-            <button class="iconos-juego">
-                <img th:src="@{/resources/core/images/reset.png}" alt="reset" />
-            </button>
-            <button class="iconos-juego">
-                <img th:src="@{/resources/core/images/iconoHome.png}" alt="home" />
-            </button>
+
+            <form th:action="@{/reset}" method="post">
+                <button type="submit" id="botonReset" class="iconos-juego">
+                    <img th:src="@{/resources/core/images/reset.png}" alt="reset" />
+                </button>
+            </form>
+
+
+
+
+
+            <a th:href="@{/sala}" class="iconos-juego">
+                    <img th:src="@{/resources/core/images/iconoHome.png}" alt="home" />
+                </a>
         </div>
     </div>
     <div class="centro-de-mesa">
@@ -194,6 +202,11 @@
 
     <p id="parrafoFooter">© Todos los derechos reservados</p>
 </footer>
+
+
+
+
+
 <script src="resources/core/js/botonesJuego.js"></script>
 </body>
 </html>

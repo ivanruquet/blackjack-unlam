@@ -253,6 +253,8 @@ main {
   font-size: 15px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+   position: relative;
+   right: 620px;
 }
 
 .btn:hover {
@@ -298,9 +300,12 @@ footer img {
     padding: 8px 12px;
   }
 
+
   .fichas img {
     width: 45px;
     height: 45px;
+    position: relative;
+    right: 620px;
   }
 
   .score {
