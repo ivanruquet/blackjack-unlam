@@ -2,7 +2,6 @@ main {
     height: 100%;
 }
 
-/* === SECCIÓN CRUPIER === */
 .iconos-section-crupier {
     display: flex;
     justify-content: space-between;
@@ -44,7 +43,6 @@ main {
     margin: 0;
 }
 
-/* === ICONOS DE JUEGO === */
 .contenedorIconos {
     width: 10%;
     height: 10%;
@@ -66,7 +64,6 @@ main {
     height: 40px;
 }
 
-/* === POZO DE APUESTA === */
 .pozo-de-apuesta {
     font-family: 'Poppins';
     color: white;
@@ -91,7 +88,6 @@ main {
     width: 40px;
 }
 
-/* === CONTENEDOR DE DECISIONES === */
 .contenedor-desiciones {
     border: 1px solid white;
     border-radius: 30px;
@@ -104,12 +100,11 @@ main {
     gap: 10px;
 }
 
-/* Cada botón dentro de un form */
 form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px; /* espacio entre botón e info */
+    gap: 6px;
 }
 
 .boton-desicion {
@@ -141,7 +136,6 @@ form {
     line-height: 1.2;
 }
 
-/* === BOTONES DE FICHAS === */
 .boton-ficha-apuesta {
     background: none;
     border: none;
@@ -167,7 +161,6 @@ form {
     margin-top: 10px;
 }
 
-/* === TEXTO DE DESCRIPCIÓN GENERAL === */
 .descripcion-boton {
     font-family: 'Poppins', sans-serif;
     font-size: 12px;
@@ -177,7 +170,6 @@ form {
     line-height: 1.2;
 }
 
-/* === CENTRO DE MESA === */
 .centro-de-mesa {
     display: flex;
     flex-direction: column;
@@ -195,7 +187,6 @@ form {
     height: 35px;
 }
 
-/* === MAZO Y FICHAS === */
 #mazo {
     width: 70px;
     height: 102px;
@@ -211,7 +202,6 @@ form {
     margin-left: 25px;
 }
 
-/* === BOTONES GENERALES === */
 .btn {
     margin-top: 20px;
     background: #ffcc00;
@@ -233,7 +223,6 @@ form {
     gap: 15px;
 }
 
-/* === BOTONES DESHABILITADOS === */
 .boton-deshabilitado {
     filter: grayscale(90%);
     opacity: 0.5;

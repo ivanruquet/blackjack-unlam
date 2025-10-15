@@ -31,13 +31,13 @@ public class ControladorSala {
     }
 
 
-    @RequestMapping(path = "/juego", method = RequestMethod.POST)
-    public ModelAndView irAlJuego(HttpServletRequest request) {
+    @RequestMapping(path = "/juegoConCrupier", method = RequestMethod.POST)
+    public ModelAndView irAlJuegoConCrupier(HttpServletRequest request) {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         if(usuario != null){
             try{
                 servicioPartida.crearPartida(usuario);
-                return new ModelAndView("juego");
+                return new ModelAndView("juegoConCrupier");
             }catch(PartidaNoCreadaException e){
                 return new ModelAndView("sala");
             }
@@ -45,5 +45,21 @@ public class ControladorSala {
         return new ModelAndView("sala");
 
     }
+
+    @RequestMapping(path = "/juegoOnline", method = RequestMethod.POST)
+    public ModelAndView irAlJuegoOnline(HttpServletRequest request) {
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+        if(usuario != null){
+            try{
+                servicioPartida.crearPartida(usuario);
+                return new ModelAndView("juegoOnline");
+            }catch(PartidaNoCreadaException e){
+                return new ModelAndView("sala");
+            }
+        }
+        return new ModelAndView("sala");
+
+    }
+
 
 }

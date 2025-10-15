@@ -55,7 +55,6 @@ main{
 
 .botonPlay{
     box-sizing: border-box;
-    width: 35%;
     height: 50px;
     background-color: #fac800;
     border-radius: 5px;

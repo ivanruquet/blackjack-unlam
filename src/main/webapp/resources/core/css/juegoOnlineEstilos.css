@@ -1,0 +1,314 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: #0f2f22;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+nav {
+  background-color: #000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  height: 80px;
+}
+
+nav .logo img {
+  height: 38px;
+}
+
+.menu-icono-perfil {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.opcionesNav {
+  list-style: none;
+}
+
+.opcionesNav li {
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.opcionesNav li:hover {
+  color: #ffcc00;
+}
+
+
+.IconoPerfil {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.IconoPerfil img {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border-radius: 0;
+}
+
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 0 30px;
+}
+
+
+.saldo {
+  background-color: #113222;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 13px;
+  text-align: center;
+  width: 125px;
+  align-self: flex-start;
+  margin: 10px 0 0 40px;
+  box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.contenedorIconos {
+  display: flex;
+  gap: 8px;
+  position: absolute;
+  top: 90px;
+  right: 8%;
+  transform: translateX(50%);
+}
+.iconos-juego {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.iconos-juego img {
+  width: 42px;
+  height: 42px;
+}
+
+.section-crupier {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.cartas {
+  display: flex;
+  gap: 8px;
+}
+
+.carta img {
+  width: 100px;
+  height: 130px;
+  border-radius: 8px;
+}
+
+.score {
+  background-color: #4b1111;
+  border-radius: 6px;
+  padding: 10px 25px;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.pozo-de-apuesta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4b1111;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin: 25px 0;
+  gap: 8px;
+}
+
+.pozo-de-apuesta img {
+  width: 30px;
+}
+
+.contenedor-decisiones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 25px;
+  padding: 10px 25px;
+  margin: 15px 0;
+  height: 110px;
+}
+
+.boton-desicion {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.boton-desicion:hover {
+  transform: scale(1.1);
+}
+
+.boton-desicion img {
+  width: 48px;
+  height: 48px;
+}
+
+.texto-descripcion {
+  font-size: 11px;
+  color: white;
+  margin-top: 4px;
+}
+
+.section-jugador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.section-jugador .cartas img {
+  width: 120px;
+  height: 150px;
+  border-radius: 8px;
+}
+
+.section-jugador .score {
+  font-size: 15px;
+  background-color: #4b1111;
+}
+
+.mazo-fichas {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-top: 40px;
+  position: relative;
+  right: 450px;
+}
+
+#mazo {
+  width: 80px;
+  height: 110px;
+}
+
+.fichas {
+  display: flex;
+  gap: 12px;
+}
+
+.fichas img {
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.fichas img:hover {
+  transform: scale(1.1);
+}
+
+.botones {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.btn {
+  width: 220px;
+  height: 50px;
+  background-color: #fac800;
+  color: #000;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+  background-color: #ffde33;
+}
+
+footer {
+  background-color: #000;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 0;
+  font-size: 13px;
+}
+
+footer img {
+  height: 26px;
+}
+
+
+  .saldo {
+    width: auto;
+    font-size: 12px;
+    margin-left: 15px;
+  }
+
+  .carta img,
+  #mazo {
+    width: 100px;
+    height: 120px;
+  }
+
+  .pozo-de-apuesta {
+    font-size: 16px;
+    padding: 8px 15px;
+  }
+
+  .contenedor-decisiones {
+    flex-wrap: wrap;
+    gap: 25px;
+    padding: 8px 12px;
+  }
+
+  .fichas img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .score {
+    font-size: 20px;
+  }
+
+  footer {
+    padding: 15px 0;
+    height: 80px;
+  }
+}

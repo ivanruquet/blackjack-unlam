@@ -30,7 +30,7 @@ public class ControladorSalaTest {
         when(request.getSession()).thenReturn(session);
         when(session.getAttribute("usuario")).thenReturn(usuario);
         servicioPartida.crearPartida(usuario);
-        assertThat(controladorSala.irAlJuego(request).getViewName(), equalToIgnoringCase("juego"));
+        assertThat(controladorSala.irAlJuegoConCrupier(request).getViewName(), equalToIgnoringCase("juegoConCrupier"));
 
     }
 

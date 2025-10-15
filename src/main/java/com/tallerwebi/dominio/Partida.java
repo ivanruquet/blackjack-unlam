@@ -13,6 +13,8 @@ public class Partida {
     @Enumerated(EnumType.STRING)
     private EstadoPartida estadoPartida;
     private Integer apuesta;
+    private boolean fichasHabilitadas;
+    private boolean botonesDesicionHabilitados;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Jugador jugador;
@@ -20,6 +22,13 @@ public class Partida {
 
     public Partida(){}
 
+    public void setFichasHabilitadas(boolean fichasHabilitadas) {this.fichasHabilitadas = fichasHabilitadas;}
+
+    public void setBotonesDesicionHabilitados(boolean botonesDesicionHabilitados) {this.botonesDesicionHabilitados = botonesDesicionHabilitados;}
+
+    public Boolean getFichasHabilitadas() {return fichasHabilitadas;}
+
+    public Boolean getBotonesDesicionHabilitados() {return botonesDesicionHabilitados;}
 
     public EstadoDeJuego getEstadoJuego() {
         return estadoJuego;

@@ -69,10 +69,12 @@
         <img th:src="@{/resources/core/images/logo gigante.png}" alt="logo gigante" id="logoGigante">
 
         <div class="contenedorBotonesPlay">
-            <form class="botones-form" th:action="@{/juego}" method="post">
+            <form class="botones-form" th:action="@{/juegoConCrupier}" method="post">
             <button class="botonPlay" id="boton-jugar-crupier" type="submit"><p class="textoBoton">JUGAR CONTRA <br>CRUPIER</br></p></button>
             </form>
-            <button class="botonPlay" type="submit"><p class="textoBoton">JUGAR ONLINE</p></button>
+            <form class="botones-form" th:action="@{/juegoOnline}" method="post">
+                <button class="botonPlay" id="botonJugarOnline" type="submit"><p class="textoBoton">JUGAR ONLINE</p></button>
+            </form>
         </div>
     </div>
 

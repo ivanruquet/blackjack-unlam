@@ -57,6 +57,32 @@ public class ServicioPartidaImpl implements ServicioPartida {
         return partida;
     }
 
+    @Override
+    public void apostar(Partida partida, Integer apuesta, Integer monto) {
+        if(apuesta == null){
+            apuesta = 0;
+        }
+        partida.setApuesta(apuesta + monto);
+    }
+
+    @Override
+    public void comenzarPartida(Partida partida) {
+        partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
+        partida.setBotonesDesicionHabilitados(false);
+        partida.setFichasHabilitadas(true);
+    }
+
+    @Override
+    public void empezarPartida(Partida partida) {
+        partida.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
+        partida.setBotonesDesicionHabilitados(true);
+        partida.setFichasHabilitadas(false);
+        if(partida.getJugador() != null && partida.getApuesta() != null) {
+            partida.getJugador().restarSaldo((double) partida.getApuesta());
+        }
+    }
+
+
     private Partida instanciarPartida(Jugador jugador) {
         Partida partida =  new Partida();
         partida.setJugador(jugador);
