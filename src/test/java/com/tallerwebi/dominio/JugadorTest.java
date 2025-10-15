@@ -14,4 +14,7 @@ public class JugadorTest {
         jugador.setUsuario(usuario);
         assertEquals(usuario, jugador.getUsuario());
     }
+
+
+
 }

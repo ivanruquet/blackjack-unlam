@@ -26,7 +26,7 @@ public class ControladorJuego {
 
 
     @RequestMapping("/juego")
-    public ModelAndView irAReglas() {
+    public ModelAndView iraJuego() {
         ModelMap modelo = new ModelMap();
         return new ModelAndView("juego", modelo);
     }
@@ -35,6 +35,7 @@ public class ControladorJuego {
     @PostMapping("/iniciar")
     public ModelAndView iniciarPartida(HttpServletRequest request) {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+
         if (usuario != null) {
             try {
                 servicioPartida.crearPartida(usuario);
@@ -45,8 +46,6 @@ public class ControladorJuego {
         return new ModelAndView("redirect:/juego");
     }
 
-
-
     @PostMapping("/apostar")
     public ModelAndView apostar(HttpServletRequest request, @RequestParam("monto") int monto) {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
@@ -55,7 +54,6 @@ public class ControladorJuego {
         }
         return new ModelAndView("redirect:/juego");
     }
-
 
     @PostMapping("/reset")
     public ModelAndView resetearPartida(HttpServletRequest request) {
