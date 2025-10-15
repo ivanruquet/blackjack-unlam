@@ -29,15 +29,21 @@
         </div>
 
         <div class="perfil">
-            <h2 id="nombreDeUsuario" th:text="${usuario.username}">NOMBRE DE USUARIO</h2>
+                <p><span id="nombreDeUsuario" contenteditable="true" th:text="${usuario.username}"></span></p>
+                <input type="hidden" name="usuario" id="nombreDeUsuarioo" />
 
-            <p id="nombreYApellido">
-                Nombre y apellido: <span th:text="${usuario.nombre} + ' ' + ${usuario.apellido}">Nombre Apellido</span>
-            </p>
+            <form method="post" th:action="@{/editar-nombre}" accept-charset="UTF-8">
+                <p>Nombre: <span id="nombre" contenteditable="true" th:text="${usuario.nombre}">Nombre</span></p>
+                <input type="hidden" name="nombre" id="nombreInput" />
 
-            <p id="email">
-                Email: <span th:text="${usuario.email}">email@example.com</span>
-            </p>
+                <p>Apellido: <span id="apellido" contenteditable="true" th:text="${usuario.apellido}">Apellido</span></p>
+                <input type="hidden" name="apellido" id="apellidoInput" />
+
+                <button type="submit">Guardar</button>
+            </form>
+
+
+            <p id="email">Email: <span contenteditable="true" th:text="${usuario.email}">email@example.com</span> </p>
 
             <p id="fecha">
                 Fecha de nacimiento: <span th:text="${usuario.fechaNacimiento}"></span>
