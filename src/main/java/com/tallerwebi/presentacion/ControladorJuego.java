@@ -2,7 +2,9 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioPartida;
 import com.tallerwebi.dominio.Usuario;
+import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
 import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
+import com.tallerwebi.dominio.excepcion.SaldoInsuficiente;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -47,12 +49,27 @@ public class ControladorJuego {
     }
 
     @PostMapping("/apostar")
-    public ModelAndView apostar(HttpServletRequest request, @RequestParam("monto") int monto) {
+    public ModelAndView apostar(HttpServletRequest request, @RequestParam("monto") int monto) throws ApuestaInvalidaException, SaldoInsuficiente {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+        ModelMap modelo = new ModelMap();
+
         if (usuario != null) {
             servicioPartida.apostar(usuario, monto);
+            return new ModelAndView("redirect:/juegoConCrupier");
         }
-        return new ModelAndView("redirect:/juegoConCrupier");
+
+        try {
+            servicioPartida.validarPartida(usuario, monto);
+            modelo.addAttribute("mensajeExito", "Apuesta realizada");
+            modelo.addAttribute("saldo", usuario.getSaldo());
+        }catch (ApuestaInvalidaException e) {
+            modelo.addAttribute("error", "El monto de la apuesta no es valido");
+        }catch (SaldoInsuficiente saldoIns){
+            modelo.addAttribute("erroSaldo", "Saldo insuficiente");
+        }
+
+        return new ModelAndView("juego", modelo);
+
     }
 
     @PostMapping("/reset")
