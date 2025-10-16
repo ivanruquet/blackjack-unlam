@@ -40,4 +40,9 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
                 .uniqueResult();
     }
 
+    @Override
+    public void guardarModificaciones(Usuario usuario) {
+        sessionFactory.getCurrentSession().merge(usuario);
+    }
+
 }
