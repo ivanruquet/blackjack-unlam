@@ -1,6 +1,8 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
 import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
+import com.tallerwebi.dominio.excepcion.SaldoInsuficiente;
 import com.tallerwebi.infraestructura.RepositorioJugadorImpl;
 import com.tallerwebi.infraestructura.RepositorioUsuarioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,6 +139,23 @@ public class ServicioPartidaImpl implements ServicioPartida {
             repositorioPartida.guardar(partida);
 
         }
+
+    }
+
+    @Override
+    public void validarPartida(Usuario usuario, int monto) throws ApuestaInvalidaException, SaldoInsuficiente {
+
+        if (monto <= 0){
+            throw new ApuestaInvalidaException("El monto debe ser mayor a 0");
+        }
+
+        if (usuario.getSaldo() < monto){
+            throw new SaldoInsuficiente("El saldo debe ser mayor a 0");
+        }
+
+        usuario.setSaldo(usuario.getSaldo() - monto);
+
+        apostar(usuario, monto);
 
     }
 

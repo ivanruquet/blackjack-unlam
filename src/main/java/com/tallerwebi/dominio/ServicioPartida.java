@@ -1,6 +1,8 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
 import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
+import com.tallerwebi.dominio.excepcion.SaldoInsuficiente;
 
 public interface ServicioPartida {
 
@@ -9,9 +11,9 @@ public interface ServicioPartida {
   void comenzarPartida(Partida partida);
   void empezarPartida(Partida partida);
 
+  void resetearPartida(Usuario usuario);
 
-
-    void resetearPartida(Usuario usuario);
+  void validarPartida(Usuario usuario, int monto) throws ApuestaInvalidaException, SaldoInsuficiente;
 
   void apostar(Usuario usuario, int monto);
 }
