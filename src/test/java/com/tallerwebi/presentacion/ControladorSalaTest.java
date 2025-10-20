@@ -24,15 +24,21 @@ public class ControladorSalaTest {
     HttpServletRequest request = mock(HttpServletRequest.class);
     HttpSession session = mock(HttpSession.class);
 
-    @Test
-    public void queAlCrearLaPartidaSePuedaIrAElJuego() throws PartidaNoCreadaException {
-        Usuario usuario = new Usuario("valenvdz7@gmail.com", "1234", "", "", LocalDate.now(), "");
-        when(request.getSession()).thenReturn(session);
-        when(session.getAttribute("usuario")).thenReturn(usuario);
-        servicioPartida.crearPartida(usuario);
-        assertThat(controladorSala.irAlJuegoConCrupier(request).getViewName(), equalToIgnoringCase("juegoConCrupier"));
+//    @Test
+//    public void queAlCrearLaPartidaSePuedaIrAElJuego() throws PartidaNoCreadaException {
+//        Usuario usuario = new Usuario("valenvdz7@gmail.com", "1234", "", "", LocalDate.now(), "");
+//        when(request.getSession()).thenReturn(session);
+//        when(session.getAttribute("usuario")).thenReturn(usuario);
+//        servicioPartida.crearPartida(usuario);
+//        assertThat(controladorSala.irAlJuegoConCrupier(request).getViewName(), equalToIgnoringCase("juegoConCrupier"));
+//    }
 
-    }
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.PartidaExistenteActivaException;
 import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -19,21 +20,41 @@ public class ServicioPartidaTest {
     Partida partida = new Partida();
     Usuario usuario= new Usuario();
 
+
     @Test
-    public void queSePuedaCrearUnaPartidaCorrectamenteConSusAtrubutos() throws PartidaNoCreadaException {
+    public void queAlConsultarSiExistePartidasActivasSeLanceUnaPartidaActivaException(){
         Usuario usuario = givenExisteUnUsuario();
         Partida partidaActiva = givenExisteUnaPartidaActiva(usuario);
         when(repositorioPartida.buscarPartidaActiva(usuario))
                 .thenReturn(List.of(partidaActiva));
-        Partida nuevaPartida = whenSeCreaNuevaPartida(usuario);
-        thenComprobarAtributos(partidaActiva, nuevaPartida, usuario);
+
+        assertThrows(PartidaExistenteActivaException.class, ()-> servicioPartida.consultarExistenciaDePartidaActiva(usuario));
     }
     @Test
-    public void queLanceUnaExceptionAlNoPoderCrearLaPartida(){
-        Usuario u = givenExisteUnUsuario();
-        whenLaPartidaGuardadaIsNull();
-        thenSeLanzaUnaExeption(u);
+    public void queSeSeteenEstadosParaPartidasActivasExistentes(){
+        Usuario usuario = givenExisteUnUsuario();
+        Partida partidaActiva = givenExisteUnaPartidaActiva(usuario);
+        servicioPartida.inactivarPartidas(List.of(partidaActiva));
+        assertEquals(EstadoPartida.INACTIVA ,partidaActiva.getEstadoPartida());
+        assertEquals(EstadoDeJuego.ABANDONADO ,partidaActiva.getEstadoJuego());
     }
+    @Test
+    public void queSePuedaCreearUnJugador() {
+        Usuario usuario = givenExisteUnUsuario();
+        assertNotNull(servicioPartida.crearJugador(usuario));
+    }
+
+    @Test
+    public void queSePuedaIntanciarUnaPartida() throws PartidaNoCreadaException {
+        Usuario usuario = givenExisteUnUsuario();
+        Jugador j = new Jugador();
+        when(repositorioPartida.guardar(any(Partida.class)))
+                .thenAnswer(inv -> inv.getArgument(0));
+        assertNotNull(servicioPartida.instanciarPartida(j));
+    }
+
+
+
 
     @Test
     public void queAlComenzarLaPartidaEstenHabilitadasSoloLasFichasYNoLosBotonesDeDesicion() {
@@ -80,13 +101,6 @@ public class ServicioPartidaTest {
 
 
     //------------------------------------------------------------------------------
-    private Partida whenSeCreaNuevaPartida(Usuario usuario) throws PartidaNoCreadaException {
-     //   when(repositorioJugador.guardar(any(Jugador.class))).thenAnswer(invoc -> invoc.getArgument(0));
-       when(repositorioPartida.guardar(any(Partida.class))).thenAnswer(invoc -> invoc.getArgument(0));
-
-        Partida nuevaPartida = servicioPartida.crearPartida(usuario);
-        return nuevaPartida;
-    }
 
 
     private @NotNull Partida givenExisteUnaPartidaActiva(Usuario usuario) {
@@ -103,28 +117,9 @@ public class ServicioPartidaTest {
         return usuario;
     }
 
-    private static void thenComprobarAtributos(Partida partidaActiva, Partida nuevaPartida, Usuario usuario) {
-        assertEquals(EstadoPartida.INACTIVA, partidaActiva.getEstadoPartida());
-        assertEquals(EstadoDeJuego.ABANDONADO, partidaActiva.getEstadoJuego());
-        assertEquals(EstadoPartida.ACTIVA, nuevaPartida.getEstadoPartida());
-        assertEquals(EstadoDeJuego.APUESTA, nuevaPartida.getEstadoJuego());
-        assertNotNull(nuevaPartida.getJugador());
-        assertEquals(usuario, nuevaPartida.getJugador().getUsuario());
-    }
 
 
 
-    private void thenSeLanzaUnaExeption(Usuario u) {
-        assertThrows(PartidaNoCreadaException.class, () -> {
-            servicioPartida.crearPartida(u);
-        });
-    }
-
-    private void whenLaPartidaGuardadaIsNull() {
-        when(repositorioPartida.buscarPartidaActiva(any(Usuario.class)))
-                .thenReturn(Collections.emptyList());
-        when(repositorioPartida.guardar(any(Partida.class))).thenReturn(null);
-    }
 
     private Partida givenComienzaUnaPartida(Partida partidaComenzada) {
         Jugador jugador = new Jugador();
@@ -142,7 +137,7 @@ public class ServicioPartidaTest {
     }
 
     private void whenComienzaLaPartida(Partida partidaActiva) {
-        servicioPartida.comenzarPartida(partidaActiva);
+        servicioPartida.setBotonesAlCrearPartida(partidaActiva);
     }
 
     private void whenSeleccionoFichas(Partida partidaActiva) {
@@ -159,7 +154,7 @@ public class ServicioPartidaTest {
 
     private void whenSeleccionoBotonEmpezarPartida(Partida partidaActiva) {
         partidaActiva.setApuesta(200);
-        servicioPartida.empezarPartida(partidaActiva);
+        servicioPartida.setBotonesAlComenzarPartida(partidaActiva);
         partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
 
     }

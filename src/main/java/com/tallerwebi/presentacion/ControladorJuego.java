@@ -34,19 +34,7 @@ public class ControladorJuego {
     }
 
 
-    @PostMapping("/iniciar")
-    public ModelAndView iniciarPartida(HttpServletRequest request) {
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
 
-        if (usuario != null) {
-            try {
-                servicioPartida.crearPartida(usuario);
-            } catch (PartidaNoCreadaException e) {
-                return new ModelAndView("redirect:/sala");
-            }
-        }
-        return new ModelAndView("redirect:/juegoConCrupier");
-    }
 
     @PostMapping("/apostar")
     public ModelAndView apostar(HttpServletRequest request, @RequestParam("monto") int monto) throws ApuestaInvalidaException, SaldoInsuficiente {
