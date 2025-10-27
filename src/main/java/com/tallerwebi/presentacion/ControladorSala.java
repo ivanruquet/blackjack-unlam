@@ -34,15 +34,24 @@ public class ControladorSala {
     }
 
     @RequestMapping("/sala")
-    public ModelAndView irASala() {
-        return new ModelAndView("sala");
+    public ModelAndView irASala(HttpServletRequest request) {
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+        if (usuario == null) {
+            return new ModelAndView("redirect:/login");
+        }
+        ModelAndView mav = new ModelAndView("sala");
+        mav.addObject("usuario", usuario);
+        return mav;
     }
 
 
     @RequestMapping(path = "/juegoConCrupier", method = RequestMethod.POST)
     public ModelAndView irAlJuegoConCrupier(HttpServletRequest request) throws PartidaNoCreadaException {
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         if (crearPartida(request)) return new ModelAndView("sala");
-        return new ModelAndView("juegoConCrupier");
+        ModelAndView mav =  new ModelAndView("juegoConCrupier");
+        mav.addObject("usuario", usuario);
+        return mav;
     }
 
 
