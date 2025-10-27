@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
+import com.tallerwebi.dominio.excepcion.PartidaExistenteActivaException;
 import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
 import com.tallerwebi.dominio.excepcion.SaldoInsuficiente;
 import com.tallerwebi.infraestructura.RepositorioJugadorImpl;
@@ -49,15 +50,34 @@ public class ServicioPartidaImpl implements ServicioPartida {
     }
 
 
-    public Partida crearPartida(Usuario usuario) throws PartidaNoCreadaException {
-        corroborarExistenciaDePartidaActiva(usuario);
-        Jugador jugador = crearJugador(usuario);
-        Partida partida = instanciarPartida(jugador);
-        if(isNull(partida)){
-            throw new PartidaNoCreadaException();
+
+
+    @Override
+    public void consultarExistenciaDePartidaActiva(Usuario usuario) throws PartidaExistenteActivaException {
+        List<Partida> partidasActivas = repositorioPartida.buscarPartidaActiva(usuario);
+        if(!partidasActivas.isEmpty()){
+            throw new PartidaExistenteActivaException();
         }
-        return partida;
+
     }
+
+    @Override
+    public void inactivarPartidas(List<Partida> partidasActivas) {
+        for(Partida partidaActiva: partidasActivas){
+            partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.ABANDONADO);
+            partidaActiva.setEstadoPartida(EstadoPartida.INACTIVA);
+            repositorioPartida.guardar(partidaActiva);
+        }
+    }
+
+    @Override
+    public Jugador crearJugador(Usuario usuario) {
+        Jugador jugador = new Jugador();
+        jugador.setUsuario(usuario);
+        repositorioJugador.guardar(jugador);
+        return jugador;
+    }
+
 
     @Override
     public void apostar(Partida partida, Integer apuesta, Integer monto) {
@@ -68,15 +88,15 @@ public class ServicioPartidaImpl implements ServicioPartida {
     }
 
     @Override
-    public void comenzarPartida(Partida partida) {
-        partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
+    public void setBotonesAlCrearPartida(Partida partida) {
+       // partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
         partida.setBotonesDesicionHabilitados(false);
         partida.setFichasHabilitadas(true);
     }
 
     @Override
-    public void empezarPartida(Partida partida) {
-        partida.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
+    public void setBotonesAlComenzarPartida(Partida partida) {
+      //  partida.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
         partida.setBotonesDesicionHabilitados(true);
         partida.setFichasHabilitadas(false);
         if(partida.getJugador() != null && partida.getApuesta() != null) {
@@ -85,31 +105,20 @@ public class ServicioPartidaImpl implements ServicioPartida {
     }
 
 
-    private Partida instanciarPartida(Jugador jugador) {
+    public Partida instanciarPartida(Jugador jugador) throws PartidaNoCreadaException {
         Partida partida =  new Partida();
         partida.setJugador(jugador);
         partida.setEstadoPartida(EstadoPartida.ACTIVA);
         partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
-
+        if(isNull(partida)){
+            throw new PartidaNoCreadaException();
+        }
         return repositorioPartida.guardar(partida);
     }
 
-    private Jugador crearJugador(Usuario usuario) {
-        Jugador jugador = new Jugador();
-        jugador.setUsuario(usuario);
-        repositorioJugador.guardar(jugador);
-        return jugador;
-    }
 
-    private void corroborarExistenciaDePartidaActiva(Usuario usuario) {
-        List<Partida> partidasActivas = repositorioPartida.buscarPartidaActiva(usuario);
-        if(!partidasActivas.isEmpty()){
-            for(Partida partidaActiva: partidasActivas){
-                partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.ABANDONADO);
-                partidaActiva.setEstadoPartida(EstadoPartida.INACTIVA);
-            }
-        }
-    }
+
+
 
     @Override
     public void apostar(Usuario usuario, int monto) {
@@ -122,6 +131,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
         }
 
     }
+
 
     @Override
     public void resetearPartida(Usuario usuario) {
