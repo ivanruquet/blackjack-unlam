@@ -42,7 +42,7 @@
     <div class="iconos-section-crupier">
         <div class="saldo">
             <p class="saldoDiponible">SALDO DISPONIBLE</p>
-            <p id="saldoDisponible">$1000.0</p>
+            <p id="saldoDisponible" th:text="'$' + ${usuario.saldo}">00.00</p>
         </div>
 
         <section class="cartas-score" id="sectionCrupier">
