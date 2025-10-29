@@ -45,5 +45,10 @@ public class RepositorioPartidaImpl implements RepositorioPartida {
         sessionFactory.getCurrentSession().delete(p);
     }
 
+    @Override
+    public void actualizar(Partida partida) {
+        sessionFactory.getCurrentSession().update(partida);
+    }
+
 
 }
