@@ -23,11 +23,12 @@ public class ControladorSala {
     private ServicioPartida servicioPartida;
     private RepositorioPartida repositorioPartida;
 
-    @Autowired
+
     public ControladorSala(ServicioPartida servicioPartida) {
         this.servicioPartida = servicioPartida;
     }
 
+    @Autowired
     public ControladorSala(ServicioPartida servicioPartida, RepositorioPartida repositorioPartida) {
         this.servicioPartida = servicioPartida;
         this.repositorioPartida = repositorioPartida;

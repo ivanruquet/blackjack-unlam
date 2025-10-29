@@ -17,14 +17,13 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         this.repositorioUsuario = repositorioUsuario;
     }
 
-    public void modificarNombre(Usuario usuario, String nombreActualizado) {
+    public void modificarAtributos(Usuario usuario, String nombreActualizado,  String apellidoActualizado, String username) {
         usuario.setNombre(nombreActualizado);
+        usuario.setApellido(apellidoActualizado);
+        usuario.setUsername(username);
         repositorioUsuario.guardarModificaciones(usuario);
     }
 
-    public void modificarApellido(Usuario usuario, String apellidoActualizado) {
-        usuario.setApellido(apellidoActualizado);
-        repositorioUsuario.guardarModificaciones(usuario);
-    }
+
 
 }

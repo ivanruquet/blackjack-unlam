@@ -19,8 +19,6 @@ import static java.util.Objects.isNull;
 public class ServicioPartidaImpl implements ServicioPartida {
 
 
-    private RepositorioPartida respositorioPartida;
-
     private RepositorioPartida repositorioPartida;
     private ServicioUsuarioImpl servicioUsuario;
     private RepositorioUsuarioImpl repositorioUsuario;
@@ -28,7 +26,9 @@ public class ServicioPartidaImpl implements ServicioPartida {
 
     public ServicioPartidaImpl(){
     }
-
+    public void setRepositorioPartida(RepositorioPartida repositorioPartida) {
+        this.repositorioPartida = repositorioPartida;
+    }
     public ServicioPartidaImpl(ServicioUsuarioImpl servicioUsuario) {
         this.servicioUsuario = servicioUsuario;
     }
@@ -78,6 +78,112 @@ public class ServicioPartidaImpl implements ServicioPartida {
         return jugador;
     }
 
+    @Override
+    public void seleccionBotonEstrategia(Partida partidaActiva) {
+        partidaActiva.setBotonEstrategia(true);
+    }
+
+    @Override
+    public String mandarEstrategia(Partida partidaActiva, Jugador jugador) {
+        Crupier crupier = partidaActiva.getCrupier();
+
+        if (crupier == null) {
+            crupier = new Crupier();
+            partidaActiva.setCrupier(crupier);
+        }
+
+        if (jugador.getPuntaje() == null) {
+            //de prueba hasta que unamos las cartas y obtengamos el puntaje de ahí
+            jugador.setPuntaje(17);
+        }
+        if (crupier.getPuntaje() == null) {
+            crupier.setPuntaje(12);
+        }
+
+        Integer jugadorPuntaje = jugador.getPuntaje();
+        Integer crupierPuntaje = crupier.getPuntaje();
+
+        String mensajeRecibido = "Pedi una carta";
+
+        if (jugadorPuntaje <= 8) {
+            mensajeRecibido = "Pedi una carta, no hay riesgo";
+        }
+        if (jugadorPuntaje == 9 && crupierPuntaje >= 3 && crupierPuntaje <= 6) {
+            mensajeRecibido = "Dobla si podes, sino pedi una carta.";
+        }
+        if (jugadorPuntaje == 10 && crupierPuntaje <= 9) {
+            mensajeRecibido = "Dobla si podes, sino pedi una carta.";
+        }
+        if (jugadorPuntaje == 11 && crupierPuntaje <= 10) {
+            mensajeRecibido = "Dobla si podes, sino pedi una carta.";
+        }
+
+        if (jugadorPuntaje == 12 && crupierPuntaje >= 4 && crupierPuntaje <= 6) {
+            mensajeRecibido = "Plantate.";
+        }
+        if (jugadorPuntaje >= 13 && jugadorPuntaje <= 16 && crupierPuntaje <= 6) {
+            mensajeRecibido = "Plantate.";
+        }
+        if (jugadorPuntaje >= 13 && jugadorPuntaje <= 16 && crupierPuntaje >= 7) {
+            mensajeRecibido = "Pedi una carta.";
+        }
+        if (jugadorPuntaje >= 17) {
+            mensajeRecibido = "Plantate.";
+        }
+
+        jugador.setMensajeEstrategia(mensajeRecibido);
+        return mensajeRecibido;
+    }
+
+    @Override
+    public Partida obtenerPartidaActiva(Usuario usuario) {
+        List<Partida> partidas = repositorioPartida.buscarPartidaActiva(usuario);
+        if (!partidas.isEmpty()) {
+            return partidas.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public Double doblarApuesta(Partida partidaActiva, Jugador jugador) {
+        Integer apuestaOriginal = partidaActiva.getApuesta();
+        Integer nuevaApuesta = (apuestaOriginal * 2);
+
+        partidaActiva.setApuesta(nuevaApuesta);
+        jugador.setSaldo(jugador.getSaldo() - apuestaOriginal);
+
+        return jugador.getSaldo();
+    }
+
+    @Override
+    public String resultadoDeLaPartida(Integer puntosCrupier, Integer puntosJugador) {
+        String resul= "No hay resultado";
+        if (puntosJugador > 21 && puntosCrupier <= 21) {
+            resul="Crupier gana";
+        }
+        if (puntosCrupier > 21 && puntosJugador <= 21) {
+            resul="Jugador gana";
+        }
+        if (puntosCrupier > 21 && puntosJugador > 21) {
+            resul="Nadie gana";
+        }
+        if (puntosJugador > puntosCrupier) {
+            resul="Jugador gana";
+
+        } else if (puntosCrupier > puntosJugador) {
+            resul="Crupier gana";
+        } else {
+            resul="empate";
+        }
+        return "Resultado: " + resul;
+    }
+
+
+    @Override
+    public void rendirse(Partida partidaActiva, Jugador jugador) {
+        partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.ABANDONADO);
+    }
+
 
     @Override
     public void apostar(Partida partida, Integer apuesta, Integer monto) {
@@ -89,14 +195,12 @@ public class ServicioPartidaImpl implements ServicioPartida {
 
     @Override
     public void setBotonesAlCrearPartida(Partida partida) {
-       // partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
         partida.setBotonesDesicionHabilitados(false);
         partida.setFichasHabilitadas(true);
     }
 
     @Override
     public void setBotonesAlComenzarPartida(Partida partida) {
-      //  partida.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
         partida.setBotonesDesicionHabilitados(true);
         partida.setFichasHabilitadas(false);
         if(partida.getJugador() != null && partida.getApuesta() != null) {
@@ -107,6 +211,11 @@ public class ServicioPartidaImpl implements ServicioPartida {
 
     public Partida instanciarPartida(Jugador jugador) throws PartidaNoCreadaException {
         Partida partida =  new Partida();
+        Crupier crupier= new Crupier();
+        partida.setCrupier(crupier);
+        jugador.setPuntaje(5);
+        crupier.setPuntaje(5);
+        partida.setApuesta(0);
         partida.setJugador(jugador);
         partida.setEstadoPartida(EstadoPartida.ACTIVA);
         partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);

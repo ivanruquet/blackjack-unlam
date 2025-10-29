@@ -29,25 +29,25 @@
         </div>
 
         <div class="perfil">
-                <p><span id="nombreDeUsuario" contenteditable="true" th:text="${usuario.username}"></span></p>
-                <input type="hidden" name="usuario" id="nombreDeUsuarioo" />
 
-            <form method="post" th:action="@{/editar-nombre}" accept-charset="UTF-8">
+            <form method="post" th:action="@{/editar-Atributos}" accept-charset="UTF-8">
+                <p>Usuario: <span id="username" contenteditable="true" th:text="${usuario.username}"></span></p>
+                <input type="hidden" name="username" id="usernameInput" />
+
                 <p>Nombre: <span id="nombre" contenteditable="true" th:text="${usuario.nombre}">Nombre</span></p>
                 <input type="hidden" name="nombre" id="nombreInput" />
 
                 <p>Apellido: <span id="apellido" contenteditable="true" th:text="${usuario.apellido}">Apellido</span></p>
                 <input type="hidden" name="apellido" id="apellidoInput" />
 
+                <p id="email">Email: <span th:text="${usuario.email}">email@example.com</span> </p>
+
+                <p id="fecha">
+                    Fecha de nacimiento: <span th:text="${usuario.fechaNacimiento}"></span>
+                </p>
+
                 <button type="submit">Guardar</button>
             </form>
-
-
-            <p id="email">Email: <span contenteditable="true" th:text="${usuario.email}">email@example.com</span> </p>
-
-            <p id="fecha">
-                Fecha de nacimiento: <span th:text="${usuario.fechaNacimiento}"></span>
-            </p>
 
             <div class="estadisticas1">
                 <div class="estadisticas1">

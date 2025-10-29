@@ -17,27 +17,28 @@ public class ServicioUsuarioTest {
     @Test
     public void queSePuedaActualizarElNombreYApellidoDelUsuario() {
 
-        Usuario usuario= givenExisteUsuarioConNombreYApellido(usuario1);
+        Usuario usuario= givenExisteUsuarioConSusDatos(usuario1);
         whenActualizoLosDatos(usuario);
         thenAparecenModificadosEnElPerfil(usuario);
     }
 
-    private Usuario givenExisteUsuarioConNombreYApellido(Usuario usuario) {
+    private Usuario givenExisteUsuarioConSusDatos(Usuario usuario) {
         assertEquals("userNombre", usuario.getNombre());
         assertEquals("userApellido", usuario.getApellido());
+        assertEquals("UserName", usuario.getUsername());
 
         return usuario;
     }
 
     private void whenActualizoLosDatos(Usuario usuario) {
-        servicio.modificarNombre(usuario, "Mia Actualizada");
-        servicio.modificarApellido(usuario, "Gomez Actualizado");
+        servicio.modificarAtributos(usuario, "Mia Actualizada" , "Gomez Actualizado", "UserName");
 
     }
 
     private void thenAparecenModificadosEnElPerfil(Usuario usuario) {
         assertEquals(usuario.getNombre(), "Mia Actualizada");
         assertEquals(usuario.getApellido(), "Gomez Actualizado");
+        assertEquals(usuario.getUsername(), "UserName");
 
     }
 

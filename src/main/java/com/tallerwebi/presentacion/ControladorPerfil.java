@@ -43,15 +43,16 @@ public class ControladorPerfil {
         return mav;
     }
 
-    @PostMapping("/editar-nombre")
-    public String editarNombre(@RequestParam String nombre, @RequestParam String apellido,
+    @PostMapping("/editar-Atributos")
+    public String editarAtributos(@RequestParam String nombre, @RequestParam String apellido,
+                                  @RequestParam String username,
                                HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if (usuario != null) {
             usuario.setNombre(nombre);
             usuario.setApellido(apellido);
-            servicioUsuario.modificarNombre(usuario, nombre);
-            servicioUsuario.modificarApellido(usuario, apellido);
+            usuario.setUsername(username);
+            servicioUsuario.modificarAtributos(usuario, nombre, apellido, username);
             session.setAttribute("usuario", usuario);
         }
         return "redirect:/perfil";

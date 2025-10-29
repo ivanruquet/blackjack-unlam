@@ -109,6 +109,75 @@ main{
     background-image: linear-gradient(rgba(255, 255, 255, 0.2));
 
 }
+.estrategia-msg {
+    position: absolute;
+    bottom: 180px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(22, 30, 22, 0.9);
+    color: #f8f8f8;
+    border: 1px solid #c2c2c2;
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: center;
+    width: fit-content;
+    max-width: 80%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    font-size: 1rem;
+    z-index: 100;
+    animation: aparecer 0.3s ease-out;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.estrategia-msg p {
+    margin: 0;
+    padding: 0;
+}
+
+.resultado-msg {
+    position: absolute;
+    bottom: 180px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(22, 30, 22, 0.9);
+    color: #f8f8f8;
+    border: 1px solid #c2c2c2;
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: center;
+    width: fit-content;
+    max-width: 80%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    font-size: 1rem;
+    z-index: 100;
+    animation: aparecer 0.3s ease-out;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+.resultado-msg p {
+    margin: 0;
+    padding: 0;
+}
 
 .BotonCofre {
 

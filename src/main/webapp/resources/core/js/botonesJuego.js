@@ -5,15 +5,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const botonEmpezar = document.getElementById("boton");
     const inputMonto = document.getElementById("inputMonto");
     const botonesDecision = document.querySelectorAll(".boton-desicion");
+    const mensajeEstrategiaDiv = document.getElementById("mensajeEstrategiaJS");
+    const botonEstrategia = document.querySelector('form[th\\:action="@{/mostrarEstrategia}"] button');
 
     let saldo = parseFloat(saldoDisponibleEl.textContent.replace("$", ""));
     let apuesta = 0;
     let juegoIniciado = false;
 
-    botonesDecision.forEach(btn => {
-        btn.disabled = true;
-        btn.classList.add("boton-deshabilitado");
-    });
+    const setEstadoBotones = (botones, habilitar) => {
+        botones.forEach(boton => {
+            boton.disabled = !habilitar;
+            boton.classList.toggle("boton-deshabilitado", !habilitar);
+        });
+    };
+
+    setEstadoBotones(fichas, true);
+    setEstadoBotones(botonesDecision, false);
 
     fichas.forEach(ficha => {
         ficha.addEventListener("click", (e) => {
@@ -48,15 +55,63 @@ document.addEventListener("DOMContentLoaded", () => {
         inputMonto.value = apuesta;
         juegoIniciado = true;
 
-        botonesDecision.forEach(btn => {
-            btn.disabled = false;
-            btn.classList.remove("boton-deshabilitado");
-        });
-
-        fichas.forEach(ficha => ficha.disabled = true);
+        setEstadoBotones(fichas, false);
+        setEstadoBotones(botonesDecision, true);
         botonEmpezar.disabled = true;
-
     });
+
+    if (botonEstrategia) {
+        botonEstrategia.addEventListener("click", async (event) => {
+            event.preventDefault();
+
+            try {
+                const response = await fetch("/mostrarEstrategia", { method: "POST" });
+                if (!response.ok) throw new Error("Error al obtener estrategia");
+
+                const html = await response.text();
+                mensajeEstrategiaDiv.textContent = html;
+                mensajeEstrategiaDiv.style.display = "block";
+            } catch (error) {
+                console.error(error);
+                mensajeEstrategiaDiv.textContent = "Error al obtener estrategia";
+                mensajeEstrategiaDiv.style.display = "block";
+            }
+        });
+    }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const mensajeResultadoDiv = document.getElementById("mensajeResultadoJS");
 
+    const botonRendirse = document.querySelector('form[th\\:action="@{/rendirse}"] button');
+
+    if (botonRendirse) {
+        let resultadoVisible = false;
+
+        botonRendirse.addEventListener("click", async (event) => {
+            event.preventDefault();
+
+            if (resultadoVisible) {
+                mensajeResultadoDiv.style.display = "none";
+                resultadoVisible = false;
+                return;
+            }
+
+            try {
+                const response = await fetch("/pararse", { method: "POST" });
+                if (!response.ok) throw new Error("Error al obtener resultado");
+
+                const texto = await response.text();
+
+                mensajeResultadoDiv.textContent = texto;
+                mensajeResultadoDiv.style.display = "block";
+                resultadoVisible = true;
+
+            } catch (error) {
+                console.error(error);
+                mensajeResultadoDiv.textContent = "Error al obtener resultado";
+                mensajeResultadoDiv.style.display = "block";
+            }
+        });
+    }
+});

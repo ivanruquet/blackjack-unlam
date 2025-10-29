@@ -40,10 +40,12 @@
 
 <main>
     <div class="iconos-section-crupier">
-        <div class="saldo">
+        <div class="saldo" th:if="${usuario != null}">
             <p class="saldoDiponible">SALDO DISPONIBLE</p>
             <p id="saldoDisponible" th:text="'$' + ${usuario.saldo}">00.00</p>
         </div>
+
+
 
         <section class="cartas-score" id="sectionCrupier">
             <div class="cartas">
@@ -82,11 +84,22 @@
                     th:src="@{/resources/core/images/fichaApuesta.png}"
                     alt="ficha de Apuesta"
             />
-            <p class="pozo" id="valor-apuesta">0</p>
+            <p class="pozo" id="valor-apuesta">0</p> </div>
+        </div>
+
+        <div th:if="${mensajeResultado}"
+             class="resultado-msg"
+             id="mensajeResultadoJS"
+             th:text="${mensajeResultado}">
+        </div>
+        <div th:if="${mensajeEstrategia}"
+             class="estrategia-msg"
+             data-mensaje-resultado="true"
+             th:text="${mensajeEstrategia}">
         </div>
         <div class="contenedor-desiciones">
 
-            <form  method="post" class="form-boton">
+            <form  method="post" th:action="@{/mostrarEstrategia}" class="form-boton">
                 <button class="boton-desicion iconos-juego boton-deshabilitado" disabled>
                     <img th:src="@{/resources/core/images/boton-estrategia.png}" alt="Estrategia" />
                 </button>
@@ -107,7 +120,8 @@
                 <p class="texto-descripcion">Pedir carta</p>
             </form>
 
-            <form  method="post" class="form-boton">
+
+            <form  method="post" th:action="@{/pararse}" class="form-boton">
                 <button class="boton-desicion iconos-juego boton-deshabilitado" disabled>
                     <img th:src="@{/resources/core/images/boton-pararse.png}" alt="Pararse" />
                 </button>
@@ -121,7 +135,7 @@
                 <p class="texto-descripcion">Dividir partida</p>
             </form>
 
-            <form method="post" class="form-boton">
+            <form method="post" th:action="@{/rendirse}"  class="form-boton">
                 <button class="boton-desicion iconos-juego boton-deshabilitado" disabled>
                     <img th:src="@{/resources/core/images/boton-rendirse.png}" alt="Rendirse" />
                 </button>
@@ -137,55 +151,39 @@
                     id="mazo"
                     alt="mazo de cartas">
 
-
             <div class="contenedor-ficha-apuesta">
                 <div class="contenedor-ficha-apuesta">
-                    <form action="/juego/apostar" method="post">
-                        <input type="hidden" name="monto" value="5">
-                        <button type="submit" class="boton-ficha-apuesta iconos-juego" data-ficha="5">
-                            <img th:src="@{/resources/core/images/ficha 5.png}" alt="Valor 5" />
-                        </button>
-                    </form>
+                    <!-- Solo botones, no forms individuales -->
+                    <button class="boton-ficha-apuesta iconos-juego" data-ficha="5">
+                        <img th:src="@{/resources/core/images/ficha 5.png}" alt="Valor 5" />
+                    </button>
 
-                    <form action="/juego/apostar" method="post">
-                        <input type="hidden" name="monto" value="10">
-                        <button type="submit" class="boton-ficha-apuesta iconos-juego" data-ficha="10">
-                            <img th:src="@{/resources/core/images/ficha10.png}" alt="Valor 10" />
-                        </button>
-                    </form>
+                    <button class="boton-ficha-apuesta iconos-juego" data-ficha="10">
+                        <img th:src="@{/resources/core/images/ficha10.png}" alt="Valor 10" />
+                    </button>
 
-                    <form action="/juego/apostar" method="post">
-                        <input type="hidden" name="monto" value="25">
-                        <button type="submit" class="boton-ficha-apuesta iconos-juego" data-ficha="25">
-                            <img th:src="@{/resources/core/images/ficha25.png}" alt="Valor 25" />
-                        </button>
-                    </form>
+                    <button class="boton-ficha-apuesta iconos-juego" data-ficha="25">
+                        <img th:src="@{/resources/core/images/ficha25.png}" alt="Valor 25" />
+                    </button>
 
-                    <form action="/juego/apostar" method="post">
-                        <input type="hidden" name="monto" value="50">
-                        <button type="submit" class="boton-ficha-apuesta iconos-juego" data-ficha="50">
-                            <img th:src="@{/resources/core/images/ficha50.png}" alt="Valor 50" />
-                        </button>
-                    </form>
+                    <button class="boton-ficha-apuesta iconos-juego" data-ficha="50">
+                        <img th:src="@{/resources/core/images/ficha50.png}" alt="Valor 50" />
+                    </button>
 
-                    <form action="/juego/apostar" method="post">
-                        <input type="hidden" name="monto" value="100">
-                        <button type="submit" class="boton-ficha-apuesta iconos-juego" data-ficha="100">
-                            <img th:src="@{/resources/core/images/ficha100.png}" alt="Valor 100" />
-                        </button>
-                    </form>
+                    <button class="boton-ficha-apuesta iconos-juego" data-ficha="100">
+                        <img th:src="@{/resources/core/images/ficha100.png}" alt="Valor 100" />
+                    </button>
                 </div>
 
                 <div class="botones">
-                    <form action="/juego/iniciar" method="post" id="form-apuesta">
+                    <form th:action="@{/apostar}" method="post" id="form-apuesta">
                         <input type="hidden" name="monto" id="inputMonto" value="0">
                         <button class="btn" id="boton" type="submit">Empezar partida</button>
                     </form>
                 </div>
-
             </div>
-        </div>
-        </div>
+
+
 
 
         <section class="cartas-score" id="sectionJuegador">

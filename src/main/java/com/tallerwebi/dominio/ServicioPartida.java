@@ -9,8 +9,7 @@ import java.util.List;
 
 public interface ServicioPartida {
 
-//  public Partida crearPartida(Usuario usuario) throws PartidaNoCreadaException;
-  void apostar(Partida partida, Integer apuesta, Integer monto);
+void apostar(Partida partida, Integer apuesta, Integer monto);
   void setBotonesAlCrearPartida(Partida partida);
   void setBotonesAlComenzarPartida(Partida partida);
 
@@ -18,11 +17,19 @@ public interface ServicioPartida {
 
   void validarPartida(Usuario usuario, int monto) throws ApuestaInvalidaException, SaldoInsuficiente;
 
-  void apostar(Usuario usuario, int monto);
+void apostar(Usuario usuario, int monto);
 
- void consultarExistenciaDePartidaActiva(Usuario usuario) throws PartidaExistenteActivaException;
+  void consultarExistenciaDePartidaActiva(Usuario usuario) throws PartidaExistenteActivaException;
   Partida instanciarPartida(Jugador jugador) throws PartidaNoCreadaException;
   void inactivarPartidas(List<Partida> partidaActiva);
-
   Jugador crearJugador(Usuario usuario);
+  void seleccionBotonEstrategia(Partida partidaActiva);
+  String mandarEstrategia(Partida partidaActiva, Jugador jugador);
+  Partida obtenerPartidaActiva(Usuario usuario);
+
+  Double doblarApuesta(Partida partidaActiva, Jugador jugador);
+
+  String resultadoDeLaPartida(Integer puntosCrupier, Integer puntosCrupier1);
+
+  void rendirse(Partida partidaActiva, Jugador jugador);
 }

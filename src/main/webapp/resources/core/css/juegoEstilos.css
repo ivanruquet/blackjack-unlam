@@ -27,6 +27,7 @@ main {
 }
 
 .score {
+margin-left: 200px
     font-family: 'Poppins';
     color: white;
     font-weight: 600;
@@ -98,6 +99,8 @@ main {
     align-items: flex-start;
     flex-wrap: wrap;
     gap: 10px;
+    margin-left:450px;
+
 }
 
 form {
@@ -154,6 +157,7 @@ form {
 }
 
 .contenedor-ficha-apuesta {
+margin-left:270px;
     display: flex;
     justify-content: center;
     gap: 25px;
@@ -188,6 +192,7 @@ form {
 }
 
 #mazo {
+    margin-left:300px;
     width: 70px;
     height: 102px;
 }

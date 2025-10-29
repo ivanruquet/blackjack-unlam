@@ -12,7 +12,14 @@ public class Jugador {
     @ManyToOne
     private Usuario usuario;
     private Double saldo = 1000.0;
+    private Integer puntaje;
+    private String mensajeEstrategia;
 
+    public Integer getPuntaje() { return puntaje; }
+    public void setPuntaje(Integer puntaje) { this.puntaje = puntaje; }
+
+    public String getMensajeEstrategia() { return mensajeEstrategia; }
+    public void setMensajeEstrategia(String mensajeEstrategia) { this.mensajeEstrategia = mensajeEstrategia; }
 
     public void restarSaldo(Double monto) { this.saldo -= monto; }
 
