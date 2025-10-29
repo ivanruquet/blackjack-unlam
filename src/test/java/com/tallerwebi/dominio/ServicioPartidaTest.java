@@ -1,11 +1,18 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.dominio.excepcion.PartidaActivaNoEnApuestaException;
 import com.tallerwebi.dominio.excepcion.PartidaExistenteActivaException;
 import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
+import com.tallerwebi.infraestructura.RepositorioPartidaImpl;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
+import javax.servlet.http.Part;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.notNull;
@@ -16,6 +23,8 @@ public class ServicioPartidaTest {
     RepositorioPartida repositorioPartida = mock(RepositorioPartida.class);
     RepositorioJugador repositorioJugador = mock(RepositorioJugador.class);
     ServicioPartida servicioPartida = new ServicioPartidaImpl(repositorioPartida, repositorioJugador);
+    //Partida partida = new Partida();
+    Usuario usuario= new Usuario();
 
 
     @Test
@@ -48,6 +57,34 @@ public class ServicioPartidaTest {
         when(repositorioPartida.guardar(any(Partida.class)))
                 .thenAnswer(inv -> inv.getArgument(0));
         assertNotNull(servicioPartida.instanciarPartida(j));
+    }
+    @Test
+    public void queSePuedaCambiarElEstadoDeJuegoDeUnaPartida() throws PartidaActivaNoEnApuestaException {
+    Partida p = new Partida();
+    p.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
+    servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(p);
+    assertEquals(EstadoDeJuego.JUEGO, p.getEstadoJuego());
+    }
+
+    @Test
+    public void queCalculeCorrectamenteElPuntajeDeCartasNumericas() {
+        List<Map<String, Object>> cartas = new ArrayList<>();
+        cartas.add(Map.of("value", "5"));
+        cartas.add(Map.of("value", "9"));
+
+        int puntaje = servicioPartida.calcularPuntaje(cartas);
+
+        assertEquals(14, puntaje);
+    }
+    @Test
+    public void queCalculeCorrectamenteElPuntajeConCartasEspeciales() {
+        List<Map<String, Object>> cartas = new ArrayList<>();
+        cartas.add(Map.of("value", "KING"));
+        cartas.add(Map.of("value", "QUEEN"));
+
+        int puntaje = servicioPartida.calcularPuntaje(cartas);
+
+        assertEquals(20, puntaje);
     }
 
     @Test
@@ -189,7 +226,7 @@ public class ServicioPartidaTest {
         return usuario;
     }
 
-    
+
     private Partida givenComienzaUnaPartida(Partida partidaComenzada, Usuario usuario) {
         Crupier crupier= new Crupier();
         Jugador jugador = new Jugador();
@@ -234,6 +271,14 @@ public class ServicioPartidaTest {
         assertFalse(partidaActiva.getFichasHabilitadas());
         assertTrue(partidaActiva.getBotonesDesicionHabilitados());
     }
+
+
+
+
+
+
+
+
 
 }
 

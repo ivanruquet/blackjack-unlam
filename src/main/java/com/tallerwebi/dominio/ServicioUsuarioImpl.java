@@ -24,6 +24,9 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         repositorioUsuario.guardarModificaciones(usuario);
     }
 
-
-
+    @Override
+    public void actualizarSaldoDeUsuario(Usuario usuario, Integer montoApuesta) {
+        usuario.setSaldo(usuario.getSaldo()-montoApuesta);
+        repositorioUsuario.guardar(usuario);
+    }
 }

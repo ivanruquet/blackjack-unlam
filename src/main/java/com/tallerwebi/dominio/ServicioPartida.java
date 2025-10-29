@@ -1,22 +1,29 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
-import com.tallerwebi.dominio.excepcion.PartidaExistenteActivaException;
-import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
-import com.tallerwebi.dominio.excepcion.SaldoInsuficiente;
+import com.tallerwebi.dominio.excepcion.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ServicioPartida {
 
-void apostar(Partida partida, Integer apuesta, Integer monto);
-  void setBotonesAlCrearPartida(Partida partida);
+    void apostar(Partida partida, Integer apuesta, Integer monto);
+    void setBotonesAlCrearPartida(Partida partida);
   void setBotonesAlComenzarPartida(Partida partida);
 
-  void resetearPartida(Usuario usuario);
+
+
+    void resetearPartida(Usuario usuario);
 
   void validarPartida(Usuario usuario, int monto) throws ApuestaInvalidaException, SaldoInsuficiente;
 
+
+
+    void setearApuesta(Usuario usuario, Integer monto, Partida partida);
+
+
+
+    int calcularPuntaje(List<Map<String, Object>> cartas);
 void apostar(Usuario usuario, int monto);
 
   void consultarExistenciaDePartidaActiva(Usuario usuario) throws PartidaExistenteActivaException;
@@ -32,4 +39,8 @@ void apostar(Usuario usuario, int monto);
   String resultadoDeLaPartida(Integer puntosCrupier, Integer puntosCrupier1);
 
   void rendirse(Partida partidaActiva, Jugador jugador);
+
+    void cambiarEstadoDeJuegoAJuegoDeUnaPartida(Partida p) throws PartidaActivaNoEnApuestaException;
+
+    List<Partida> buscarPartidaActiva(Usuario usuario);
 }

@@ -1,16 +1,15 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
-import com.tallerwebi.dominio.excepcion.PartidaExistenteActivaException;
-import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
-import com.tallerwebi.dominio.excepcion.SaldoInsuficiente;
+import com.tallerwebi.dominio.excepcion.*;
 import com.tallerwebi.infraestructura.RepositorioJugadorImpl;
+import com.tallerwebi.infraestructura.RepositorioPartidaImpl;
 import com.tallerwebi.infraestructura.RepositorioUsuarioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Objects.isNull;
 
@@ -20,7 +19,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
 
 
     private RepositorioPartida repositorioPartida;
-    private ServicioUsuarioImpl servicioUsuario;
+    private ServicioUsuario servicioUsuario;
     private RepositorioUsuarioImpl repositorioUsuario;
     private RepositorioJugador repositorioJugador;
 
@@ -34,13 +33,15 @@ public class ServicioPartidaImpl implements ServicioPartida {
     }
 
     @Autowired
-    public ServicioPartidaImpl(RepositorioPartida respositorioPartida, RepositorioUsuarioImpl repositorioUsuario, RepositorioJugadorImpl repositorioJugador){
+
+    public ServicioPartidaImpl(RepositorioPartidaImpl respositorioPartida, RepositorioUsuarioImpl repositorioUsuario, RepositorioJugadorImpl repositorioJugador, ServicioUsuario servicioUsuario){
         this.repositorioPartida=respositorioPartida;
         this.repositorioUsuario = repositorioUsuario;
         this.repositorioJugador = repositorioJugador;
+        this.servicioUsuario=servicioUsuario;
     }
 
-    public ServicioPartidaImpl(RepositorioPartida repositorioPartida) {
+    public ServicioPartidaImpl(RepositorioPartidaImpl repositorioPartida) {
         this.repositorioPartida= repositorioPartida;
     }
 
@@ -76,6 +77,21 @@ public class ServicioPartidaImpl implements ServicioPartida {
         jugador.setUsuario(usuario);
         repositorioJugador.guardar(jugador);
         return jugador;
+    }
+
+    @Override
+    public void cambiarEstadoDeJuegoAJuegoDeUnaPartida(Partida p) throws PartidaActivaNoEnApuestaException {
+        if(p.getEstadoJuego().equals(EstadoDeJuego.APUESTA)){
+            p.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
+        }else{
+            throw new PartidaActivaNoEnApuestaException();
+        }
+
+    }
+
+    @Override
+    public List<Partida> buscarPartidaActiva(Usuario usuario) {
+        return repositorioPartida.buscarPartidaActiva(usuario);
     }
 
     @Override
@@ -209,6 +225,8 @@ public class ServicioPartidaImpl implements ServicioPartida {
     }
 
 
+
+
     public Partida instanciarPartida(Jugador jugador) throws PartidaNoCreadaException {
         Partida partida =  new Partida();
         Crupier crupier= new Crupier();
@@ -228,6 +246,48 @@ public class ServicioPartidaImpl implements ServicioPartida {
 
 
 
+
+    @Override
+    public void setearApuesta(Usuario usuario, Integer monto, Partida partida) {
+
+        //List<Partida> partidas = repositorioPartida.buscarPartidaActiva(usuario);
+//        if (!partidas.isEmpty()) {
+//            Partida partida = partidas.get(0);
+            partida.setApuesta(monto);
+            servicioUsuario.actualizarSaldoDeUsuario(usuario, monto);
+            repositorioUsuario.actualizar(usuario);
+            repositorioPartida.actualizar(partida);
+       // }
+
+    }
+
+    @Override
+    public int calcularPuntaje(List<Map<String, Object>> cartas) {
+        int total = 0;
+        int ases = 0;
+
+        for (Map<String, Object> carta : cartas) {
+            String valor = (String) carta.get("value");
+            switch (valor) {
+                case "KING":
+                case "QUEEN":
+                case "JACK":
+                    total += 10; break;
+                case "ACE":
+                    total += 11;
+                    ases++;
+                    break;
+                default:
+                    total += Integer.parseInt(valor);
+            }
+        }
+        // Si se pasa de 21, los Ases valen 1
+        while (total > 21 && ases > 0) {
+            total -= 10;
+            ases--;
+        }
+        return total;
+    }
 
     @Override
     public void apostar(Usuario usuario, int monto) {
@@ -263,7 +323,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
 
     @Override
     public void validarPartida(Usuario usuario, int monto) throws ApuestaInvalidaException, SaldoInsuficiente {
-
+//modificar nombre de metodo(confuso) ->-> validar saldo o algo asi
         if (monto <= 0){
             throw new ApuestaInvalidaException("El monto debe ser mayor a 0");
         }
@@ -272,9 +332,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
             throw new SaldoInsuficiente("El saldo debe ser mayor a 0");
         }
 
-        usuario.setSaldo(usuario.getSaldo() - monto);
 
-        apostar(usuario, monto);
 
     }
 

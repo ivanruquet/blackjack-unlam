@@ -7,5 +7,7 @@ public interface RepositorioUsuario {
     Usuario buscar(String email);
     void guardarModificaciones(Usuario usuario);
 
+
+    void actualizar(Usuario usuario);
 }
 
