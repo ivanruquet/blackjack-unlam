@@ -67,7 +67,7 @@ public class ControladorSala {
         try {
             servicioPartida.consultarExistenciaDePartidaActiva(usuario);
         } catch (PartidaExistenteActivaException e) {
-            List<Partida> activas = repositorioPartida.buscarPartidaActiva(usuario);
+            List<Partida> activas = servicioPartida.buscarPartidaActiva(usuario);
             servicioPartida.inactivarPartidas(activas);
         }
         try {

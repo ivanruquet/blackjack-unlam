@@ -45,21 +45,32 @@
             <p id="saldoDisponible" th:text="'$' + ${usuario.saldo}">00.00</p>
         </div>
 
-        <section class="cartas-score" id="sectionCrupier">
-            <div class="cartas">
-                <div class="carta"></div>
-                <div class="carta"></div>
-                <!-- <img
-                  src="ImgBlackJack/tarjeta-de-corazon (2) 1.png"
-                  alt="dos de corazones"
-                />
-                <img src="ImgBlackJack/cartaoculta (3).png" alt="carta oculta" /> -->
-            </div>
+<!--        <section class="cartas-score" id="sectionCrupier">-->
+<!--            <div class="cartas">-->
+<!--                <div class="carta"></div>-->
+<!--                <div class="carta"></div>-->
+<!--                &lt;!&ndash; <img-->
+<!--                  src="ImgBlackJack/tarjeta-de-corazon (2) 1.png"-->
+<!--                  alt="dos de corazones"-->
+<!--                />-->
+<!--                <img src="ImgBlackJack/cartaoculta (3).png" alt="carta oculta" /> &ndash;&gt;-->
+<!--            </div>-->
+            <section class="cartas-score" id="sectionCrupier">
+                <div class="cartas">
+                    <div class="carta" th:each="carta : ${cartasDealer}">
+                        <img th:src="${carta.image}" alt="Carta del dealer"/>
+                    </div>
 
-            <div class="score" id="score-crupier">
-                <p id="valorScoreCrupier">0</p>
-            </div>
-        </section>
+                    <div th:if="${#lists.isEmpty(cartasDealer)}" class="placeholder-carta">
+                        <div class="carta"></div>
+                        <div class="carta"></div>
+                    </div>
+                </div>
+
+                <div class="score" id="score-crupier">
+                    <p id="valorScoreCrupier">[[${puntajeDealer}]]</p>
+                </div>
+            </section>
 
         <div class="contenedorIconos">
 
@@ -130,12 +141,12 @@
 
         </div>
 
-    <div class="todo-sola-hago">
+    <div class="mesa-apuesta">
         <div class="contenedor-mazo-fichas">
-            <img
-                    th:src="@{/resources/core/images/mazo final 1.png}"
-                    id="mazo"
-                    alt="mazo de cartas">
+<!--            <img-->
+<!--                    th:src="@{/resources/core/images/mazo final 1.png}"-->
+<!--                    id="mazo"-->
+<!--                    alt="mazo de cartas">-->
 
 
             <div class="contenedor-ficha-apuesta">
@@ -177,8 +188,8 @@
                 </div>
 
                 <div class="botones">
-                    <form action="/juego/iniciar" method="post" id="form-apuesta">
-                        <input type="hidden" name="monto" id="inputMonto" value="0">
+                    <form th:action="@{/iniciar}" method="post" id="form-apuesta">
+                        <input type="hidden" name="monto" id="inputMonto" th:value="${pozo}">
                         <button class="btn" id="boton" type="submit">Empezar partida</button>
                     </form>
                 </div>
@@ -188,19 +199,39 @@
         </div>
 
 
-        <section class="cartas-score" id="sectionJuegador">
+<!--        <section class="cartas-score" id="sectionJuegador">-->
+<!--            <div class="cartas">-->
+<!--                <div class="carta"></div>-->
+<!--                <div class="carta"></div>-->
+<!--                &lt;!&ndash; <img-->
+<!--                  src="ImgBlackJack/tarjeta-de-corazon (2) 1.png"-->
+<!--                  alt="dos de corazones"-->
+<!--                />-->
+<!--                <img src="ImgBlackJack/cartaoculta (3).png" alt="carta oculta" /> &ndash;&gt;-->
+<!--            </div>-->
+
+
+<!--            <div class="score" id="score-jugador">-->
+<!--                <p id="valorScorejugador">0</p>-->
+<!--            </div>-->
+<!--        </section>-->
+        <section class="cartas-score" id="sectionJugador">
             <div class="cartas">
-                <div class="carta"></div>
-                <div class="carta"></div>
-                <!-- <img
-                  src="ImgBlackJack/tarjeta-de-corazon (2) 1.png"
-                  alt="dos de corazones"
-                />
-                <img src="ImgBlackJack/cartaoculta (3).png" alt="carta oculta" /> -->
+                <div class="carta"
+                     th:each="carta : ${cartasJugador}"
+                     th:classappend="${ultimaCartaJugador != null and carta.image == ultimaCartaJugador.image ? 'nueva' : ''}">
+                    <img th:src="${carta.image}" alt="Carta del jugador"/>
+                </div>
+
+
+                <div th:if="${#lists.isEmpty(cartasJugador)}" class="placeholder-carta">
+                    <div class="carta"></div>
+                    <div class="carta"></div>
+                </div>
             </div>
 
             <div class="score" id="score-jugador">
-                <p id="valorScorejugador">0</p>
+                <p id="valorScoreJugador" th:text="${puntajeJugador}">0</p>
             </div>
         </section>
     </div>

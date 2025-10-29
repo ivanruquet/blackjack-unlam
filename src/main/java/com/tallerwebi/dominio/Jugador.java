@@ -11,7 +11,7 @@ public class Jugador {
     private Long id;
     @ManyToOne
     private Usuario usuario;
-    private Double saldo = 1000.0;
+    private Double saldo ;
 
 
     public void restarSaldo(Double monto) { this.saldo -= monto; }

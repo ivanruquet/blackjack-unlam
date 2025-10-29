@@ -40,4 +40,9 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
                 .uniqueResult();
     }
 
+    @Override
+    public void actualizar(Usuario usuario) {
+        sessionFactory.getCurrentSession().update(usuario);
+    }
+
 }
