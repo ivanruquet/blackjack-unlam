@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ServicioUsuarioImpl implements ServicioUsuario {
 
-    private RepositorioUsuarioImpl repositorioUsuario;
+    private RepositorioUsuario repositorioUsuario;
 
 
     @Autowired
-    public ServicioUsuarioImpl(RepositorioUsuarioImpl repositorioUsuario) {
+    public ServicioUsuarioImpl(RepositorioUsuario repositorioUsuario) {
         this.repositorioUsuario = repositorioUsuario;
     }
 
