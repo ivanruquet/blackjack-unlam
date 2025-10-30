@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 public class ControladorPartidaTest {
 
     RepositorioPartida repositorioPartida = mock(RepositorioPartida.class);
-    ServicioPartidaImpl servicioPartida = new ServicioPartidaImpl();
+    ServicioPartidaImpl servicioPartida = new ServicioPartidaImpl(repositorioPartida);
     ControladorPartida controladorPartida;
 
     @BeforeEach

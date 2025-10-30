@@ -12,8 +12,9 @@ public interface ServicioPartida {
   void setBotonesAlComenzarPartida(Partida partida);
 
 
+  void apostar(Usuario usuario, int monto);
 
-    void resetearPartida(Usuario usuario);
+  void resetearPartida(Usuario usuario);
 
   void validarPartida(Usuario usuario, int monto) throws ApuestaInvalidaException, SaldoInsuficiente;
 
@@ -24,11 +25,16 @@ public interface ServicioPartida {
 
 
     int calcularPuntaje(List<Map<String, Object>> cartas);
-void apostar(Usuario usuario, int monto);
 
-  void consultarExistenciaDePartidaActiva(Usuario usuario) throws PartidaExistenteActivaException;
+ void consultarExistenciaDePartidaActiva(Usuario usuario) throws PartidaExistenteActivaException;
+
+  void comenzarPartida(Partida partida);
+
+  void empezarPartida(Partida partida);
+
   Partida instanciarPartida(Jugador jugador) throws PartidaNoCreadaException;
   void inactivarPartidas(List<Partida> partidaActiva);
+
   Jugador crearJugador(Usuario usuario);
   void seleccionBotonEstrategia(Partida partidaActiva);
   String mandarEstrategia(Partida partidaActiva, Jugador jugador);
@@ -43,4 +49,6 @@ void apostar(Usuario usuario, int monto);
     void cambiarEstadoDeJuegoAJuegoDeUnaPartida(Partida p) throws PartidaActivaNoEnApuestaException;
 
     List<Partida> buscarPartidaActiva(Usuario usuario);
+
+  Partida crearPartida(Usuario usuario)throws PartidaNoCreadaException;
 }
