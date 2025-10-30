@@ -1,19 +1,46 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
-import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
-import com.tallerwebi.dominio.excepcion.SaldoInsuficiente;
+import com.tallerwebi.dominio.excepcion.*;
+
+import java.util.List;
+import java.util.Map;
 
 public interface ServicioPartida {
 
-  public Partida crearPartida(Usuario usuario) throws PartidaNoCreadaException;
-  void apostar(Partida partida, Integer apuesta, Integer monto);
-  void comenzarPartida(Partida partida);
-  void empezarPartida(Partida partida);
+
+ void apostar(Partida partida, Integer apuesta, Integer monto);
+  void setBotonesAlCrearPartida(Partida partida);
+  void setBotonesAlComenzarPartida(Partida partida);
+
+
+  void apostar(Usuario usuario, int monto);
 
   void resetearPartida(Usuario usuario);
 
   void validarPartida(Usuario usuario, int monto) throws ApuestaInvalidaException, SaldoInsuficiente;
 
-  void apostar(Usuario usuario, int monto);
+
+
+    void setearApuesta(Usuario usuario, Integer monto, Partida partida);
+
+
+
+    int calcularPuntaje(List<Map<String, Object>> cartas);
+
+ void consultarExistenciaDePartidaActiva(Usuario usuario) throws PartidaExistenteActivaException;
+
+  void comenzarPartida(Partida partida);
+
+  void empezarPartida(Partida partida);
+
+  Partida instanciarPartida(Jugador jugador) throws PartidaNoCreadaException;
+  void inactivarPartidas(List<Partida> partidaActiva);
+
+  Jugador crearJugador(Usuario usuario);
+
+    void cambiarEstadoDeJuegoAJuegoDeUnaPartida(Partida p) throws PartidaActivaNoEnApuestaException;
+
+    List<Partida> buscarPartidaActiva(Usuario usuario);
+
+  Partida crearPartida(Usuario usuario)throws PartidaNoCreadaException;
 }

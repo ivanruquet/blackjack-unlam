@@ -18,13 +18,19 @@ import javax.servlet.http.HttpServletRequest;
 
 @Service
 @Controller
-@RequestMapping("/juego")
 public class ControladorJuego {
 
     private ServicioPartida servicioPartida;
 
     public ControladorJuego(ServicioPartida servicioPartida) {
         this.servicioPartida = servicioPartida;
+    }
+
+
+    @RequestMapping("/juegoConCrupier")
+    public ModelAndView iraJuego() {
+        ModelMap modelo = new ModelMap();
+        return new ModelAndView("juegoConCrupier", modelo);
     }
 
 
@@ -35,50 +41,47 @@ public class ControladorJuego {
         if (usuario != null) {
             try {
                 servicioPartida.crearPartida(usuario);
-                return new ModelAndView("juegoConCrupier");
             } catch (PartidaNoCreadaException e) {
-                ModelMap modelo = new ModelMap();
-                modelo.addAttribute("error", "No se pudo crear la partida.");
-                return new ModelAndView("sala", modelo);
+                return new ModelAndView("redirect:/sala");
             }
         }
-
-        ModelMap modelo = new ModelMap();
-        modelo.addAttribute("error", "Debe iniciar sesión para jugar.");
-        return new ModelAndView("sala", modelo);
+        return new ModelAndView("redirect:/juegoConCrupier");
     }
 
-
     @PostMapping("/apostar")
-    public ModelAndView apostar(HttpServletRequest request, @RequestParam("monto") int monto) {
+    public ModelAndView apostar(HttpServletRequest request, @RequestParam("monto") int monto) throws ApuestaInvalidaException, SaldoInsuficiente {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         ModelMap modelo = new ModelMap();
 
-        try {
-            servicioPartida.validarPartida(usuario, monto);
+        if (usuario != null) {
             servicioPartida.apostar(usuario, monto);
-
-
-            request.getSession().setAttribute("usuario", usuario);
-
-            modelo.addAttribute("saldo", usuario.getSaldo());
-        } catch (ApuestaInvalidaException | SaldoInsuficiente e) {
-            modelo.addAttribute("errorServidor", e.getMessage());
+            return new ModelAndView("redirect:/juegoConCrupier");
         }
 
-        return new ModelAndView("juegoConCrupier", modelo);
+        try {
+            servicioPartida.validarPartida(usuario, monto);
+            modelo.addAttribute("mensajeExito", "Apuesta realizada");
+            modelo.addAttribute("saldo", usuario.getSaldo());
+        }catch (ApuestaInvalidaException e) {
+            modelo.addAttribute("error", "El monto de la apuesta no es valido");
+        }catch (SaldoInsuficiente saldoIns){
+            modelo.addAttribute("erroSaldo", "Saldo insuficiente");
+        }
+
+        return new ModelAndView("juego", modelo);
+
     }
-
-
 
     @PostMapping("/reset")
     public ModelAndView resetearPartida(HttpServletRequest request) {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-
         if (usuario != null) {
             servicioPartida.resetearPartida(usuario);
         }
         return new ModelAndView("redirect:/juegoConCrupier");
     }
+
+
+
 
 }

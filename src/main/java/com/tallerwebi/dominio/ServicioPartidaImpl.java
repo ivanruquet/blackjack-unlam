@@ -4,7 +4,6 @@ import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
 import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
 import com.tallerwebi.dominio.excepcion.SaldoInsuficiente;
 import com.tallerwebi.infraestructura.RepositorioJugadorImpl;
-import com.tallerwebi.infraestructura.RepositorioUsuarioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +14,14 @@ import static java.util.Objects.isNull;
 
 @Service
 @Transactional
-public class ServicioPartidaImpl implements ServicioPartida {
+public abstract class ServicioPartidaImpl implements ServicioPartida {
 
 
     private RepositorioPartida respositorioPartida;
 
     private RepositorioPartida repositorioPartida;
     private ServicioUsuarioImpl servicioUsuario;
-    private RepositorioUsuarioImpl repositorioUsuario;
+    private RepositorioUsuario repositorioUsuario;
     private RepositorioJugador repositorioJugador;
 
     public ServicioPartidaImpl(){
@@ -33,7 +32,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
     }
 
     @Autowired
-    public ServicioPartidaImpl(RepositorioPartida respositorioPartida, RepositorioUsuarioImpl repositorioUsuario, RepositorioJugadorImpl repositorioJugador){
+    public ServicioPartidaImpl(RepositorioPartida respositorioPartida, RepositorioUsuario repositorioUsuario, RepositorioJugadorImpl repositorioJugador){
         this.repositorioPartida=respositorioPartida;
         this.repositorioUsuario = repositorioUsuario;
         this.repositorioJugador = repositorioJugador;
@@ -48,7 +47,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
         this.repositorioPartida = repositorioPartida;
     }
 
-
+@Override
     public Partida crearPartida(Usuario usuario) throws PartidaNoCreadaException {
         corroborarExistenciaDePartidaActiva(usuario);
         Jugador jugador = crearJugador(usuario);
@@ -85,7 +84,8 @@ public class ServicioPartidaImpl implements ServicioPartida {
     }
 
 
-    private Partida instanciarPartida(Jugador jugador) {
+    @Override
+    public Partida instanciarPartida(Jugador jugador) {
         Partida partida =  new Partida();
         partida.setJugador(jugador);
         partida.setEstadoPartida(EstadoPartida.ACTIVA);
@@ -94,7 +94,8 @@ public class ServicioPartidaImpl implements ServicioPartida {
         return repositorioPartida.guardar(partida);
     }
 
-    private Jugador crearJugador(Usuario usuario) {
+    @Override
+    public Jugador crearJugador(Usuario usuario) {
         Jugador jugador = new Jugador();
         jugador.setUsuario(usuario);
         repositorioJugador.guardar(jugador);
@@ -115,7 +116,6 @@ public class ServicioPartidaImpl implements ServicioPartida {
     public void apostar(Usuario usuario, int monto) {
 
         List<Partida> partidas = repositorioPartida.buscarPartidaActiva(usuario);
-
         if (!partidas.isEmpty()) {
             Partida partida = partidas.get(0);
             partida.setApuesta(partida.getApuesta() + monto);

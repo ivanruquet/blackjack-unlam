@@ -27,6 +27,7 @@ public void registrar(Usuario usuario) throws UsuarioExistente {
     if (usuarioBuscado != null) {
         throw new UsuarioExistente();
     }
+
     repositorioUsuario.guardar(usuario);
 }
 

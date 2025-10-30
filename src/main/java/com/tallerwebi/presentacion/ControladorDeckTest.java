@@ -119,6 +119,9 @@ public class ControladorDeckTest {
         }
         return total;
     }
+
+
+
     private ModelAndView redibujarVista() {
         String mensaje = "";
 
