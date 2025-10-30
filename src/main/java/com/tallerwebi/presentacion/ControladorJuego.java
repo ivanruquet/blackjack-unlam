@@ -18,19 +18,13 @@ import javax.servlet.http.HttpServletRequest;
 
 @Service
 @Controller
+@RequestMapping("/juego")
 public class ControladorJuego {
 
     private ServicioPartida servicioPartida;
 
     public ControladorJuego(ServicioPartida servicioPartida) {
         this.servicioPartida = servicioPartida;
-    }
-
-
-    @RequestMapping("/juegoConCrupier")
-    public ModelAndView iraJuego() {
-        ModelMap modelo = new ModelMap();
-        return new ModelAndView("juegoConCrupier", modelo);
     }
 
 
@@ -41,47 +35,50 @@ public class ControladorJuego {
         if (usuario != null) {
             try {
                 servicioPartida.crearPartida(usuario);
+                return new ModelAndView("juegoConCrupier");
             } catch (PartidaNoCreadaException e) {
-                return new ModelAndView("redirect:/sala");
+                ModelMap modelo = new ModelMap();
+                modelo.addAttribute("error", "No se pudo crear la partida.");
+                return new ModelAndView("sala", modelo);
             }
         }
-        return new ModelAndView("redirect:/juegoConCrupier");
+
+        ModelMap modelo = new ModelMap();
+        modelo.addAttribute("error", "Debe iniciar sesión para jugar.");
+        return new ModelAndView("sala", modelo);
     }
 
+
     @PostMapping("/apostar")
-    public ModelAndView apostar(HttpServletRequest request, @RequestParam("monto") int monto) throws ApuestaInvalidaException, SaldoInsuficiente {
+    public ModelAndView apostar(HttpServletRequest request, @RequestParam("monto") int monto) {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         ModelMap modelo = new ModelMap();
 
-        if (usuario != null) {
-            servicioPartida.apostar(usuario, monto);
-            return new ModelAndView("redirect:/juegoConCrupier");
-        }
-
         try {
             servicioPartida.validarPartida(usuario, monto);
-            modelo.addAttribute("mensajeExito", "Apuesta realizada");
+            servicioPartida.apostar(usuario, monto);
+
+
+            request.getSession().setAttribute("usuario", usuario);
+
             modelo.addAttribute("saldo", usuario.getSaldo());
-        }catch (ApuestaInvalidaException e) {
-            modelo.addAttribute("error", "El monto de la apuesta no es valido");
-        }catch (SaldoInsuficiente saldoIns){
-            modelo.addAttribute("erroSaldo", "Saldo insuficiente");
+        } catch (ApuestaInvalidaException | SaldoInsuficiente e) {
+            modelo.addAttribute("errorServidor", e.getMessage());
         }
 
-        return new ModelAndView("juego", modelo);
-
+        return new ModelAndView("juegoConCrupier", modelo);
     }
+
+
 
     @PostMapping("/reset")
     public ModelAndView resetearPartida(HttpServletRequest request) {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+
         if (usuario != null) {
             servicioPartida.resetearPartida(usuario);
         }
         return new ModelAndView("redirect:/juegoConCrupier");
     }
-
-
-
 
 }

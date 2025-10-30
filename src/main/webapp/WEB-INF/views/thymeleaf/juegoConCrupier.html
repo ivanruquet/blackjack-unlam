@@ -11,17 +11,6 @@
 </head>
 <body>
 
-<div th:if="${mensajeExito}" class="alert alert-success" role="alert">
-    <span th:text="${mensajeExito}"></span>
-</div>
-
-<div th:if="${error}" class="alert alert-danger" role="alert">
-    <span th:text="${error}"></span>
-</div>
-
-<div th:if="${errorSaldo}" class="alert alert-danger" role="alert">
-    <span th:text="${errorSaldo}"></span>
-</div>
 
 <nav>
     <div class="logo">
@@ -42,7 +31,8 @@
     <div class="iconos-section-crupier">
         <div class="saldo">
             <p class="saldoDiponible">SALDO DISPONIBLE</p>
-            <p id="saldoDisponible">$1000.0</p>
+            <p id="saldoDisponible" th:text="'$' + ${saldo}">Saldo</p>
+
         </div>
 
         <section class="cartas-score" id="sectionCrupier">
@@ -73,6 +63,7 @@
             <a th:href="@{/sala}" class="iconos-juego">
                     <img th:src="@{/resources/core/images/iconoHome.png}" alt="home" />
                 </a>
+
         </div>
     </div>
     <div class="centro-de-mesa">
@@ -140,8 +131,9 @@
 
             <div class="contenedor-ficha-apuesta">
                 <div class="contenedor-ficha-apuesta">
-                    <form action="/juego/apostar" method="post">
-                        <input type="hidden" name="monto" value="5">
+                    <form th:action="@{/juego/apostar}" method="post">
+
+                    <input type="hidden" name="monto" value="5">
                         <button type="submit" class="boton-ficha-apuesta iconos-juego" data-ficha="5">
                             <img th:src="@{/resources/core/images/ficha 5.png}" alt="Valor 5" />
                         </button>
@@ -214,9 +206,7 @@
 </footer>
 
 
-
-
-
 <script src="resources/core/js/botonesJuego.js"></script>
+
 </body>
 </html>

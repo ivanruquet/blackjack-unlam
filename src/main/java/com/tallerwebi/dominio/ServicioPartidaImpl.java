@@ -115,6 +115,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
     public void apostar(Usuario usuario, int monto) {
 
         List<Partida> partidas = repositorioPartida.buscarPartidaActiva(usuario);
+
         if (!partidas.isEmpty()) {
             Partida partida = partidas.get(0);
             partida.setApuesta(partida.getApuesta() + monto);
