@@ -369,7 +369,7 @@
 //}
 
 package com.tallerwebi.dominio;
-
+import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
 import com.tallerwebi.dominio.excepcion.*;
 import com.tallerwebi.infraestructura.RepositorioJugadorImpl;
 import com.tallerwebi.infraestructura.RepositorioPartidaImpl;
@@ -606,8 +606,24 @@ public class ServicioPartidaImpl implements ServicioPartida {
 
 
     @Override
-    public void apostar(Partida partida, Integer apuesta, Integer monto) {
-        if(apuesta == null){
+    public void apostar(Partida partida, Integer apuesta, Integer monto)
+            throws ApuestaInvalidaException, SaldoInsuficiente {
+
+        List<Integer> fichasValidas = List.of(10, 25, 50, 100);
+        if (!fichasValidas.contains(monto)) {
+            throw new ApuestaInvalidaException("El monto no corresponde a una ficha válida.");
+        }
+
+        Jugador jugador = partida.getJugador();
+        Double saldoActual = jugador.getSaldo();
+
+        if (saldoActual == null || saldoActual < monto) {
+            throw new SaldoInsuficiente("Saldo insuficiente para realizar la apuesta.");
+        }
+
+        jugador.setSaldo(saldoActual - monto);
+
+        if (apuesta == null) {
             apuesta = 0;
         }
         partida.setApuesta(apuesta + monto);

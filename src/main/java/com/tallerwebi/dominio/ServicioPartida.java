@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface ServicioPartida {
 
-    void apostar(Partida partida, Integer apuesta, Integer monto);
+    void apostar(Partida partida, Integer apuesta, Integer monto) throws ApuestaInvalidaException, SaldoInsuficiente;
     void setBotonesAlCrearPartida(Partida partida);
   void setBotonesAlComenzarPartida(Partida partida);
 
