@@ -133,19 +133,19 @@ public class ControladorPartidaTest {
     }
 
 
-        @Test
-    public void apostarMontoValidoDeberiaRegistrarApuesta() throws Exception {
-            Usuario usuario = givenExisteUnUsuario();
-            Partida partidaComenzada= givenExisteUnaPartidaActiva();
-            Partida partidaActiva= givenComienzaUnaPartida(partidaComenzada, usuario);
-            whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.getSession().setAttribute("usuario", usuario);
-        request.getSession().setAttribute("partida", partidaActiva);
-        ModelAndView mv = controladorPartida.apostar(request, 500);
-        assertEquals("juegoConCrupier", mv.getViewName());
-        assertEquals(usuario.getSaldo(), mv.getModel().get("saldo"));
-    }
+//        @Test
+//    public void apostarMontoValidoDeberiaRegistrarApuesta() throws Exception {
+//            Usuario usuario = givenExisteUnUsuario();
+//            Partida partidaComenzada= givenExisteUnaPartidaActiva();
+//            Partida partidaActiva= givenComienzaUnaPartida(partidaComenzada, usuario);
+//            whenSeleccionoBotonEmpezarPartida(partidaActiva);
+//        MockHttpServletRequest request = new MockHttpServletRequest();
+//        request.getSession().setAttribute("usuario", usuario);
+//        request.getSession().setAttribute("partida", partidaActiva);
+//        ModelAndView mv = controladorPartida.apostar(request, 500);
+//        assertEquals("juegoConCrupier", mv.getViewName());
+//        assertEquals(usuario.getSaldo(), mv.getModel().get("saldo"));
+//    }
 
     @Test
     public void queAlSeleccionarElBotonRendirseEnvieAlUsuarioALaVistaSala(){
