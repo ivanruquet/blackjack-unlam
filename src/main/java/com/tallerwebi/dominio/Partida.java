@@ -15,12 +15,25 @@ public class Partida {
     private Integer apuesta;
     private boolean fichasHabilitadas;
     private boolean botonesDesicionHabilitados;
+    private boolean botonEstrategia;
+    private String ganador;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Jugador jugador;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Crupier crupier;
+
 
     public Partida(){}
+
+    public void setGanador(String ganador) {this.ganador = ganador;}
+
+    public String getGanador() {return ganador;}
+
+    public Boolean getBotonEstrategia(){ return botonEstrategia;}
+
+    public void setBotonEstrategia(boolean botonEstrategia){ this.botonEstrategia = botonEstrategia; }
 
     public void setFichasHabilitadas(boolean fichasHabilitadas) {this.fichasHabilitadas = fichasHabilitadas;}
 
@@ -60,6 +73,14 @@ public class Partida {
 
     public Jugador getJugador(){
         return this.jugador;
+    }
+
+    public void setCrupier(Crupier crupier) {
+        this.crupier = crupier;
+    }
+
+    public Crupier getCrupier(){
+        return this.crupier;
     }
 
     public void setEstadoPartida(EstadoPartida estadoPartida) {
