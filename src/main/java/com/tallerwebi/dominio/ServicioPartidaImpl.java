@@ -206,6 +206,8 @@ public class ServicioPartidaImpl implements ServicioPartida {
     @Override
     public void rendirse(Partida partidaActiva, Jugador jugador) {
         partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.ABANDONADO);
+        partidaActiva.setEstadoPartida(EstadoPartida.INACTIVA);
+        repositorioPartida.actualizar(partidaActiva);
     }
 
 

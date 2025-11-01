@@ -99,6 +99,11 @@
             <p th:text="${mensajeEstrategia}"></p>
         </div>
 
+        <div th:if="${mensajeResultado}" class="mensaje-estrategia">
+            <p th:text="${mensajeResultado}"></p>
+        </div>
+
+
         <div class="contenedor-desiciones">
 
             <form method="post" th:action="@{/mostrarEstrategia}" class="form-boton">

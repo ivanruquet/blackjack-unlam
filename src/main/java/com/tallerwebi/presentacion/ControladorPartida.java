@@ -35,11 +35,11 @@ public class ControladorPartida {
     }
 
 
-//    @RequestMapping("/juegoConCrupier")
-//    public ModelAndView iraJuego() {
-//        ModelMap modelo = new ModelMap();
-//        return new ModelAndView("juegoConCrupier", modelo);
-//    }
+    @RequestMapping("/juegoConCrupier")
+    public ModelAndView iraJuego() {
+        ModelMap modelo = new ModelMap();
+        return new ModelAndView("juegoConCrupier", modelo);
+    }
 
 
     @PostMapping("/reset")
@@ -244,13 +244,24 @@ public class ControladorPartida {
         }
 
         Jugador jugador = partidaActiva.getJugador();
-        String mensajeEstrategia = servicioPartida.resultadoDeLaPartida(partidaActiva.getCrupier().getPuntaje(), jugador.getPuntaje());
+        int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
+        int puntajeDealer = servicioPartida.calcularPuntaje(cartasDealer);
 
-        modelo.put("mensajeResultado", mensajeEstrategia);
+        List<Map<String, Object>> cartasJugador =
+                (List<Map<String, Object>>) request.getSession().getAttribute("cartasJugador");
+        List<Map<String, Object>> cartasDealer =
+                (List<Map<String, Object>>) request.getSession().getAttribute("cartasDealer");
+
+        String mensajeResultado= servicioPartida.resultadoDeLaPartida(puntajeDealer, puntajeJugador);
+
+        modelo.put("mensajeResultado", mensajeResultado);
         modelo.addAttribute("partida", partidaActiva);
         modelo.addAttribute("jugador", jugador);
         modelo.addAttribute("usuario", usuario);
-
+        modelo.addAttribute("puntajeJugador", puntajeJugador);
+        modelo.addAttribute("puntajeDealer", puntajeDealer);
+        modelo.addAttribute("cartasJugador", cartasJugador);
+        modelo.addAttribute("cartasDealer", cartasDealer);
         request.getSession().setAttribute("partidaActiva", partidaActiva);
 
         return new ModelAndView("juegoConCrupier", modelo);
@@ -259,9 +270,11 @@ public class ControladorPartida {
     @PostMapping("/rendirse")
     public ModelAndView rendirse(HttpServletRequest request){
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-        ModelAndView modelo = new ModelAndView();
-        modelo.setViewName("redirect:/sala");
-        return modelo;
+        Partida partidaActiva = servicioPartida.obtenerPartidaActiva(usuario);
+        ModelMap modelo = new ModelMap();
+        servicioPartida.rendirse(partidaActiva, partidaActiva.getJugador());
+        request.getSession().removeAttribute("partidaActiva");
+        return new ModelAndView("redirect:/sala", modelo);
     }
 
 
