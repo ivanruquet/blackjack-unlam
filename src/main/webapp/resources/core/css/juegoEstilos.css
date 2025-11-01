@@ -17,6 +17,40 @@ main {
     gap: 12px;
     padding-right: 45px;
 }
+.mensaje-estrategia {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    color: white;
+    padding: 1px 10px 1px;
+    border-radius: 10px;
+    border: solid 1px white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    max-width: 200px;
+    margin: 10px 0;
+    position: relative;
+
+    animation: subirYDesaparecer 3s ease forwards;
+}
+
+@keyframes subirYDesaparecer {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+}
+
 
 .cartas {
     display: flex;
@@ -122,7 +156,11 @@ form {
     align-items: center;
     gap: 6px;
 }
-
+.boton-deshabilitado {
+  opacity: 0.5;
+  pointer-events: none;
+  filter: grayscale(80%);
+}
 .boton-desicion {
     background: none;
     border: none;

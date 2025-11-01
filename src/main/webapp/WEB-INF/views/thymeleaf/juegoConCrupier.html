@@ -45,17 +45,27 @@
             <p id="saldoDisponible">$1000.0</p>
         </div>
 
-        <section class="cartas-score" id="sectionCrupier">
-            <div class="cartas">
-                <div class="carta"></div>
-                <div class="carta"></div>
-                <!-- <img
-                  src="ImgBlackJack/tarjeta-de-corazon (2) 1.png"
-                  alt="dos de corazones"
-                />
-                <img src="ImgBlackJack/cartaoculta (3).png" alt="carta oculta" /> -->
-            </div>
+<!--        <section class="cartas-score" id="sectionCrupier">-->
+<!--            <div class="cartas">-->
+<!--                <div class="carta"></div>-->
+<!--                <div class="carta"></div>-->
+<!--                &lt;!&ndash; <img-->
+<!--                  src="ImgBlackJack/tarjeta-de-corazon (2) 1.png"-->
+<!--                  alt="dos de corazones"-->
+<!--                />-->
+<!--                <img src="ImgBlackJack/cartaoculta (3).png" alt="carta oculta" /> &ndash;&gt;-->
+<!--            </div>-->
+            <section class="cartas-score" id="sectionCrupier">
+                <div class="cartas">
+                    <div class="carta" th:each="carta : ${cartasDealer}">
+                        <img th:src="${carta.image}" alt="Carta del dealer"/>
+                    </div>
 
+                    <div th:if="${#lists.isEmpty(cartasDealer)}" class="placeholder-carta">
+                        <div class="carta"></div>
+                        <div class="carta"></div>
+                    </div>
+                </div>
                 <div class="score" id="score-crupier">
                     <p id="valorScoreCrupier">[[${puntajeDealer}]]</p>
                 </div>
@@ -82,33 +92,47 @@
                     th:src="@{/resources/core/images/fichaApuesta.png}"
                     alt="ficha de Apuesta"
             />
-            <p class="pozo" id="valor-apuesta" th:text="${pozo}">0</p>
+            <p><span th:text="${partida.apuesta}">0</span></p>
         </div>
+
+        <div th:if="${mensajeEstrategia}" class="mensaje-estrategia">
+            <p th:text="${mensajeEstrategia}"></p>
+        </div>
+
         <div class="contenedor-desiciones">
 
             <form method="post" th:action="@{/mostrarEstrategia}" class="form-boton">
-                <button class="boton-desicion iconos-juego boton-deshabilitado" disabled>
+                <button class="boton-desicion iconos-juego"
+                        th:classappend="${!partida.botonesDesicionHabilitados} ? ' boton-deshabilitado' : ''"
+                        th:attr="disabled=${!partida.botonesDesicionHabilitados}">
                     <img th:src="@{/resources/core/images/boton-estrategia.png}" alt="Estrategia" />
                 </button>
                 <p class="texto-descripcion">Estrategia</p>
             </form>
+            <div id="mensajeEstrategiaJS" style="display:none;" class="mensaje-estrategia"></div>
 
             <form method="post" th:action="@{/doblarApuesta}" class="form-boton">
-                <button class="boton-desicion iconos-juego boton-deshabilitado" disabled>
+                <button class="boton-desicion iconos-juego"
+                        th:classappend="${!partida.botonesDesicionHabilitados} ? ' boton-deshabilitado' : ''"
+                        th:attr="disabled=${!partida.botonesDesicionHabilitados}">
                     <img th:src="@{/resources/core/images/boton-doblar-apuesta.png}" alt="Doblar apuesta" />
                 </button>
                 <p class="texto-descripcion">Doblar apuesta</p>
             </form>
 
             <form  method="post" class="form-boton">
-                <button class="boton-desicion iconos-juego boton-deshabilitado" disabled>
+                <button class="boton-desicion iconos-juego"
+                        th:classappend="${!partida.botonesDesicionHabilitados} ? ' boton-deshabilitado' : ''"
+                        th:attr="disabled=${!partida.botonesDesicionHabilitados}">
                     <img th:src="@{/resources/core/images/boton-pedir-carta.png}" alt="Pedir carta" />
                 </button>
                 <p class="texto-descripcion">Pedir carta</p>
             </form>
 
             <form method="post" th:action="@{/pararse}" class="form-boton">
-                <button class="boton-desicion iconos-juego boton-deshabilitado" disabled>
+                <button class="boton-desicion iconos-juego"
+                        th:classappend="${!partida.botonesDesicionHabilitados} ? ' boton-deshabilitado' : ''"
+                        th:attr="disabled=${!partida.botonesDesicionHabilitados}">
                     <img th:src="@{/resources/core/images/boton-pararse.png}" alt="Pararse" />
                 </button>
                 <p class="texto-descripcion">Pararse</p>
@@ -116,14 +140,18 @@
 
 
             <form method="post" class="form-boton">
-                <button class="boton-desicion iconos-juego boton-deshabilitado" disabled>
+                <button class="boton-desicion iconos-juego"
+                        th:classappend="${!partida.botonesDesicionHabilitados} ? ' boton-deshabilitado' : ''"
+                        th:attr="disabled=${!partida.botonesDesicionHabilitados}">
                     <img th:src="@{/resources/core/images/boton-dividir.png}" alt="Dividir partida" />
                 </button>
                 <p class="texto-descripcion">Dividir partida</p>
             </form>
 
             <form method="post" th:action="@{/rendirse}" class="form-boton">
-                <button class="boton-desicion iconos-juego boton-deshabilitado" disabled>
+                <button class="boton-desicion iconos-juego"
+                        th:classappend="${!partida.botonesDesicionHabilitados} ? ' boton-deshabilitado' : ''"
+                        th:attr="disabled=${!partida.botonesDesicionHabilitados}">
                     <img th:src="@{/resources/core/images/boton-rendirse.png}" alt="Rendirse" />
                 </button>
                 <p class="texto-descripcion">Rendirse</p>
@@ -141,37 +169,53 @@
 
             <div class="contenedor-ficha-apuesta">
                 <div class="contenedor-ficha-apuesta">
+
                     <form th:action="@{/apostar}" method="post">
                         <input type="hidden" name="monto" value="5">
-                        <button type="submit" class="boton-ficha-apuesta iconos-juego" data-ficha="5">
+                        <button type="submit" class="boton-ficha-apuesta iconos-juego"
+                                th:classappend="${!partida.fichasHabilitadas} ? ' boton-deshabilitado' : ''"
+                                th:attr="disabled=${!partida.fichasHabilitadas}"
+                                data-ficha="5">
                             <img th:src="@{/resources/core/images/ficha 5.png}" alt="Valor 5" />
                         </button>
                     </form>
 
                     <form th:action="@{/apostar}" method="post">
                         <input type="hidden" name="monto" value="10">
-                        <button type="submit" class="boton-ficha-apuesta iconos-juego" data-ficha="10">
+                        <button type="submit" class="boton-ficha-apuesta iconos-juego"
+                                th:classappend="${!partida.fichasHabilitadas} ? ' boton-deshabilitado' : ''"
+                                th:attr="disabled=${!partida.fichasHabilitadas}"
+                                data-ficha="10">
                             <img th:src="@{/resources/core/images/ficha10.png}" alt="Valor 10" />
                         </button>
                     </form>
 
                     <form th:action="@{/apostar}" method="post">
                         <input type="hidden" name="monto" value="25">
-                        <button type="submit" class="boton-ficha-apuesta iconos-juego" data-ficha="25" >
+                        <button type="submit" class="boton-ficha-apuesta iconos-juego"
+                                th:classappend="${!partida.fichasHabilitadas} ? ' boton-deshabilitado' : ''"
+                                th:attr="disabled=${!partida.fichasHabilitadas}"
+                                data-ficha="25">
                             <img th:src="@{/resources/core/images/ficha25.png}" alt="Valor 25" />
                         </button>
                     </form>
 
                     <form th:action="@{/apostar}" method="post">
                         <input type="hidden" name="monto" value="50">
-                        <button type="submit" class="boton-ficha-apuesta iconos-juego" data-ficha="50">
+                        <button type="submit" class="boton-ficha-apuesta iconos-juego"
+                                th:classappend="${!partida.fichasHabilitadas} ? ' boton-deshabilitado' : ''"
+                                th:attr="disabled=${!partida.fichasHabilitadas}"
+                                data-ficha="50">
                             <img th:src="@{/resources/core/images/ficha50.png}" alt="Valor 50" />
                         </button>
                     </form>
 
                     <form th:action="@{/apostar}" method="post">
                         <input type="hidden" name="monto" value="100">
-                        <button type="submit" class="boton-ficha-apuesta iconos-juego" data-ficha="100">
+                        <button type="submit" class="boton-ficha-apuesta iconos-juego"
+                                th:classappend="${!partida.fichasHabilitadas} ? ' boton-deshabilitado' : ''"
+                                th:attr="disabled=${!partida.fichasHabilitadas}"
+                                data-ficha="100">
                             <img th:src="@{/resources/core/images/ficha100.png}" alt="Valor 100" />
                         </button>
                     </form>
@@ -179,7 +223,7 @@
 
                 <div class="botones">
                     <form th:action="@{/iniciar}" method="post" id="form-apuesta">
-                        <input type="hidden" name="monto" id="inputMonto" th:value="${pozo}">
+                        <input type="hidden" name="empezar" id="inputMonto" th:value="${pozo}">
                         <button class="btn" id="boton" type="submit">Empezar partida</button>
                     </form>
                 </div>

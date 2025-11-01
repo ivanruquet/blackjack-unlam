@@ -36,7 +36,7 @@ public class ServicioPartidaTest {
     @Test
     public void queAlConsultarSiExistePartidasActivasSeLanceUnaPartidaActivaException(){
         Usuario usuario = givenExisteUnUsuario();
-        Partida partidaActiva = givenExisteUnaPartidaActiva();
+        Partida partidaActiva = givenComienzaUnaPartida(usuario);
         when(repositorioPartida.buscarPartidaActiva(usuario))
                 .thenReturn(List.of(partidaActiva));
 
@@ -45,7 +45,7 @@ public class ServicioPartidaTest {
     @Test
     public void queSeSeteenEstadosParaPartidasActivasExistentes(){
         Usuario usuario = givenExisteUnUsuario();
-        Partida partidaActiva = givenExisteUnaPartidaActiva();
+        Partida partidaActiva = givenComienzaUnaPartida(usuario);
         servicioPartida.inactivarPartidas(List.of(partidaActiva));
         assertEquals(EstadoPartida.INACTIVA ,partidaActiva.getEstadoPartida());
         assertEquals(EstadoDeJuego.ABANDONADO ,partidaActiva.getEstadoJuego());
@@ -65,12 +65,13 @@ public class ServicioPartidaTest {
                 .thenAnswer(inv -> inv.getArgument(0));
         assertNotNull(servicioPartida.instanciarPartida(j));
     }
+
     @Test
     public void queSePuedaCambiarElEstadoDeJuegoDeUnaPartida() throws PartidaActivaNoEnApuestaException {
-    Partida p = new Partida();
-    p.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
-    servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(p);
-    assertEquals(EstadoDeJuego.JUEGO, p.getEstadoJuego());
+        Partida p = new Partida();
+        p.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
+        servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(p);
+        assertEquals(EstadoDeJuego.JUEGO, p.getEstadoJuego());
     }
 
     @Test
@@ -93,17 +94,17 @@ public class ServicioPartidaTest {
 
         assertEquals(20, puntaje);
     }
-
+//--------------------------------------------
 
     @Test
-    public void queAlComenzarLaPartidaEstenHabilitadasSoloLasFichasYNoLosBotonesDeDecision() {
+    public void queAlIniciarEstenHabilitadasSoloLasFichasYNoLosBotonesDeDecision() {
         Usuario usuario = givenExisteUnUsuario();
-        Partida partidaComenzada= givenExisteUnaPartidaActiva();
-        Partida partidaActiva= givenComienzaUnaPartida(partidaComenzada, usuario);
+        Partida partidaActiva = givenComienzaUnaPartida(usuario);
         whenComienzaLaPartida(partidaActiva);
         thenBotonesHabilitadosYDesicionesDesabilitado(partidaActiva);
     }
     private void thenBotonesHabilitadosYDesicionesDesabilitado(Partida partidaActiva) {
+        assertEquals(partidaActiva.getEstadoJuego(), EstadoDeJuego.APUESTA);
         assertTrue(partidaActiva.getFichasHabilitadas());
         assertFalse(partidaActiva.getBotonesDesicionHabilitados());
     }
@@ -111,44 +112,49 @@ public class ServicioPartidaTest {
     private void whenComienzaLaPartida(Partida partidaActiva) {
         servicioPartida.setBotonesAlCrearPartida(partidaActiva);
     }
+
+
+    @Test
+    public void queAlSeleccionarElBotonEmpezarPartidaSeHabilitenLosBotonesDeDecision() throws PartidaActivaNoEnApuestaException{
+        Usuario usuario = givenExisteUnUsuario();
+        Partida partidaActiva = givenComienzaUnaPartida(usuario);
+        whenSeleccionoBotonEmpezarPartida(partidaActiva);
+        whenComienzaLaPartida(partidaActiva);
+        thenSeHabilitanLosBotonesDeDecision(partidaActiva);
+    }
+
+    private void whenSeleccionoBotonEmpezarPartida(Partida partidaActiva)throws PartidaActivaNoEnApuestaException  {
+        servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partidaActiva);
+    }
+
+    private void thenSeHabilitanLosBotonesDeDecision(Partida partidaActiva) {
+        assertEquals(partidaActiva.getEstadoJuego(), EstadoDeJuego.JUEGO);
+        assertFalse(partidaActiva.getFichasHabilitadas());
+        assertTrue(partidaActiva.getBotonesDesicionHabilitados());
+    }
     @Test
     public void queAlSeleccionarFichasSuValorSeSumeEnElPozoTotal() throws ApuestaInvalidaException, SaldoInsuficiente {
         Usuario usuario = givenExisteUnUsuario();
-        Partida partidaComenzada= givenExisteUnaPartidaActiva();
-        Partida partidaActiva= givenComienzaUnaPartida(partidaComenzada, usuario);
+        Partida partidaActiva = givenComienzaUnaPartida(usuario);
         whenSeleccionoFichas(partidaActiva);
         thenSeSumaElPozo(partidaActiva);
     }
 
-
-    @Test
-    public void queAlSeleccionarElBotonEmpezarPartidaSeDescuenteElSaldoDelJugador() {
-        Usuario usuario = givenExisteUnUsuario();
-        Partida partidaComenzada= givenExisteUnaPartidaActiva();
-        Partida partidaActiva= givenComienzaUnaPartida(partidaComenzada, usuario);
-        whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        thenSeDescuentaElsaldo(partidaActiva);
+    private void whenSeleccionoFichas(Partida partidaActiva) throws ApuestaInvalidaException, SaldoInsuficiente {
+        servicioPartida.apostar(partidaActiva, 100);
     }
 
-
-    @Test
-    public void queAlSeleccionarElBotonEmpezarPartidaSeHabilitenLosBotonesDeDecision() {
-        Usuario usuario = givenExisteUnUsuario();
-        Partida partidaComenzada= givenExisteUnaPartidaActiva();
-        Partida partidaActiva= givenComienzaUnaPartida(partidaComenzada, usuario);
-        whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        thenSeHabilitanLosBotonesDeDecision(partidaActiva);
+    private void thenSeSumaElPozo(Partida partidaActiva) {
+        assertEquals(200, partidaActiva.getApuesta());
     }
 
     @Test
-    public void queAlSeleccionarElBotonEstrategiaElUsuarioRecibaUnaAyuda(){
+    public void queAlSeleccionarElBotonEstrategiaElUsuarioRecibaUnaAyuda() throws PartidaActivaNoEnApuestaException{
         Usuario usuario = givenExisteUnUsuario();
-        Partida partidaComenzada= givenExisteUnaPartidaActiva();
-        Partida partidaActiva= givenComienzaUnaPartida(partidaComenzada, usuario);
-        Jugador jugador = partidaActiva.getJugador();
+        Partida partidaActiva = givenComienzaUnaPartida(usuario);
         whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        String mensajeEsperado= whenSeleccionoBotonEstrategia(partidaActiva, jugador);
-        thenElUsuarioRecibeUnaAyuda(jugador, mensajeEsperado);
+        String mensajeEsperado= whenSeleccionoBotonEstrategia(partidaActiva, partidaActiva.getJugador());
+        thenElUsuarioRecibeUnaAyuda(partidaActiva.getJugador(), mensajeEsperado);
     }
 
     private void thenElUsuarioRecibeUnaAyuda(Jugador jugador, String mensajeEsperado) {
@@ -157,24 +163,40 @@ public class ServicioPartidaTest {
 
     private String whenSeleccionoBotonEstrategia(Partida partidaActiva, Jugador jugador) {
         servicioPartida.seleccionBotonEstrategia(partidaActiva);
-        String mensajeEsperado= servicioPartida.mandarEstrategia(partidaActiva, jugador);
+        String mensajeEsperado= servicioPartida.mandarEstrategia(partidaActiva, partidaActiva.getJugador().getPuntaje(), partidaActiva.getCrupier().getPuntaje());
         return mensajeEsperado;
     }
 
+
+    private void thenSeDescuentaElsaldo(Partida partidaActiva) {
+        assertEquals(900.0, partidaActiva.getJugador().getSaldo());
+    }
+
     @Test
-    public void queAlSeleccionarElBotonDoblarApuestaSeDobleLaApuesta(){
+    public void queAlSeleccionarElBotonEmpezarPartidaSeDescuenteElSaldoDelJugador() throws PartidaActivaNoEnApuestaException, ApuestaInvalidaException, SaldoInsuficiente {
         Usuario usuario = givenExisteUnUsuario();
-        Partida partidaComenzada= givenExisteUnaPartidaActiva();
-        Partida partidaActiva= givenComienzaUnaPartida(partidaComenzada, usuario);
-        Jugador jugador = partidaActiva.getJugador();
+        Partida partidaActiva = givenComienzaUnaPartida(usuario);
         whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        Double apuestaDoblada= whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(partidaActiva, jugador);
-        thenApuestaDoblada(partidaActiva, jugador, apuestaDoblada);
+        whenSeDescuentaElSaldoDeLaApuesta(partidaActiva);
+        thenSeDescuentaElsaldo(partidaActiva);
+    }
+
+    private void whenSeDescuentaElSaldoDeLaApuesta(Partida partidaActiva) throws ApuestaInvalidaException, SaldoInsuficiente {
+        servicioPartida.apostar(partidaActiva, partidaActiva.getApuesta());
+    }
+
+    @Test
+    public void queAlSeleccionarElBotonDoblarApuestaSeDobleLaApuesta() throws PartidaActivaNoEnApuestaException{
+        Usuario usuario = givenExisteUnUsuario();
+        Partida partidaActiva = givenComienzaUnaPartida(usuario);
+        whenSeleccionoBotonEmpezarPartida(partidaActiva);
+        Double apuestaDoblada= whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(partidaActiva, partidaActiva.getJugador());
+        thenApuestaDoblada(partidaActiva, partidaActiva.getJugador(), apuestaDoblada);
     }
 
     private void thenApuestaDoblada(Partida partidaActiva, Jugador jugador, Double apuestaDoblada) {
-        assertEquals(Integer.valueOf(400), partidaActiva.getApuesta());
-        assertEquals(600.0, jugador.getSaldo(), 0.01);
+        assertEquals(Integer.valueOf(200), partidaActiva.getApuesta());
+        assertEquals(800.0, jugador.getSaldo(), 0.01);
     }
 
     private Double whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(Partida partidaActiva, Jugador jugador) {
@@ -183,10 +205,9 @@ public class ServicioPartidaTest {
     }
 
     @Test
-    public void queAlSeleccionarElBotonPararseSeComparenLosPuntosYSeDefinaUnGanador(){
+    public void queAlSeleccionarElBotonPararseSeComparenLosPuntosYSeDefinaUnGanador() throws PartidaActivaNoEnApuestaException{
         Usuario usuario = givenExisteUnUsuario();
-        Partida partidaComenzada= givenExisteUnaPartidaActiva();
-        Partida partidaActiva= givenComienzaUnaPartida(partidaComenzada, usuario);
+        Partida partidaActiva = givenComienzaUnaPartida(usuario);
         Jugador jugador = partidaActiva.getJugador();
         whenSeleccionoBotonEmpezarPartida(partidaActiva);
         whenSeleccionoBotonPararseSeComparanLosPuntosYSeDefineUnGanador(partidaActiva);
@@ -206,35 +227,27 @@ public class ServicioPartidaTest {
     }
 
     @Test
-    public void queAlSeleccionarElBotonRendirseSeLeResteLaApuestaAlJugadorYLaPartidaPasaAEstadoAbandonado(){
+    public void queAlSeleccionarElBotonRendirseSeLeResteLaApuestaAlJugadorYLaPartidaPasaAEstadoAbandonado() throws PartidaActivaNoEnApuestaException, ApuestaInvalidaException, SaldoInsuficiente {
         Usuario usuario = givenExisteUnUsuario();
-        Partida partidaComenzada= givenExisteUnaPartidaActiva();
-        Partida partidaActiva= givenComienzaUnaPartida(partidaComenzada, usuario);
-        Jugador jugador = partidaActiva.getJugador();
+        Partida partidaActiva = givenComienzaUnaPartida(usuario);
         whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        whenSeleccionoBotonRendirseSeLeResteLaApuestaAlJugadorYYLaPartidaPasaAEstadoAbandonado(partidaActiva, jugador);
-        thenEstadoAbandonadoYSaldoRestado(partidaActiva, jugador);
+        whenSeleccionoBotonRendirseSeLeResteLaApuestaAlJugadorYYLaPartidaPasaAEstadoAbandonado(partidaActiva, partidaActiva.getJugador());
+        thenEstadoAbandonadoYSaldoRestado(partidaActiva, partidaActiva.getJugador());
     }
 
     private void thenEstadoAbandonadoYSaldoRestado(Partida partidaActiva, Jugador jugador) {
         assertEquals(EstadoDeJuego.ABANDONADO ,partidaActiva.getEstadoJuego());
-        assertEquals(800, jugador.getSaldo() );
+        assertEquals(900, jugador.getSaldo());
     }
 
-    private void whenSeleccionoBotonRendirseSeLeResteLaApuestaAlJugadorYYLaPartidaPasaAEstadoAbandonado(Partida partidaActiva, Jugador jugador) {
+    private void whenSeleccionoBotonRendirseSeLeResteLaApuestaAlJugadorYYLaPartidaPasaAEstadoAbandonado(Partida partidaActiva, Jugador jugador) throws ApuestaInvalidaException, SaldoInsuficiente {
         servicioPartida.rendirse(partidaActiva, jugador);
+        servicioPartida.apostar(partidaActiva, partidaActiva.getApuesta());
     }
 
 
     //------------------------------------------------------------------------------
 
-
-    private @NotNull Partida givenExisteUnaPartidaActiva() {
-        Partida partidaActiva = new Partida();
-        partidaActiva.setEstadoPartida(EstadoPartida.ACTIVA);
-        partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
-        return partidaActiva;
-    }
 
     private static @NotNull Usuario givenExisteUnUsuario() {
         Usuario usuario = new Usuario();
@@ -242,43 +255,24 @@ public class ServicioPartidaTest {
     }
 
 
-    private Partida givenComienzaUnaPartida(Partida partidaComenzada, Usuario usuario) {
+    private @NotNull Partida givenComienzaUnaPartida(Usuario usuario) {
+        Partida partidaActiva = new Partida();
+        partidaActiva.setEstadoPartida(EstadoPartida.ACTIVA);
+        partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
         Crupier crupier= new Crupier();
         Jugador jugador = new Jugador();
         jugador.setUsuario(usuario);
-        jugador.setSaldo(1000.0);
 
         crupier.setPuntaje(7);
         jugador.setPuntaje(10);
-        partidaComenzada.setJugador(jugador);
-        partidaComenzada.setCrupier(crupier);
-        return partidaComenzada;
+        partidaActiva.setApuesta(100);
+        partidaActiva.setJugador(jugador);
+        partidaActiva.setCrupier(crupier);
+        return partidaActiva;
     }
 
 
 
-    private void whenSeleccionoFichas(Partida partidaActiva) throws ApuestaInvalidaException, SaldoInsuficiente {
-        servicioPartida.apostar(partidaActiva, partidaActiva.getApuesta(), 100);
-    }
-
-    private void thenSeSumaElPozo(Partida partidaActiva) {
-        assertEquals(100, partidaActiva.getApuesta());
-    }
-
-    private void thenSeDescuentaElsaldo(Partida partidaActiva) {
-        assertEquals(800.0, partidaActiva.getJugador().getSaldo());
-    }
-
-    private void whenSeleccionoBotonEmpezarPartida(Partida partidaActiva) {
-        partidaActiva.setApuesta(200);
-        servicioPartida.setBotonesAlComenzarPartida(partidaActiva);
-        partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
-    }
-
-    private void thenSeHabilitanLosBotonesDeDecision(Partida partidaActiva) {
-        assertFalse(partidaActiva.getFichasHabilitadas());
-        assertTrue(partidaActiva.getBotonesDesicionHabilitados());
-    }
 
 
 
@@ -289,6 +283,3 @@ public class ServicioPartidaTest {
 
 
 }
-
-
-
