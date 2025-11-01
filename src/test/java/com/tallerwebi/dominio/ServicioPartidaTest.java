@@ -94,7 +94,6 @@ public class ServicioPartidaTest {
 
         assertEquals(20, puntaje);
     }
-//--------------------------------------------
 
     @Test
     public void queAlIniciarEstenHabilitadasSoloLasFichasYNoLosBotonesDeDecision() {
@@ -168,10 +167,6 @@ public class ServicioPartidaTest {
     }
 
 
-    private void thenSeDescuentaElsaldo(Partida partidaActiva) {
-        assertEquals(900.0, partidaActiva.getJugador().getSaldo());
-    }
-
     @Test
     public void queAlSeleccionarElBotonEmpezarPartidaSeDescuenteElSaldoDelJugador() throws PartidaActivaNoEnApuestaException, ApuestaInvalidaException, SaldoInsuficiente {
         Usuario usuario = givenExisteUnUsuario();
@@ -183,6 +178,10 @@ public class ServicioPartidaTest {
 
     private void whenSeDescuentaElSaldoDeLaApuesta(Partida partidaActiva) throws ApuestaInvalidaException, SaldoInsuficiente {
         servicioPartida.apostar(partidaActiva, partidaActiva.getApuesta());
+    }
+
+    private void thenSeDescuentaElsaldo(Partida partidaActiva) {
+        assertEquals(900.0, partidaActiva.getJugador().getSaldo());
     }
 
     @Test
@@ -208,7 +207,6 @@ public class ServicioPartidaTest {
     public void queAlSeleccionarElBotonPararseSeComparenLosPuntosYSeDefinaUnGanador() throws PartidaActivaNoEnApuestaException{
         Usuario usuario = givenExisteUnUsuario();
         Partida partidaActiva = givenComienzaUnaPartida(usuario);
-        Jugador jugador = partidaActiva.getJugador();
         whenSeleccionoBotonEmpezarPartida(partidaActiva);
         whenSeleccionoBotonPararseSeComparanLosPuntosYSeDefineUnGanador(partidaActiva);
         thenResultadoDeLaPartida(partidaActiva);

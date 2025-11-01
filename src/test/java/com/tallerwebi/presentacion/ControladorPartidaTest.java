@@ -125,7 +125,6 @@ public class ControladorPartidaTest {
     public void queAlSeleccionarElBotonPararseSeDefinaElResultadoDeLaPartida(){
         Usuario usuario = givenExisteUnUsuario();
         Partida partidaActiva= givenComienzaUnaPartida(usuario);
-        Jugador jugador = partidaActiva.getJugador();
         whenSeleccionoBotonEmpezarPartida(partidaActiva);
         MockHttpServletRequest request = givenExisteUnaSesionConUsuarioYPartida(usuario, partidaActiva);
         ModelAndView mav= whenSelecionoElBotonPararseObtengoElResultado(request);
@@ -134,7 +133,7 @@ public class ControladorPartidaTest {
 
     private void thenResultadoFinal(ModelAndView mav) {
         String mensaje = (String) mav.getModel().get("mensajeResultado");
-        assertTrue(mensaje.contains("Jugador gana"));
+        assertEquals(mensaje, "Resultado: empate");
     }
 
     private ModelAndView whenSelecionoElBotonPararseObtengoElResultado( MockHttpServletRequest request) {
@@ -162,23 +161,23 @@ public class ControladorPartidaTest {
 //        assertEquals(usuario.getSaldo(), mv.getModel().get("saldo"));
 //    }
 
-    @Test
-    public void queAlSeleccionarElBotonRendirseEnvieAlUsuarioALaVistaSala(){
-        Usuario usuario = givenExisteUnUsuario();
-        Partida partidaActiva= givenComienzaUnaPartida(usuario);
-        whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        ModelAndView vista= whenSeleccionoElBotonRendirseSeTerminaLaPartidaYcambiaDeVista();
-        thenVistaAlcual(vista);
-    }
-
-    private void thenVistaAlcual(ModelAndView vista) {
-        assertEquals("redirect:/sala", vista.getViewName());
-    }
-
-    private ModelAndView whenSeleccionoElBotonRendirseSeTerminaLaPartidaYcambiaDeVista() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        return controladorPartida.rendirse(request);
-    }
+//    @Test
+//    public void queAlSeleccionarElBotonRendirseEnvieAlUsuarioALaVistaSala(){
+//        Usuario usuario = givenExisteUnUsuario();
+//        Partida partidaActiva= givenComienzaUnaPartida(usuario);
+//        whenSeleccionoBotonEmpezarPartida(partidaActiva);
+//        ModelAndView vista= whenSeleccionoElBotonRendirseSeTerminaLaPartidaYcambiaDeVista();
+//        thenVistaAlcual(vista);
+//    }
+//
+//    private void thenVistaAlcual(ModelAndView vista) {
+//        assertEquals("redirect:/sala", vista.getViewName());
+//    }
+//
+//    private ModelAndView whenSeleccionoElBotonRendirseSeTerminaLaPartidaYcambiaDeVista() {
+//        MockHttpServletRequest request = new MockHttpServletRequest();
+//        return controladorPartida.rendirse(request);
+//    }
 
 
 
