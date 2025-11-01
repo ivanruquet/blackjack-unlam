@@ -1,20 +1,19 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Partida;
-import com.tallerwebi.dominio.RepositorioPartida;
-import com.tallerwebi.dominio.ServicioPartida;
-import com.tallerwebi.dominio.Usuario;
+import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.PartidaExistenteActivaException;
 import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -48,12 +47,27 @@ public class ControladorSala {
 
     @RequestMapping(path = "/juegoConCrupier", method = RequestMethod.POST)
     public ModelAndView irAlJuegoConCrupier(HttpServletRequest request) throws PartidaNoCreadaException {
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+        HttpSession session = request.getSession();
+
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        Partida partida = (Partida) session.getAttribute("partida");
+
+        if (partida == null) {
+            partida = new Partida();
+            partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
+            servicioPartida.setBotonesAlCrearPartida(partida);
+            session.setAttribute("partida", partida);
+        }
+
         if (crearPartida(request)) return new ModelAndView("sala");
-        ModelAndView mav =  new ModelAndView("juegoConCrupier");
+
+        ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("usuario", usuario);
+        mav.addObject("partida", partida);
         return mav;
     }
+
+
 
 
     @RequestMapping(path = "/juegoOnline", method = RequestMethod.POST)

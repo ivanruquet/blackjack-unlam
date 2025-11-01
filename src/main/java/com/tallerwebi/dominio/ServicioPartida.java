@@ -7,9 +7,8 @@ import java.util.Map;
 
 public interface ServicioPartida {
 
-    void apostar(Partida partida, Integer apuesta, Integer monto) throws ApuestaInvalidaException, SaldoInsuficiente;
+     void apostar(Partida partida, Integer monto) throws ApuestaInvalidaException, SaldoInsuficiente;
     void setBotonesAlCrearPartida(Partida partida);
-  void setBotonesAlComenzarPartida(Partida partida);
 
 
   void apostar(Usuario usuario, int monto);
@@ -20,7 +19,7 @@ public interface ServicioPartida {
 
 
 
-    void setearApuesta(Usuario usuario, Integer monto, Partida partida);
+    void setearApuesta(Usuario usuario, Partida partida);
 
 
 
@@ -28,16 +27,12 @@ public interface ServicioPartida {
 
  void consultarExistenciaDePartidaActiva(Usuario usuario) throws PartidaExistenteActivaException;
 
-  void comenzarPartida(Partida partida);
-
-  void empezarPartida(Partida partida);
-
   Partida instanciarPartida(Jugador jugador) throws PartidaNoCreadaException;
   void inactivarPartidas(List<Partida> partidaActiva);
 
   Jugador crearJugador(Usuario usuario);
   void seleccionBotonEstrategia(Partida partidaActiva);
-  String mandarEstrategia(Partida partidaActiva, Jugador jugador);
+  String mandarEstrategia(Partida partidaActiva, Integer jugadorPuntaje, Integer  puntajeDealer);
   Partida obtenerPartidaActiva(Usuario usuario);
 
   Double doblarApuesta(Partida partidaActiva, Jugador jugador);
