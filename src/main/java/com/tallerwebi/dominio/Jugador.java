@@ -12,7 +12,7 @@ public class Jugador {
     @ManyToOne
     private Usuario usuario;
     private Double saldo = 1000.0;
-    private Integer puntaje;
+    private Integer puntaje = 0;
     private String mensajeEstrategia;
 
     public Integer getPuntaje() { return puntaje; }

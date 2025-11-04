@@ -22,6 +22,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
     private ServicioUsuario servicioUsuario;
     private RepositorioUsuarioImpl repositorioUsuario;
     private RepositorioJugador repositorioJugador;
+    private ServicioDeckOfCards servicioDeckOfCards;
 
     public ServicioPartidaImpl(RepositorioPartida repositorioPartida) {
         this.repositorioPartida= repositorioPartida;
@@ -38,11 +39,13 @@ public class ServicioPartidaImpl implements ServicioPartida {
 
     @Autowired
 
-    public ServicioPartidaImpl(RepositorioPartidaImpl respositorioPartida, RepositorioUsuarioImpl repositorioUsuario, RepositorioJugadorImpl repositorioJugador, ServicioUsuario servicioUsuario){
+    public ServicioPartidaImpl(ServicioDeckOfCards servicioDeckOfCards, RepositorioPartidaImpl respositorioPartida, RepositorioUsuarioImpl repositorioUsuario, RepositorioJugadorImpl repositorioJugador, ServicioUsuario servicioUsuario){
         this.repositorioPartida=respositorioPartida;
         this.repositorioUsuario = repositorioUsuario;
         this.repositorioJugador = repositorioJugador;
         this.servicioUsuario=servicioUsuario;
+        this.servicioDeckOfCards= servicioDeckOfCards;
+
     }
 
     public ServicioPartidaImpl(RepositorioPartida repositorioPartida, RepositorioJugador repositorioJugador) {
@@ -104,7 +107,15 @@ public class ServicioPartidaImpl implements ServicioPartida {
         return partida;
     }
 
-        private void corroborarExistenciaDePartidaActiva(Usuario usuario) {
+    @Override
+    public void bloquearBotones(Partida partida) {
+        partida.setEstadoPartida(EstadoPartida.INACTIVA);
+        partida.cambiarEstadoDeJuego(EstadoDeJuego.FINALIZADA);
+        partida.setBotonesDesicionHabilitados(false);
+        partida.setFichasHabilitadas(false);
+    }
+
+    private void corroborarExistenciaDePartidaActiva(Usuario usuario) {
         List<Partida> partidasActivas = repositorioPartida.buscarPartidaActiva(usuario);
         if(!partidasActivas.isEmpty()){
             for(Partida partidaActiva: partidasActivas){
@@ -169,39 +180,35 @@ public class ServicioPartidaImpl implements ServicioPartida {
     }
 
     @Override
-    public Double doblarApuesta(Partida partidaActiva, Jugador jugador) {
+    public Integer doblarApuesta(Partida partidaActiva, Jugador jugador) {
         Integer apuestaOriginal = partidaActiva.getApuesta();
         Integer nuevaApuesta = (apuestaOriginal * 2);
 
         partidaActiva.setApuesta(nuevaApuesta);
         jugador.setSaldo(jugador.getSaldo() - nuevaApuesta);
 
-        return jugador.getSaldo();
+        return nuevaApuesta;
     }
 
     @Override
     public String resultadoDeLaPartida(Integer puntosCrupier, Integer puntosJugador) {
         String resul= "No hay resultado";
         if (puntosJugador > 21 && puntosCrupier <= 21) {
-            resul="Crupier gana";
-        }
-        if (puntosCrupier > 21 && puntosJugador <= 21) {
-            resul="Jugador gana";
-        }
-        if (puntosCrupier > 21 && puntosJugador > 21) {
-            resul="Nadie gana";
-        }
-        if (puntosJugador > puntosCrupier) {
-            resul="Jugador gana";
-
+            return "Resultado: Superaste los 21, Crupier gana";
+        } else if (puntosCrupier > 21 && puntosJugador <= 21) {
+            return "Resultado: El crupier se paso de 21, Jugador gana";
+        } else if (puntosCrupier > 21 && puntosJugador > 21) {
+            return "Resultado: Ambos superaron los 21, nadie gana";
+        } else if (puntosJugador > puntosCrupier) {
+            return "Resultado: Jugador gana";
         } else if (puntosCrupier > puntosJugador) {
             resul="Crupier gana";
+            return "Resultado: Crupier gana";
         } else {
             resul="empate";
         }
         return "Resultado: " + resul;
     }
-
 
     @Override
     public void rendirse(Partida partidaActiva, Jugador jugador) {
@@ -322,13 +329,11 @@ public class ServicioPartidaImpl implements ServicioPartida {
         if (!partidasActivas.isEmpty()) {
 
             Partida partida = partidasActivas.get(0);
-
             partida.setApuesta(0);
             partida.cambiarEstadoDeJuego(EstadoDeJuego.ABANDONADO);
             partida.setEstadoPartida(EstadoPartida.INACTIVA);
 
             repositorioPartida.guardar(partida);
-
         }
 
     }
@@ -343,11 +348,29 @@ public class ServicioPartidaImpl implements ServicioPartida {
         if (usuario.getSaldo() < monto){
             throw new SaldoInsuficiente("El saldo debe ser mayor a 0");
         }
-
-
-
     }
 
 
+    @Override
+    public Map<String, Object> pedirCarta(Jugador jugador, List<Map<String, Object>> cartasJugador, String deckId) {
+        if (deckId == null || deckId.isEmpty()) {
+            return null;
+        }
+
+        if(jugador.getPuntaje()<21){
+            List<Map<String, Object>> nuevaCarta = servicioDeckOfCards.sacarCartas(deckId, 1);
+            cartasJugador.add(nuevaCarta.get(0));
+
+            int puntajeJugador = calcularPuntaje(cartasJugador);
+            jugador.setPuntaje(puntajeJugador);
+
+            return nuevaCarta.get(0);
+        }
+        return null;
+    }
+
+    public void setServicioDeckOfCards(ServicioDeckOfCards servicioDeckOfCards) {
+        this.servicioDeckOfCards = servicioDeckOfCards;
+    }
 
 }

@@ -36,7 +36,7 @@ public class ControladorPartida {
 
 
     @RequestMapping("/juegoConCrupier")
-    public ModelAndView iraJuego() {
+    public ModelAndView iraJuego(HttpServletRequest request) {
         ModelMap modelo = new ModelMap();
         return new ModelAndView("juegoConCrupier", modelo);
     }
@@ -45,6 +45,7 @@ public class ControladorPartida {
     @PostMapping("/reset")
     public ModelAndView resetearPartida(HttpServletRequest request) {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+
         if (usuario != null) {
             servicioPartida.resetearPartida(usuario);
         }
@@ -57,8 +58,7 @@ public class ControladorPartida {
             throws PartidaActivaNoEnApuestaException, PartidaNoCreadaException {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-//        Jugador jugador= servicioPartida.crearJugador(usuario);
-        Partida partida = (Partida) session.getAttribute("partida");
+        Partida partida = (Partida) request.getSession().getAttribute("partida");
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("partida", partida);
@@ -67,9 +67,7 @@ public class ControladorPartida {
         mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
 
         return mav ;
-
-
-////        Partida partida = (Partida) request.getSession().getAttribute("partida");
+//---------
 //        try {
 //            servicioPartida.consultarExistenciaDePartidaActiva(usuario);
 //        } catch (PartidaExistenteActivaException e) {
@@ -82,45 +80,46 @@ public class ControladorPartida {
 //            // servicioPartida.setearApuesta(usuario, monto, activas.get(0));
 //            //Se reparte cartas
 //        }
+
+
+        //-----------------Con todo esto funcionan los botones (me faltan doblar y dividir)
+//        Partida partida = (Partida) request.getSession().getAttribute("partida");
 //
 //        partida.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
 //        servicioPartida.setBotonesAlCrearPartida(partida);
 //        request.getSession().setAttribute("partida", partida);
 //
-////        servicioPartida.setearApuesta(usuario,  partida.getApuesta(), partida);
-//
 //        cartasJugador = new ArrayList<>();
 //        cartasDealer = new ArrayList<>();
-//        //  se crea el mazo
 //
 //        var mazo = servicioDeck.crearMazo();
 //        deckId = (String) mazo.get("deck_id");
+//        request.getSession().setAttribute("deckId", deckId);
 //
 //        cartasJugador = servicioDeck.sacarCartas(deckId, 2);
 //        cartasDealer = servicioDeck.sacarCartas(deckId, 2);
-////Calculo de puntaje basado en las cartas
 //        int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
 //        int puntajeDealer = servicioPartida.calcularPuntaje(cartasDealer);
 //
-////ahora tenemos que guardar ese puntaje en los jugadores
 //        partida.getJugador().setPuntaje(puntajeJugador);
 //        partida.getCrupier().setPuntaje(puntajeDealer);
 //
 //
 //        request.getSession().setAttribute("cartasJugador", cartasJugador);
 //        request.getSession().setAttribute("cartasDealer", cartasDealer);
-//// servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partida);
-//        request.getSession().setAttribute("partida", partida);
 //        ModelAndView mav = new ModelAndView("juegoConCrupier");
 //        mav.addObject("partida", partida);
 //        mav.addObject("usuario", usuario);
 //        mav.addObject("deckId", deckId);
+//        mav.addObject("jugador", partida.getJugador());
 //        mav.addObject("cartasJugador", cartasJugador);
 //        mav.addObject("cartasDealer", cartasDealer);
 //        mav.addObject("puntajeJugador", puntajeJugador);
+//        mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
 //        mav.addObject("puntajeDealer", puntajeDealer);
 //
-//        return mav;
+ //        return mav;
+        //-------------------
     }
 
 
@@ -130,25 +129,9 @@ public class ControladorPartida {
             throws PartidaNoCreadaException {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-        Partida partida = (Partida) session.getAttribute("partida");
-
-//comento esto porque tiene errores de disenio/logica -> la partida nunca es null,
-// y sobrecargar de responsabiliades firma: valentina
-//        if (partida == null) {
-//            partida = servicioPartida.crearPartida(usuario);
-//            partida.setBotonesDesicionHabilitados(false);
-//            partida.setFichasHabilitadas(true);
-//            partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
-//            session.setAttribute("partida", partida);
-//        }
-//Siempre se crea el jugador por lo que el saldo siempre es el de entrada, no el del jugador de la sesion
-//        Jugador jugador = new Jugador();
-//        jugador.setUsuario(usuario);
-//        partida.setJugador(jugador);
+        Partida partida = (Partida) request.getSession().getAttribute("partida");
 
         ModelMap modelo = new ModelMap();
-//        // modelo.addAttribute("usuario", usuario);
-
         try {
             servicioPartida.apostar(partida, monto);
             //se agrega el jugador al modelo para que muestre su saldo a la vista -valentina
@@ -173,21 +156,13 @@ public class ControladorPartida {
 
     @PostMapping("/mostrarEstrategia")
     public ModelAndView mostrarEstrategia(HttpServletRequest request) {
+        HttpSession session = request.getSession();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+        Partida partida = (Partida) request.getSession().getAttribute("partida");
+
         ModelMap modelo = new ModelMap();
 
-        if (usuario == null) {
-            modelo.addAttribute("error", "Inicia sesión para ver la estrategia");
-            return new ModelAndView("redirect:/login", modelo);
-        }
-
-        Partida partidaActiva = servicioPartida.obtenerPartidaActiva(usuario);
-        if (partidaActiva == null) {
-            modelo.addAttribute("error", "No hay partida activa.");
-            return new ModelAndView("sala", modelo);
-        }
-
-        Jugador jugador = partidaActiva.getJugador();
+        Jugador jugador = partida.getJugador();
         int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
         int puntajeDealer = servicioPartida.calcularPuntaje(cartasDealer);
 
@@ -196,20 +171,21 @@ public class ControladorPartida {
         List<Map<String, Object>> cartasDealer =
                 (List<Map<String, Object>>) request.getSession().getAttribute("cartasDealer");
 
-        partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
-        servicioPartida.setBotonesAlCrearPartida(partidaActiva);
-        request.getSession().setAttribute("partida", partidaActiva);
-        String mensajeEstrategia = servicioPartida.mandarEstrategia(partidaActiva, puntajeJugador,  puntajeDealer);
+        partida.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
+        servicioPartida.setBotonesAlCrearPartida(partida);
+        request.getSession().setAttribute("partida", partida);
+        String mensajeEstrategia = servicioPartida.mandarEstrategia(partida, puntajeJugador,  puntajeDealer);
 
         modelo.put("mensajeEstrategia", mensajeEstrategia);
-        modelo.addAttribute("partida", partidaActiva);
+        modelo.addAttribute("partida", partida);
         modelo.addAttribute("jugador", jugador);
         modelo.addAttribute("usuario", usuario);
         modelo.addAttribute("puntajeJugador", puntajeJugador);
         modelo.addAttribute("puntajeDealer", puntajeDealer);
         modelo.addAttribute("cartasJugador", cartasJugador);
         modelo.addAttribute("cartasDealer", cartasDealer);
-        request.getSession().setAttribute("partidaActiva", partidaActiva);
+        modelo.addAttribute("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
+        request.getSession().setAttribute("partidaActiva", partida);
 
 
         return new ModelAndView("juegoConCrupier", modelo);
@@ -219,46 +195,30 @@ public class ControladorPartida {
 
     @PostMapping("/doblarApuesta")
     public ModelAndView doblarApuesta(HttpServletRequest request) {
+        HttpSession session = request.getSession();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+        Partida partida = (Partida) request.getSession().getAttribute("partida");
         ModelMap modelo = new ModelMap();
 
-        if (usuario == null) {
-            modelo.addAttribute("error", "Inicia sesión para ver la estrategia");
-            return new ModelAndView("redirect:/login", modelo);
-        }
 
-        Partida partidaActiva = servicioPartida.obtenerPartidaActiva(usuario);
-        if (partidaActiva == null) {
-            modelo.addAttribute("error", "No hay partida activa.");
-            return new ModelAndView("sala", modelo);
-        }
-
-        Jugador jugador = partidaActiva.getJugador();
-        Double resultado = servicioPartida.doblarApuesta(partidaActiva, jugador);
+        Jugador jugador = partida.getJugador();
+        Integer resultado = servicioPartida.doblarApuesta(partida, jugador);
         modelo.put("resultado", resultado);
+        modelo.addAttribute("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
 
-        request.getSession().setAttribute("partidaActiva", partidaActiva);
+        request.getSession().setAttribute("partidaActiva", partida);
         return new ModelAndView("juegoConCrupier", modelo);
 
     }
 
     @PostMapping("/pararse")
     public ModelAndView pararse(HttpServletRequest request){
+        HttpSession session = request.getSession();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+        Partida partida = (Partida) request.getSession().getAttribute("partida");
         ModelMap modelo = new ModelMap();
 
-        if (usuario == null) {
-            modelo.addAttribute("error", "Inicia sesión para ver la estrategia");
-            return new ModelAndView("redirect:/login", modelo);
-        }
-
-        Partida partidaActiva = servicioPartida.obtenerPartidaActiva(usuario);
-        if (partidaActiva == null) {
-            modelo.addAttribute("error", "No hay partida activa.");
-            return new ModelAndView("sala", modelo);
-        }
-
-        Jugador jugador = partidaActiva.getJugador();
+        Jugador jugador = partida.getJugador();
         int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
         int puntajeDealer = servicioPartida.calcularPuntaje(cartasDealer);
 
@@ -270,27 +230,62 @@ public class ControladorPartida {
         String mensajeResultado= servicioPartida.resultadoDeLaPartida(puntajeDealer, puntajeJugador);
 
         modelo.put("mensajeResultado", mensajeResultado);
-        modelo.addAttribute("partida", partidaActiva);
+        modelo.addAttribute("partida", partida);
         modelo.addAttribute("jugador", jugador);
         modelo.addAttribute("usuario", usuario);
         modelo.addAttribute("puntajeJugador", puntajeJugador);
         modelo.addAttribute("puntajeDealer", puntajeDealer);
         modelo.addAttribute("cartasJugador", cartasJugador);
         modelo.addAttribute("cartasDealer", cartasDealer);
-        request.getSession().setAttribute("partidaActiva", partidaActiva);
+        modelo.addAttribute("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
+        request.getSession().setAttribute("partidaActiva", partida);
 
+        servicioPartida.bloquearBotones(partida);
         return new ModelAndView("juegoConCrupier", modelo);
     }
 
     @PostMapping("/rendirse")
     public ModelAndView rendirse(HttpServletRequest request){
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-        Partida partidaActiva = servicioPartida.obtenerPartidaActiva(usuario);
-        ModelMap modelo = new ModelMap();
-        servicioPartida.rendirse(partidaActiva, partidaActiva.getJugador());
+        Partida partida = (Partida) request.getSession().getAttribute("partida");
+        servicioPartida.rendirse(partida, partida.getJugador());
         request.getSession().removeAttribute("partidaActiva");
-        return new ModelAndView("redirect:/sala", modelo);
+        return new ModelAndView("redirect:/sala");
     }
 
+    @PostMapping("/pedirCarta")
+    public ModelAndView pedirCarta(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+        Partida partida = (Partida) request.getSession().getAttribute("partida");
+        List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) session.getAttribute("cartasJugador");
+        List<Map<String, Object>> cartasDealer = (List<Map<String, Object>>) session.getAttribute("cartasDealer");
+        String deckId = (String) session.getAttribute("deckId");
+
+        Map<String, Object> cartaNueva = servicioPartida.pedirCarta(
+                partida.getJugador(), cartasJugador, deckId
+        );
+
+        session.setAttribute("cartasJugador", cartasJugador);
+        session.setAttribute("partida", partida);
+
+        int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
+        partida.getJugador().setPuntaje(puntajeJugador);
+
+
+        ModelAndView mav = new ModelAndView("juegoConCrupier");
+        mav.addObject("jugador", partida.getJugador());
+        mav.addObject("cartasJugador", cartasJugador);
+        mav.addObject("cartasDealer", cartasDealer);
+        mav.addObject("usuario", usuario);
+        mav.addObject("puntajeJugador", puntajeJugador);
+        mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
+        mav.addObject("puntajeDealer", partida.getCrupier().getPuntaje());
+        mav.addObject("ultimaCartaJugador", cartaNueva);
+        mav.addObject("partida", partida);
+
+        return mav;
+
+    }
 
 }

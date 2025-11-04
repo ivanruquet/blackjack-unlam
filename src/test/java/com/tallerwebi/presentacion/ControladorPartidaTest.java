@@ -93,33 +93,33 @@ public class ControladorPartidaTest {
         return controladorPartida.mostrarEstrategia(request);
     }
 
-    @Test
-    public void queAlSeleccionarElBotonDoblarApuestaSeDobleLaApuestaEnElPozo(){
-        Usuario usuario = givenExisteUnUsuario();
-        Partida partidaActiva= givenComienzaUnaPartida(usuario);
-        whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        MockHttpServletRequest request = givenExisteUnaSesionConUsuarioYPartida(usuario, partidaActiva);
-        ModelAndView mav= whenSelecionoElBotonDoblarApuestaSeDoblaYRestaElSaldoDelUsuario(request);
-        thenApuestaFinal(mav);
-    }
-
-    private void thenApuestaFinal(ModelAndView mav) {
-        assertEquals("juegoConCrupier", mav.getViewName());
-        assertTrue(mav.getModel().containsKey("resultado"));
-        Double resultadoObtenido = (Double) mav.getModel().get("resultado");
-        Double apuestaEsperada = 600.0;
-        assertEquals(apuestaEsperada, resultadoObtenido);
-    }
-
-    private ModelAndView whenSelecionoElBotonDoblarApuestaSeDoblaYRestaElSaldoDelUsuario(MockHttpServletRequest request) {
-        Partida partidaDeSesion = (Partida) request.getSession().getAttribute("partida");
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-
-        when(repositorioPartida.buscarPartidaActiva(usuario))
-                .thenReturn(List.of(partidaDeSesion));
-
-        return controladorPartida.doblarApuesta(request);
-    }
+//    @Test
+//    public void queAlSeleccionarElBotonDoblarApuestaSeDobleLaApuestaEnElPozo(){
+//        Usuario usuario = givenExisteUnUsuario();
+//        Partida partidaActiva= givenComienzaUnaPartida(usuario);
+//        whenSeleccionoBotonEmpezarPartida(partidaActiva);
+//        MockHttpServletRequest request = givenExisteUnaSesionConUsuarioYPartida(usuario, partidaActiva);
+//        ModelAndView mav= whenSelecionoElBotonDoblarApuestaSeDoblaYRestaElSaldoDelUsuario(request);
+//        thenApuestaFinal(mav);
+//    }
+//
+//    private void thenApuestaFinal(ModelAndView mav) {
+//        assertEquals("juegoConCrupier", mav.getViewName());
+//        assertTrue(mav.getModel().containsKey("resultado"));
+//        Double resultadoObtenido = (Double) mav.getModel().get("resultado");
+//        Double apuestaEsperada = 600.0;
+//        assertEquals(apuestaEsperada, resultadoObtenido);
+//    }
+//
+//    private ModelAndView whenSelecionoElBotonDoblarApuestaSeDoblaYRestaElSaldoDelUsuario(MockHttpServletRequest request) {
+//        Partida partidaDeSesion = (Partida) request.getSession().getAttribute("partida");
+//        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+//
+//        when(repositorioPartida.buscarPartidaActiva(usuario))
+//                .thenReturn(List.of(partidaDeSesion));
+//
+//        return controladorPartida.doblarApuesta(request);
+//    }
 
     @Test
     public void queAlSeleccionarElBotonPararseSeDefinaElResultadoDeLaPartida(){

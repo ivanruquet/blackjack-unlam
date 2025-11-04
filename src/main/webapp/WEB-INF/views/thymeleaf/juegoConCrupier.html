@@ -42,7 +42,8 @@
     <div class="iconos-section-crupier">
         <div class="saldo">
             <p class="saldoDiponible">SALDO DISPONIBLE</p>
-            <p id="saldoDisponible" th:text="'$' + ${jugador.saldo}">00.00</p>
+            <p id="saldoDisponible" th:text="'$' + ${jugador != null ? jugador.saldo : 0}">00.00</p>
+
         </div>
 
 <!--        <section class="cartas-score" id="sectionCrupier">-->
@@ -125,10 +126,11 @@
                 <p class="texto-descripcion">Doblar apuesta</p>
             </form>
 
-            <form  method="post" class="form-boton">
+            <form method="post" th:action="@{/pedirCarta}" class="form-boton">
                 <button class="boton-desicion iconos-juego"
-                        th:classappend="${!partida.botonesDesicionHabilitados} ? ' boton-deshabilitado' : ''"
-                        th:attr="disabled=${!partida.botonesDesicionHabilitados}">
+                        th:disabled="${partida != null and partida.jugador != null and partida.jugador.puntaje >= 21 or (partida != null and !partida.botonesDesicionHabilitados)}"
+                        th:classappend="${partida != null and !partida.botonesDesicionHabilitados or
+                        (partida != null and partida.jugador != null and partida.jugador.puntaje >= 21)} ? ' boton-deshabilitado' : ''">
                     <img th:src="@{/resources/core/images/boton-pedir-carta.png}" alt="Pedir carta" />
                 </button>
                 <p class="texto-descripcion">Pedir carta</p>
@@ -229,7 +231,9 @@
                 <div class="botones">
                     <form th:action="@{/iniciar}" method="post" id="form-apuesta">
                         <input type="hidden" name="empezar" id="inputMonto" th:value="${pozo}">
-                        <button class="btn" id="boton" type="submit">Empezar partida</button>
+                        <button class="btn" id="boton" type="submit"
+                                th:classappend="${!partida.fichasHabilitadas} ? ' boton-deshabilitado' : ''"
+                                th:attr="disabled=${!partida.fichasHabilitadas}">Empezar partida</button>
                     </form>
                 </div>
 
