@@ -42,7 +42,7 @@
     <div class="iconos-section-crupier">
         <div class="saldo">
             <p class="saldoDiponible">SALDO DISPONIBLE</p>
-            <p id="saldoDisponible">$1000.0</p>
+            <p id="saldoDisponible" th:text="'$' + ${jugador.saldo}">00.00</p>
         </div>
 
 <!--        <section class="cartas-score" id="sectionCrupier">-->
@@ -92,7 +92,7 @@
                     th:src="@{/resources/core/images/fichaApuesta.png}"
                     alt="ficha de Apuesta"
             />
-            <p><span th:text="${partida.apuesta}">0</span></p>
+            <p><span th:text="${apuesta}">0</span></p>
         </div>
 
         <div th:if="${mensajeEstrategia}" class="mensaje-estrategia">

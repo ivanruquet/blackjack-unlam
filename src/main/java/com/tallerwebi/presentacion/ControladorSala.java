@@ -50,20 +50,22 @@ public class ControladorSala {
         HttpSession session = request.getSession();
 
         Usuario usuario = (Usuario) session.getAttribute("usuario");
-        Partida partida = (Partida) session.getAttribute("partida");
 
-        if (partida == null) {
-            partida = new Partida();
-            partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
-            servicioPartida.setBotonesAlCrearPartida(partida);
-            session.setAttribute("partida", partida);
-        }
+
+//        if (partida == null) {
+//            partida = new Partida();
+//            partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
+//            servicioPartida.setBotonesAlCrearPartida(partida);
+//            session.setAttribute("partida", partida);
+//        }
 
         if (crearPartida(request)) return new ModelAndView("sala");
+        Partida partida = (Partida) session.getAttribute("partida");
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("usuario", usuario);
         mav.addObject("partida", partida);
+        mav.addObject("jugador", partida.getJugador());
         return mav;
     }
 
@@ -84,9 +86,13 @@ public class ControladorSala {
         } catch (PartidaExistenteActivaException e) {
             List<Partida> activas = servicioPartida.buscarPartidaActiva(usuario);
             servicioPartida.inactivarPartidas(activas);
+            request.getSession().removeAttribute("partida");
+          
         }
         try {
-            servicioPartida.instanciarPartida(servicioPartida.crearJugador(usuario));
+            Partida p = servicioPartida.instanciarPartida(servicioPartida.crearJugador(usuario));
+            servicioPartida.setBotonesAlCrearPartida(p);
+            request.getSession().setAttribute("partida", p);
         } catch (PartidaNoCreadaException e) {
             return true;
         }
