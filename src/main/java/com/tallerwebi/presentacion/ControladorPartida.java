@@ -55,62 +55,72 @@ public class ControladorPartida {
     @PostMapping("/iniciar")
     public ModelAndView comenzarPartida(HttpServletRequest request)
             throws PartidaActivaNoEnApuestaException, PartidaNoCreadaException {
-
+        HttpSession session = request.getSession();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-        Jugador jugador= servicioPartida.crearJugador(usuario);
-        Partida partida =  servicioPartida.instanciarPartida(jugador);
-//        Partida partida = (Partida) request.getSession().getAttribute("partida");
-        try {
-            servicioPartida.consultarExistenciaDePartidaActiva(usuario);
-        } catch (PartidaExistenteActivaException e) {
-            List<Partida> activas = servicioPartida.buscarPartidaActiva(usuario);
-            partida = activas.get(0);
-            servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partida);
-            request.getSession().setAttribute("partida", partida);
-            //que el saldo del usuario se actualice
-            //error 500 me sale violacion de restriccio - tabla usuario
-            // servicioPartida.setearApuesta(usuario, monto, activas.get(0));
-            //Se reparte cartas
-        }
+//        Jugador jugador= servicioPartida.crearJugador(usuario);
+        Partida partida = (Partida) session.getAttribute("partida");
 
-        partida.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
-        servicioPartida.setBotonesAlCrearPartida(partida);
-        request.getSession().setAttribute("partida", partida);
-
-//        servicioPartida.setearApuesta(usuario,  partida.getApuesta(), partida);
-
-        cartasJugador = new ArrayList<>();
-        cartasDealer = new ArrayList<>();
-        //  se crea el mazo
-
-        var mazo = servicioDeck.crearMazo();
-        deckId = (String) mazo.get("deck_id");
-
-        cartasJugador = servicioDeck.sacarCartas(deckId, 2);
-        cartasDealer = servicioDeck.sacarCartas(deckId, 2);
-//Calculo de puntaje basado en las cartas
-        int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
-        int puntajeDealer = servicioPartida.calcularPuntaje(cartasDealer);
-
-//ahora tenemos que guardar ese puntaje en los jugadores
-        partida.getJugador().setPuntaje(puntajeJugador);
-        partida.getCrupier().setPuntaje(puntajeDealer);
-
-
-        request.getSession().setAttribute("cartasJugador", cartasJugador);
-        request.getSession().setAttribute("cartasDealer", cartasDealer);
-// servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partida);
-        request.getSession().setAttribute("partida", partida);
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("partida", partida);
+        mav.addObject("jugador", partida.getJugador());
         mav.addObject("usuario", usuario);
-        mav.addObject("deckId", deckId);
-        mav.addObject("cartasJugador", cartasJugador);
-        mav.addObject("cartasDealer", cartasDealer);
-        mav.addObject("puntajeJugador", puntajeJugador);
-        mav.addObject("puntajeDealer", puntajeDealer);
+        mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
 
-        return mav;
+        return mav ;
+
+
+////        Partida partida = (Partida) request.getSession().getAttribute("partida");
+//        try {
+//            servicioPartida.consultarExistenciaDePartidaActiva(usuario);
+//        } catch (PartidaExistenteActivaException e) {
+//            List<Partida> activas = servicioPartida.buscarPartidaActiva(usuario);
+//            partida = activas.get(0);
+//            servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partida);
+//            request.getSession().setAttribute("partida", partida);
+//            //que el saldo del usuario se actualice
+//            //error 500 me sale violacion de restriccio - tabla usuario
+//            // servicioPartida.setearApuesta(usuario, monto, activas.get(0));
+//            //Se reparte cartas
+//        }
+//
+//        partida.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
+//        servicioPartida.setBotonesAlCrearPartida(partida);
+//        request.getSession().setAttribute("partida", partida);
+//
+////        servicioPartida.setearApuesta(usuario,  partida.getApuesta(), partida);
+//
+//        cartasJugador = new ArrayList<>();
+//        cartasDealer = new ArrayList<>();
+//        //  se crea el mazo
+//
+//        var mazo = servicioDeck.crearMazo();
+//        deckId = (String) mazo.get("deck_id");
+//
+//        cartasJugador = servicioDeck.sacarCartas(deckId, 2);
+//        cartasDealer = servicioDeck.sacarCartas(deckId, 2);
+////Calculo de puntaje basado en las cartas
+//        int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
+//        int puntajeDealer = servicioPartida.calcularPuntaje(cartasDealer);
+//
+////ahora tenemos que guardar ese puntaje en los jugadores
+//        partida.getJugador().setPuntaje(puntajeJugador);
+//        partida.getCrupier().setPuntaje(puntajeDealer);
+//
+//
+//        request.getSession().setAttribute("cartasJugador", cartasJugador);
+//        request.getSession().setAttribute("cartasDealer", cartasDealer);
+//// servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partida);
+//        request.getSession().setAttribute("partida", partida);
+//        ModelAndView mav = new ModelAndView("juegoConCrupier");
+//        mav.addObject("partida", partida);
+//        mav.addObject("usuario", usuario);
+//        mav.addObject("deckId", deckId);
+//        mav.addObject("cartasJugador", cartasJugador);
+//        mav.addObject("cartasDealer", cartasDealer);
+//        mav.addObject("puntajeJugador", puntajeJugador);
+//        mav.addObject("puntajeDealer", puntajeDealer);
+//
+//        return mav;
     }
 
 
@@ -122,25 +132,30 @@ public class ControladorPartida {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) session.getAttribute("partida");
 
-        if (partida == null) {
-            partida = servicioPartida.crearPartida(usuario);
-            partida.setBotonesDesicionHabilitados(false);
-            partida.setFichasHabilitadas(true);
-            partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
-            session.setAttribute("partida", partida);
-        }
-
-        Jugador jugador = new Jugador();
-        jugador.setUsuario(usuario);
-        partida.setJugador(jugador);
+//comento esto porque tiene errores de disenio/logica -> la partida nunca es null,
+// y sobrecargar de responsabiliades firma: valentina
+//        if (partida == null) {
+//            partida = servicioPartida.crearPartida(usuario);
+//            partida.setBotonesDesicionHabilitados(false);
+//            partida.setFichasHabilitadas(true);
+//            partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
+//            session.setAttribute("partida", partida);
+//        }
+//Siempre se crea el jugador por lo que el saldo siempre es el de entrada, no el del jugador de la sesion
+//        Jugador jugador = new Jugador();
+//        jugador.setUsuario(usuario);
+//        partida.setJugador(jugador);
 
         ModelMap modelo = new ModelMap();
-        modelo.addAttribute("usuario", usuario);
+//        // modelo.addAttribute("usuario", usuario);
 
         try {
             servicioPartida.apostar(partida, monto);
-            session.setAttribute("partida", partida);
+            //se agrega el jugador al modelo para que muestre su saldo a la vista -valentina
+            modelo.addAttribute("jugador", partida.getJugador());
+            modelo.addAttribute("usuario", usuario);
 
+           // session.setAttribute("partida", partida);
             modelo.addAttribute("partida", partida);
             modelo.addAttribute("apuesta", partida.getApuesta());
 
