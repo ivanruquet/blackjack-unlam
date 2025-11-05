@@ -58,17 +58,17 @@
 <!--            </div>-->
             <section class="cartas-score" id="sectionCrupier">
                 <div class="cartas">
-                    <div class="carta" th:each="carta : ${cartasDealer}">
+                    <div class="carta" th:each="carta : ${dto.cartasDealer}">
                         <img th:src="${carta.image}" alt="Carta del dealer"/>
                     </div>
 
-                    <div th:if="${#lists.isEmpty(cartasDealer)}" class="placeholder-carta">
+                    <div th:if="${#lists.isEmpty(dto.cartasDealer)}" class="placeholder-carta">
                         <div class="carta"></div>
                         <div class="carta"></div>
                     </div>
                 </div>
                 <div class="score" id="score-crupier">
-                    <p id="valorScoreCrupier">[[${puntajeDealer}]]</p>
+                    <p id="valorScoreCrupier">[[${dto.puntajeDealer}]]</p>
                 </div>
             </section>
 
@@ -261,20 +261,20 @@
         <section class="cartas-score" id="sectionJugador">
             <div class="cartas">
                 <div class="carta"
-                     th:each="carta : ${cartasJugador}"
+                     th:each="carta : ${dto.cartasJugador}"
                      th:classappend="${ultimaCartaJugador != null and carta.image == ultimaCartaJugador.image ? 'nueva' : ''}">
                     <img th:src="${carta.image}" alt="Carta del jugador"/>
                 </div>
 
 
-                <div th:if="${#lists.isEmpty(cartasJugador)}" class="placeholder-carta">
+                <div th:if="${#lists.isEmpty(dto.cartasJugador)}" class="placeholder-carta">
                     <div class="carta"></div>
                     <div class="carta"></div>
                 </div>
             </div>
 
             <div class="score" id="score-jugador">
-                <p id="valorScoreJugador" th:text="${puntajeJugador}">0</p>
+                <p id="valorScoreJugador" th:text="${dto.puntajeJugador}">0</p>
             </div>
         </section>
     </div>

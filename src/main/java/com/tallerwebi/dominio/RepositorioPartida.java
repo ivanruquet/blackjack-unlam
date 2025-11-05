@@ -8,4 +8,6 @@ public interface RepositorioPartida {
     void borrarPartida(Partida p);
 
     void actualizar(Partida partida);
+
+    Partida buscarPartidaPorId(Long id);
 }

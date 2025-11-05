@@ -50,5 +50,14 @@ public class RepositorioPartidaImpl implements RepositorioPartida {
         sessionFactory.getCurrentSession().update(partida);
     }
 
+    @Override
+    public Partida buscarPartidaPorId(Long id) {
+        return (Partida)sessionFactory.getCurrentSession()
+                .createCriteria(Partida.class, "p")
+                .add(Restrictions.eq("p.id", id))
+                .add(Restrictions.eq("p.estadoPartida", EstadoPartida.ACTIVA))
+                .uniqueResult();
+    }
+
 
 }

@@ -41,11 +41,16 @@ public interface ServicioPartida {
 
   void rendirse(Partida partidaActiva, Jugador jugador);
 
+
     void cambiarEstadoDeJuegoAJuegoDeUnaPartida(Partida p) throws PartidaActivaNoEnApuestaException;
 
     List<Partida> buscarPartidaActiva(Usuario usuario);
 
   Partida crearPartida(Usuario usuario)throws PartidaNoCreadaException;
 
+
+    ComienzoCartasDTO repartoInicial(Long id);
+
     void bloquearBotones(Partida partida);
+
 }
