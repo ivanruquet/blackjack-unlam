@@ -57,14 +57,24 @@ public class ControladorPartida {
             throws PartidaActivaNoEnApuestaException, PartidaNoCreadaException {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-//        Jugador jugador= servicioPartida.crearJugador(usuario);
         Partida partida = (Partida) session.getAttribute("partida");
+        servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partida);
+        servicioPartida.setBotonesAlCrearPartida(partida);
+        ComienzoCartasDTO dto = servicioPartida.repartoInicial(partida.getId());
+
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("partida", partida);
         mav.addObject("jugador", partida.getJugador());
         mav.addObject("usuario", usuario);
         mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
+        mav.addObject("dto", dto);
+      //  mav.addObject("cartasJugador", dto.getCartasJugador());
+//        mav.addObject("cartasDealer", dto.getCartasDealer());
+//        mav.addObject("puntajeJugador", dto.getPuntajeJugador());
+//        mav.addObject("puntajeDealer", dto.getPuntajeDealer());
+
+
 
         return mav ;
 
@@ -83,8 +93,8 @@ public class ControladorPartida {
 //            //Se reparte cartas
 //        }
 //
-//        partida.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
-//        servicioPartida.setBotonesAlCrearPartida(partida);
+ //
+
 //        request.getSession().setAttribute("partida", partida);
 //
 ////        servicioPartida.setearApuesta(usuario,  partida.getApuesta(), partida);
@@ -158,7 +168,7 @@ public class ControladorPartida {
            // session.setAttribute("partida", partida);
             modelo.addAttribute("partida", partida);
             modelo.addAttribute("apuesta", partida.getApuesta());
-
+            modelo.addAttribute("dto", new ComienzoCartasDTO());
 
         } catch (ApuestaInvalidaException e) {
             modelo.addAttribute("error", "El monto de la apuesta no es válido");

@@ -66,6 +66,7 @@ public class ControladorSala {
         mav.addObject("usuario", usuario);
         mav.addObject("partida", partida);
         mav.addObject("jugador", partida.getJugador());
+        mav.addObject("dto", new ComienzoCartasDTO());
         return mav;
     }
 

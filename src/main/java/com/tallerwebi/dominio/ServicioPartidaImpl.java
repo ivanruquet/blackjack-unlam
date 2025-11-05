@@ -18,6 +18,7 @@ import static java.util.Objects.isNull;
 public class ServicioPartidaImpl implements ServicioPartida {
 
 
+    private  ServicioDeckOfCards servicioDeck;
     private RepositorioPartida repositorioPartida;
     private ServicioUsuario servicioUsuario;
     private RepositorioUsuarioImpl repositorioUsuario;
@@ -38,11 +39,12 @@ public class ServicioPartidaImpl implements ServicioPartida {
 
     @Autowired
 
-    public ServicioPartidaImpl(RepositorioPartidaImpl respositorioPartida, RepositorioUsuarioImpl repositorioUsuario, RepositorioJugadorImpl repositorioJugador, ServicioUsuario servicioUsuario){
+    public ServicioPartidaImpl(RepositorioPartidaImpl respositorioPartida, RepositorioUsuarioImpl repositorioUsuario, RepositorioJugadorImpl repositorioJugador, ServicioUsuario servicioUsuario, ServicioDeckOfCards servicioDeck){
         this.repositorioPartida=respositorioPartida;
         this.repositorioUsuario = repositorioUsuario;
         this.repositorioJugador = repositorioJugador;
         this.servicioUsuario=servicioUsuario;
+        this.servicioDeck=servicioDeck;
     }
 
     public ServicioPartidaImpl(RepositorioPartida repositorioPartida, RepositorioJugador repositorioJugador) {
@@ -79,6 +81,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
         return jugador;
     }
 
+
     @Override
     public void cambiarEstadoDeJuegoAJuegoDeUnaPartida(Partida p) throws PartidaActivaNoEnApuestaException {
         if(p.getEstadoJuego().equals(EstadoDeJuego.APUESTA)){
@@ -104,7 +107,38 @@ public class ServicioPartidaImpl implements ServicioPartida {
         return partida;
     }
 
-        private void corroborarExistenciaDePartidaActiva(Usuario usuario) {
+    @Override
+    public ComienzoCartasDTO repartoInicial(Long id) {
+        ComienzoCartasDTO dto = new ComienzoCartasDTO();
+        //necesito buscar partida por id en el repo
+        Partida partida  = repositorioPartida.buscarPartidaPorId(id);
+        if(partida != null){
+             List<Map<String, Object>> cartasJugador;
+             List<Map<String, Object>> cartasDealer;
+        //  se crea el mazo
+        var mazo = servicioDeck.crearMazo();
+       String deckId = (String) mazo.get("deck_id");
+
+        cartasJugador = servicioDeck.sacarCartas(deckId, 2);
+        cartasDealer = servicioDeck.sacarCartas(deckId, 2);
+        int puntajeJugador = calcularPuntaje(cartasJugador);
+        int puntajeDealer = calcularPuntaje(cartasDealer);
+        partida.getJugador().setPuntaje(puntajeJugador);
+        partida.getCrupier().setPuntaje(puntajeDealer);
+
+            dto.setPartida(partida);
+            dto.setDeckId(deckId);
+            dto.setCartasJugador(cartasJugador);
+            dto.setCartasDealer(cartasDealer);
+            dto.setPuntajeJugador(puntajeJugador);
+            dto.setPuntajeDealer(puntajeDealer);
+            return dto;
+        }
+
+        return dto;
+    }
+
+    private void corroborarExistenciaDePartidaActiva(Usuario usuario) {
         List<Partida> partidasActivas = repositorioPartida.buscarPartidaActiva(usuario);
         if(!partidasActivas.isEmpty()){
             for(Partida partidaActiva: partidasActivas){
@@ -243,6 +277,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
     }
     @Override
     public void setBotonesAlCrearPartida(Partida partida) {
+
         if(partida.getEstadoJuego().equals(EstadoDeJuego.APUESTA)){
             partida.setBotonesDesicionHabilitados(false);
             partida.setFichasHabilitadas(true);
