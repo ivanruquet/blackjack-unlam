@@ -57,16 +57,37 @@
 <!--                <img src="ImgBlackJack/cartaoculta (3).png" alt="carta oculta" /> &ndash;&gt;-->
 <!--            </div>-->
             <section class="cartas-score" id="sectionCrupier">
-                <div class="cartas">
-                    <div class="carta" th:each="carta : ${dto.cartasDealer}">
-                        <img th:src="${carta.image}" alt="Carta del dealer"/>
-                    </div>
+<!--                <div class="cartas">-->
+<!--                    <div class="carta" th:each="carta : ${dto.cartasDealer}">-->
+<!--                        <img th:src="${carta.image}" alt="Carta del dealer"/>-->
+<!--                    </div>-->
+
+<!--                    <div th:if="${#lists.isEmpty(dto.cartasDealer)}" class="placeholder-carta">-->
+<!--                        <div class="carta"></div>-->
+<!--                        <div class="carta"></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+                <div class="cartas" id="contenedor-cartas-dealer">
 
                     <div th:if="${#lists.isEmpty(dto.cartasDealer)}" class="placeholder-carta">
                         <div class="carta"></div>
                         <div class="carta"></div>
                     </div>
+
+                    <th:block th:unless="${#lists.isEmpty(dto.cartasDealer)}">
+
+                        <div class="carta" th:each="carta : ${dto.cartasDealer}">
+                            <img th:src="${carta.image}" alt="Carta del dealer"/>
+                        </div>
+
+                        <div class="carta" id="carta-oculta-dealer">
+                            <img id="carta-oculta-crupier" th:src="@{/resources/core/images/carta-oculta-crupier.png}" alt="Carta oculta"/>
+                        </div>
+
+                    </th:block>
+
                 </div>
+
                 <div class="score" id="score-crupier">
                     <p id="valorScoreCrupier">[[${dto.puntajeDealer}]]</p>
                 </div>

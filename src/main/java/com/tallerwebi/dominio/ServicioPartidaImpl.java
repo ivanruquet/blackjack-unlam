@@ -126,7 +126,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
             String deckId = (String) mazo.get("deck_id");
 
             cartasJugador = servicioDeckOfCards.sacarCartas(deckId, 2);
-            cartasDealer = servicioDeckOfCards.sacarCartas(deckId, 2);
+            cartasDealer = servicioDeckOfCards.sacarCartas(deckId, 1);
             int puntajeJugador = calcularPuntaje(cartasJugador);
             int puntajeDealer = calcularPuntaje(cartasDealer);
             partida.getJugador().setPuntaje(puntajeJugador);
