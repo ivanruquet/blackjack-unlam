@@ -14,7 +14,7 @@ public class Usuario {
     @Column(unique = true)
     private String email;
     private String password;
-    private Double saldo;
+    private Double saldo = 150.0;
     private String nombre;
     private String apellido;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
