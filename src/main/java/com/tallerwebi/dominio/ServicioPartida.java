@@ -22,7 +22,7 @@ public interface ServicioPartida {
     void setearApuesta(Usuario usuario, Partida partida);
 
 
-
+    Map<String, Object> pedirCarta(Jugador jugador, List<Map<String, Object>> cartasJugador, String deckId);
     int calcularPuntaje(List<Map<String, Object>> cartas);
 
  void consultarExistenciaDePartidaActiva(Usuario usuario) throws PartidaExistenteActivaException;
@@ -35,7 +35,7 @@ public interface ServicioPartida {
   String mandarEstrategia(Partida partidaActiva, Integer jugadorPuntaje, Integer  puntajeDealer);
   Partida obtenerPartidaActiva(Usuario usuario);
 
-  Double doblarApuesta(Partida partidaActiva, Jugador jugador);
+  Integer doblarApuesta(Partida partidaActiva, Jugador jugador);
 
   String resultadoDeLaPartida(Integer puntosCrupier, Integer puntosCrupier1);
 
@@ -48,5 +48,9 @@ public interface ServicioPartida {
 
   Partida crearPartida(Usuario usuario)throws PartidaNoCreadaException;
 
+
     ComienzoCartasDTO repartoInicial(Long id);
+
+    void bloquearBotones(Partida partida);
+
 }

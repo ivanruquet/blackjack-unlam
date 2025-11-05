@@ -192,17 +192,17 @@ public class ServicioPartidaTest {
         Usuario usuario = givenExisteUnUsuario();
         Partida partidaActiva = givenComienzaUnaPartida(usuario);
         whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        Double apuestaDoblada= whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(partidaActiva, partidaActiva.getJugador());
+        Integer apuestaDoblada= whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(partidaActiva, partidaActiva.getJugador());
         thenApuestaDoblada(partidaActiva, partidaActiva.getJugador(), apuestaDoblada);
     }
 
-    private void thenApuestaDoblada(Partida partidaActiva, Jugador jugador, Double apuestaDoblada) {
+    private void thenApuestaDoblada(Partida partidaActiva, Jugador jugador, Integer apuestaDoblada) {
         assertEquals(Integer.valueOf(200), partidaActiva.getApuesta());
         assertEquals(800.0, jugador.getSaldo(), 0.01);
     }
 
-    private Double whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(Partida partidaActiva, Jugador jugador) {
-        Double resultado= servicioPartida.doblarApuesta(partidaActiva, jugador);
+    private Integer whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(Partida partidaActiva, Jugador jugador) {
+        Integer resultado= servicioPartida.doblarApuesta(partidaActiva, jugador);
         return resultado;
     }
 
