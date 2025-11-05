@@ -63,8 +63,9 @@ public class ControladorSala {
         Partida partida = (Partida) session.getAttribute("partida");
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
-        mav.addObject("usuario", usuario);
+
         mav.addObject("partida", partida);
+        mav.addObject("usuario", partida.getJugador().getUsuario());
         mav.addObject("jugador", partida.getJugador());
         mav.addObject("dto", new ComienzoCartasDTO());
         return mav;

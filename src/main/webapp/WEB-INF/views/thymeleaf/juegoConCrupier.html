@@ -42,8 +42,8 @@
     <div class="iconos-section-crupier">
         <div class="saldo">
             <p class="saldoDiponible">SALDO DISPONIBLE</p>
-            <p id="saldoDisponible" th:text="'$' + ${jugador != null ? jugador.saldo : 0}">00.00</p>
-
+<!--            <p id="saldoDisponible" th:text="'$' + ${jugador != null ? jugador.saldo : 0}">00.00</p>-->
+            <p id="saldoDisponible" th:text="'$' + ${usuario != null ? usuario.saldo : 0}">00.00</p>
         </div>
 
 <!--        <section class="cartas-score" id="sectionCrupier">-->

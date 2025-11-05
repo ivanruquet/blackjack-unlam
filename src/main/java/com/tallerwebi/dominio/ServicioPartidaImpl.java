@@ -250,14 +250,15 @@ public class ServicioPartidaImpl implements ServicioPartida {
             public void apostar (Partida partida, Integer monto)
             throws ApuestaInvalidaException, SaldoInsuficiente {
 
-                Jugador jugador = partida.getJugador();
-                Double saldoActual = jugador.getSaldo();
+                //Jugador jugador = partida.getJugador();
+                Usuario usuario = partida.getJugador().getUsuario();
+                Double saldoActual = usuario.getSaldo();
 
                 if (saldoActual == null || saldoActual < monto) {
                     throw new SaldoInsuficiente("Saldo insuficiente para realizar la apuesta.");
                 }
 
-                jugador.setSaldo(saldoActual - monto);
+                usuario.setSaldo(saldoActual - monto);
 
                 if (partida.getApuesta() == null) {
                     partida.setApuesta(0);

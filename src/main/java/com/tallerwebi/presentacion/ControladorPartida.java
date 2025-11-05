@@ -149,9 +149,13 @@ public class ControladorPartida {
             servicioPartida.apostar(partida, monto);
             //se agrega el jugador al modelo para que muestre su saldo a la vista -valentina
             modelo.addAttribute("jugador", partida.getJugador());
-            modelo.addAttribute("usuario", usuario);
+            //modelo.addAttribute("usuario", usuario);
+            session.setAttribute("partida", partida);
+            session.setAttribute("usuario", partida.getJugador().getUsuario());
+
 
            // session.setAttribute("partida", partida);
+            modelo.addAttribute("usuario", partida.getJugador().getUsuario());
             modelo.addAttribute("partida", partida);
             modelo.addAttribute("apuesta", partida.getApuesta());
             modelo.addAttribute("dto", new ComienzoCartasDTO());
