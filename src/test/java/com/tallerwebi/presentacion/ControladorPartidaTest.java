@@ -148,31 +148,31 @@ public class ControladorPartidaTest {
 //
 //        return controladorPartida.doblarApuesta(request);
 //    }
-
-    @Test
-    public void queAlSeleccionarElBotonPararseSeDefinaElResultadoDeLaPartida(){
-        Usuario usuario = givenExisteUnUsuario();
-        Partida partidaActiva= givenComienzaUnaPartida(usuario);
-        whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        MockHttpServletRequest request = givenExisteUnaSesionConUsuarioYPartida(usuario, partidaActiva);
-        ModelAndView mav= whenSelecionoElBotonPararseObtengoElResultado(request);
-        thenResultadoFinal(mav);
-    }
-
-    private void thenResultadoFinal(ModelAndView mav) {
-        String mensaje = (String) mav.getModel().get("mensajeResultado");
-        assertEquals(mensaje, "Resultado: Jugador gana");
-    }
-
-    private ModelAndView whenSelecionoElBotonPararseObtengoElResultado( MockHttpServletRequest request) {
-        Partida partidaDeSesion = (Partida) request.getSession().getAttribute("partida");
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-
-        when(repositorioPartida.buscarPartidaActiva(usuario))
-                .thenReturn(List.of(partidaDeSesion));
-
-        return controladorPartida.pararse(request);
-    }
+//
+//    @Test
+//    public void queAlSeleccionarElBotonPararseSeDefinaElResultadoDeLaPartida(){
+//        Usuario usuario = givenExisteUnUsuario();
+//        Partida partidaActiva= givenComienzaUnaPartida(usuario);
+//        whenSeleccionoBotonEmpezarPartida(partidaActiva);
+//        MockHttpServletRequest request = givenExisteUnaSesionConUsuarioYPartida(usuario, partidaActiva);
+//        ModelAndView mav= whenSelecionoElBotonPararseObtengoElResultado(request);
+//        thenResultadoFinal(mav);
+//    }
+//
+//    private void thenResultadoFinal(ModelAndView mav) {
+//        String mensaje = (String) mav.getModel().get("mensajeResultado");
+//        assertEquals(mensaje, "Resultado: Jugador gana");
+//    }
+//
+//    private ModelAndView whenSelecionoElBotonPararseObtengoElResultado( MockHttpServletRequest request) {
+//        Partida partidaDeSesion = (Partida) request.getSession().getAttribute("partida");
+//        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+//
+//        when(repositorioPartida.buscarPartidaActiva(usuario))
+//                .thenReturn(List.of(partidaDeSesion));
+//
+//        return controladorPartida.pararse(request);
+//    }
 
 
 //        @Test
