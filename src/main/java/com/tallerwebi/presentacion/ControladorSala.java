@@ -52,24 +52,21 @@ public class ControladorSala {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
 
-//        if (partida == null) {
-//            partida = new Partida();
-//            partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
-//            servicioPartida.setBotonesAlCrearPartida(partida);
-//            session.setAttribute("partida", partida);
-//        }
+        if (usuario == null) {
+            return new ModelAndView("redirect:/login");
+        }
 
         if (crearPartida(request)) return new ModelAndView("sala");
         Partida partida = (Partida) session.getAttribute("partida");
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
-
         mav.addObject("partida", partida);
         mav.addObject("usuario", partida.getJugador().getUsuario());
         mav.addObject("jugador", partida.getJugador());
         mav.addObject("dto", new ComienzoCartasDTO());
         return mav;
     }
+
 
 
 

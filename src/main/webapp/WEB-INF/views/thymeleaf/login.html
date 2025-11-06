@@ -4,66 +4,211 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Black Jack</title>
-    <link rel="stylesheet" th:href="@{/css/loginEstilos.css}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #LoginPrincipal {
+            position: relative;
+            height: 100vh;
+        }
+
+        #imagenFondo {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            display: block;
+        }
+
+        #ingresoDatos {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(54, 13, 13, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            width: 350px;
+        }
+
+        #datos h3 {
+            color: white;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        #boton-ingresar,
+        #Abrir-cuenta {
+            width: 90%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        #boton-ingresar {
+            background-color: #1e90ff;
+            color: white;
+        }
+
+        #boton-ingresar:hover {
+            background-color: #187bcd;
+        }
+
+        #Abrir-cuenta {
+            background-color: #fac800;
+            color: #000;
+        }
+
+        #Abrir-cuenta:hover {
+            background-color: #e0b700;
+        }
+
+        #pie-pagina {
+            background-color: black;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #pie-pagina h4 {
+            color: white;
+        }
+
+        #logo-imagen-pie {
+            width: 70px;
+        }
+
+
+        @media (max-width: 768px) {
+            #ingresoDatos {
+                width: 80%;
+                padding: 30px;
+            }
+
+            input[type="text"],
+            input[type="password"] {
+                width: 95%;
+                padding: 8px;
+            }
+
+            #boton-ingresar,
+            #Abrir-cuenta {
+                width: 95%;
+                padding: 8px;
+            }
+
+            #datos h3 {
+                font-size: 20px;
+            }
+
+            #logopng {
+                width: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #ingresoDatos {
+                width: 90%;
+                padding: 20px;
+            }
+
+            input[type="text"],
+            input[type="password"] {
+                width: 100%;
+                padding: 6px;
+                font-size: 14px;
+            }
+
+            #boton-ingresar,
+            #Abrir-cuenta {
+                width: 100%;
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            #datos h3 {
+                font-size: 18px;
+            }
+
+            #logopng {
+                width: 80px;
+            }
+        }
+
+
+    </style>
 </head>
 <body>
 
 <div id="LoginPrincipal">
 
     <div id="img">
-        <img th:src="@{/resources/core/images/background.png}"  alt="" id="imagenFondo">
-        <div id="ingresoDatos">
+        <img th:src="@{/resources/core/images/background.png}" alt="" id="imagenFondo">
 
+        <div id="ingresoDatos">
             <div id="datos">
                 <div id="logo">
-                    <img th:src="@{/resources/core/images/logo.png}" alt="" id="logopng" style="margin-top: 20px">
+                    <img th:src="@{/resources/core/images/logo.png}" alt="" id="logopng" style="margin-bottom: 15px; width: 120px;">
                 </div>
 
-                <h3 style="color: white; font-family: Arial, Helvetica, sans-serif; font-size: 24px;">Ingresa a tu cuenta de Black Jack</h3>
+                <h3>Ingresa a tu cuenta de Black Jack</h3>
 
+                <div th:if="${error}"
+                     style="background-color: rgba(255, 0, 0, 0.2);
+                    border: 1px solid #ff4d4d;
+                    color: #ffcccc;
+                    padding: 10px;
+                    margin-bottom: 20px;
+                    border-radius: 6px;
+                    width: 90%;
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: 15px;">
+                    <p th:text="${error}" style="margin: 0;"></p>
+                </div>
 
                 <form th:action="@{/validar-login}" th:object="${datosLogin}" method="post">
-                    <p style="color: white;" id="nombre-usuario">Email:</p>
-                    <input type="text" th:field="*{email}" id="rectangulo-nombre-usuario" placeholder="Ingrese su email...">
-                    <br>
-                    <p style="color: white;" id="contraseña">Contraseña:</p>
-                    <input type="password" th:field="*{password}" id="rectangulo-contraseña" placeholder="Ingrese su contraseña...">
+                    <input type="text" th:field="*{email}" placeholder="Ingrese su email...">
+                    <input type="password" th:field="*{password}" placeholder="Ingrese su contraseña...">
                     <input type="submit" id="boton-ingresar" value="Ingresar">
                 </form>
 
+                <h4 style="color: white; margin-top: 25px; font-size: 18px;">¿Nuevo en Black Jack?</h4>
 
-                <p style="color: white;">_</p>
-
-                <h4 style="color: white; margin-top: 5px; font-size: 20px;">¿Nuevo en Black Jack?</h4>
-
-                <form class="botones" th:action="@{/registro}"  method="get">
-                  <button id="Abrir-cuenta" type="submit" style=" background: #FAC800; padding: 8px; border-radius: 5px; cursor: pointer;">Abrir cuenta</button>
+                <form class="botones" th:action="@{/registro}" method="get">
+                    <button id="Abrir-cuenta" type="submit">Abrir cuenta</button>
                 </form>
-
             </div>
-
-
-        </div>
-
         </div>
     </div>
 
-
-
     <div id="pie-pagina">
-
         <div id="elementos-pie">
-
             <img th:src="@{/resources/core/images/logo.png}" alt="" id="logo-imagen-pie">
-
-            <h4 id="texto-pie">@ Todos los derechos reservados</h4>
-
+            <h4>@ Todos los derechos reservados</h4>
         </div>
-
-
     </div>
 
 </div>
 
 </body>
+</html>
 </html>

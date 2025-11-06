@@ -17,4 +17,5 @@ public class ControladorRegistro {
         return new ModelAndView("registro", modelo);
     }
 
+
     }
