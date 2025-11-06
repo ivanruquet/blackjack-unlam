@@ -56,8 +56,7 @@
 <!--                />-->
 <!--                <img src="ImgBlackJack/cartaoculta (3).png" alt="carta oculta" /> &ndash;&gt;-->
 <!--            </div>-->
-            <section class="cartas-score" id="sectionCrupier">
-<!--                <div class="cartas">-->
+        <!--                <div class="cartas">-->
 <!--                    <div class="carta" th:each="carta : ${dto.cartasDealer}">-->
 <!--                        <img th:src="${carta.image}" alt="Carta del dealer"/>-->
 <!--                    </div>-->
@@ -67,7 +66,8 @@
 <!--                        <div class="carta"></div>-->
 <!--                    </div>-->
 <!--                </div>-->
-                <div class="cartas" id="contenedor-cartas-dealer">
+        <section class="cartas-score" id="sectionCrupier">
+        <div class="cartas" id="contenedor-cartas-dealer">
 
                     <div th:if="${#lists.isEmpty(dto.cartasDealer)}" class="placeholder-carta">
                         <div class="carta"></div>
@@ -80,7 +80,7 @@
                             <img th:src="${carta.image}" alt="Carta del dealer"/>
                         </div>
 
-                        <div class="carta" id="carta-oculta-dealer">
+                        <div class="carta" id="carta-oculta-dealer" th:if="${!dto.jugadorSePlanto}">
                             <img id="carta-oculta-crupier" th:src="@{/resources/core/images/carta-oculta-crupier.png}" alt="Carta oculta"/>
                         </div>
 
@@ -169,8 +169,8 @@
 
             <form method="post" th:action="@{/dividirPartida}" class="form-boton">
                 <button class="boton-desicion iconos-juego"
-                        th:classappend="${!partida.botonesDesicionHabilitados} ? ' boton-deshabilitado' : ''"
-                        th:attr="disabled=${!partida.botonesDesicionHabilitados}">
+                        th:classappend="${!partida.botonesDesicionHabilitados or !dto.botonDividir} ? ' boton-deshabilitado' : ''"
+                        th:attr="disabled=${!partida.botonesDesicionHabilitados or !dto.botonDividir}">
                     <img th:src="@{/resources/core/images/boton-dividir.png}" alt="Dividir partida" />
                 </button>
                 <p class="texto-descripcion">Dividir partida</p>

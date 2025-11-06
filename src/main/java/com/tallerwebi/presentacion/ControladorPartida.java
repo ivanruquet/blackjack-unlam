@@ -63,6 +63,7 @@ public class ControladorPartida {
         servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partida);
         servicioPartida.setBotonesAlCrearPartida(partida);
         ComienzoCartasDTO dto = servicioPartida.repartoInicial(partida.getId());
+        servicioPartida.logicaBotonDividir(partida, dto.getCartasJugador(), dto);
 
         String deckId = dto.getDeckId();
         session.setAttribute("deckId", deckId);
@@ -155,16 +156,19 @@ public class ControladorPartida {
         HttpSession session = request.getSession();
         Partida partida = (Partida) request.getSession().getAttribute("partida");
         ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
+        List<Map<String, Object>> cartasDealer = (List<Map<String, Object>>) session.getAttribute("cartasDealer");
+        String deckId = (String) session.getAttribute("deckId");
         ModelMap modelo = new ModelMap();
 
-        String mensajeResultado = servicioPartida.determinarResultado(partida);
+        Map<String, Object> cartaMano2= servicioPartida.entregarCartaAlCrupier(partida, cartasDealer, deckId);
+        dto.setPuntajeDealer(partida.getCrupier().getPuntaje());
+        String mensajeResultado = servicioPartida.determinarResultado(partida, dto);
 
         modelo.addAttribute("mensajeResultado", mensajeResultado);
         modelo.addAttribute("dto", dto);
         modelo.addAttribute("partida", partida);
         modelo.addAttribute("usuario", partida.getJugador().getUsuario());
         modelo.addAttribute("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
-//        request.getSession().setAttribute("partidaActiva", partida);
 
         servicioPartida.bloquearBotones(partida);
         return new ModelAndView("juegoConCrupier", modelo);
@@ -224,6 +228,7 @@ public class ControladorPartida {
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("dto", dto);
+        mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
         mav.addObject("usuario", partida.getJugador().getUsuario());
         mav.addObject("puntajeJugador", partida.getJugador().getPuntaje());
         mav.addObject("cartaMano1", cartaMano1);

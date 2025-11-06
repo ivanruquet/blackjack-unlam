@@ -133,6 +133,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
             partida.getJugador().setPuntaje(puntajeJugador);
             partida.getCrupier().setPuntaje(puntajeDealer);
 
+            dto.setJugadorSePlanto(false);
             dto.setPartida(partida);
             dto.setDeckId(deckId);
             dto.setCartasJugador(cartasJugador);
@@ -391,9 +392,9 @@ public class ServicioPartidaImpl implements ServicioPartida {
         String valor1 = (String) cartasJugador.get(0).get("value");
         String valor2 = (String) cartasJugador.get(1).get("value");
 
-//        if (!valor1.equals(valor2)) {
-//            throw new NoSePuedenDividirDosCartasDistintasException("No se puede dividir: las cartas deben tener el mismo valor.");
-//        }
+        if (!valor1.equals(valor2)) {
+            throw new NoSePuedenDividirDosCartasDistintasException("No se puede dividir: las cartas deben tener el mismo valor.");
+        }
 
         if (jugador.getSaldo() < partida.getApuesta()) {
             throw new SaldoInsuficiente("Saldo insuficiente para dividir la apuesta.");
@@ -410,14 +411,31 @@ public class ServicioPartidaImpl implements ServicioPartida {
         partida.setMano1(mano1);
         partida.setMano2(mano2);
         partida.setManoDividida(true);
-
         partida.setPuntajeMano1(calcularPuntaje(mano1));
         partida.setPuntajeMano2(calcularPuntaje(mano2));
     }
+    @Override
+    public void logicaBotonDividir(Partida partida, List<Map<String, Object>> cartasJugador, ComienzoCartasDTO dto) {
+        if (cartasJugador == null || cartasJugador.size() != 2) {
+            dto.setBotonDividir(false);
+            return;
+        }
 
+        String valor1 = (String) cartasJugador.get(0).get("value");
+        String valor2 = (String) cartasJugador.get(1).get("value");
+        double saldo = partida.getJugador().getSaldo();
+        double apuesta = partida.getApuesta();
+
+        if (valor1.equals(valor2) && saldo >= apuesta) {
+            dto.setBotonDividir(true);
+        } else {
+            dto.setBotonDividir(false);
+        }
+    }
 
     @Override
-    public String determinarResultado(Partida partida) {
+    public String determinarResultado(Partida partida, ComienzoCartasDTO dto) {
+        dto.setJugadorSePlanto(true);
         int puntajeCrupier = partida.getCrupier().getPuntaje();
 
         if (partida.getManoDividida()) {
@@ -438,21 +456,25 @@ public class ServicioPartidaImpl implements ServicioPartida {
             if (partida.getPuntajeMano1() == puntajeCrupier) {
                 resultado += "Empate mano 1. ";
             }
+            if(partida.getPuntajeMano1() < puntajeCrupier){
                 resultado += "Perdió mano 1. ";
+            }
         } else {
             resultado += "Mano 1 se pasó. ";
         }
 
         if (partida.getPuntajeMano2() <= 21) {
             if (partida.getPuntajeMano2() > puntajeCrupier || puntajeCrupier > 21) {
-                resultado += "Ganó mano 2.";
-            } else if (partida.getPuntajeMano2() == puntajeCrupier) {
-                resultado += "Empate mano 2.";
-            } else {
-                resultado += "Perdió mano 2.";
+                resultado += "Ganó mano 2. ";
+            }
+            if (partida.getPuntajeMano2() == puntajeCrupier) {
+                resultado += "Empate mano 2. ";
+            }
+            if(partida.getPuntajeMano2() < puntajeCrupier){
+                resultado += "Perdió mano 2. ";
             }
         } else {
-            resultado += " Mano 2 se pasó.";
+            resultado += "Mano 2 se pasó. ";
         }
 
         return resultado;
@@ -464,6 +486,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
         if (puntosJugador > 21 && puntosCrupier <= 21) {
             return "Resultado: Superaste los 21, Crupier gana";
         } else if (puntosCrupier > 21 && puntosJugador <= 21) {
+
             return "Resultado: El crupier se paso de 21, Jugador gana";
         } else if (puntosCrupier > 21 && puntosJugador > 21) {
             return "Resultado: Ambos superaron los 21, nadie gana";
@@ -478,8 +501,17 @@ public class ServicioPartidaImpl implements ServicioPartida {
         return "Resultado: " + resul;
     }
 
-            public void setServicioDeckOfCards (ServicioDeckOfCards servicioDeckOfCards){
-                this.servicioDeckOfCards = servicioDeckOfCards;
-            }
+    public void setServicioDeckOfCards (ServicioDeckOfCards servicioDeckOfCards){
+        this.servicioDeckOfCards = servicioDeckOfCards;
+    }
 
-        }
+    public Map<String, Object> entregarCartaAlCrupier(Partida partida, List<Map<String, Object>> cartasDealer, String deckId){
+        List<Map<String, Object>> nuevaCarta = servicioDeckOfCards.sacarCartas(deckId, 1);
+        cartasDealer.add(nuevaCarta.get(0));
+
+        int puntajeCrupier = calcularPuntaje(cartasDealer);
+        partida.getCrupier().setPuntaje(puntajeCrupier);
+
+        return nuevaCarta.get(0);
+    }
+}

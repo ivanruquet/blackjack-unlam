@@ -12,6 +12,12 @@ public class ComienzoCartasDTO {
     private List<Map<String, Object>> cartasDealer = new ArrayList<>();
     private int puntajeJugador;
     private int puntajeDealer;
+    private Boolean jugadorSePlanto= false;
+    private boolean botonDividir;
+
+    public Boolean getBotonDividir(){ return botonDividir;}
+
+    public void setBotonDividir(boolean botonDividir){ this.botonDividir = botonDividir; }
 
     public void setPartida(Partida partida) {
         this.partida = partida;
@@ -37,7 +43,9 @@ public class ComienzoCartasDTO {
         this.puntajeDealer = puntajeDealer;
     }
 
+    public Boolean getJugadorSePlanto() {return jugadorSePlanto;}
 
+    public void setJugadorSePlanto(Boolean jugadorSePlanto) { this.jugadorSePlanto = jugadorSePlanto;}
     public String getDeckId() {
         return this.deckId;
     }
