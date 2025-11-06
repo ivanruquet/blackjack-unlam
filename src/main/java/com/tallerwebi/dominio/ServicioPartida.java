@@ -53,6 +53,8 @@ public interface ServicioPartida {
 
     void bloquearBotones(Partida partida);
     void dividirPartida(Partida partida, List<Map<String, Object>> cartasJugador) throws SaldoInsuficiente;
-    String determinarResultado(Partida partida);
+    String determinarResultado(Partida partida, ComienzoCartasDTO dto);
     String determinarResultadoDividido(Partida partida);
+    void logicaBotonDividir(Partida partida, List<Map<String, Object>> cartasJugador, ComienzoCartasDTO dto);
+    Map<String, Object> entregarCartaAlCrupier(Partida partida, List<Map<String, Object>> cartasDealer, String deckId);
 }
