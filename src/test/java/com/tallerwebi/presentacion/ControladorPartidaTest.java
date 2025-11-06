@@ -9,7 +9,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -71,8 +76,16 @@ public class ControladorPartidaTest {
 
     private MockHttpServletRequest givenExisteUnaSesionConUsuarioYPartida(Usuario usuario, Partida partida) {
         MockHttpServletRequest request = new MockHttpServletRequest();
+        HttpSession session = request.getSession();
         request.getSession().setAttribute("usuario", usuario);
         request.getSession().setAttribute("partida", partida);
+        ComienzoCartasDTO dto = new ComienzoCartasDTO();
+        dto.setPuntajeJugador(0);
+        dto.setPuntajeDealer(0);
+        dto.setCartasJugador(new ArrayList<>());
+        dto.setCartasDealer(new ArrayList<>());
+
+        session.setAttribute("dto", dto);
         return request;
     }
 
@@ -86,6 +99,21 @@ public class ControladorPartidaTest {
     private ModelAndView whenGenerarAyuda( MockHttpServletRequest request) {
         Partida partidaDeSesion = (Partida) request.getSession().getAttribute("partida");
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+        List<Map<String, Object>> cartasJugador = new ArrayList<>();
+        Map<String, Object> carta = new HashMap<>();
+        carta.put("value", "5");
+        carta.put("suit", "HEARTS");
+        carta.put("image", "urlCarta.jpg");
+        cartasJugador.add(carta);
+        request.getSession().setAttribute("cartasJugador", cartasJugador);
+
+        List<Map<String, Object>> cartasDealer = new ArrayList<>();
+        Map<String, Object> cartaDealer = new HashMap<>();
+        cartaDealer.put("value", "9");
+        cartaDealer.put("suit", "SPADES");
+        cartaDealer.put("image", "urlDealer.jpg");
+        cartasDealer.add(cartaDealer);
+        request.getSession().setAttribute("cartasDealer", cartasDealer);
 
         when(repositorioPartida.buscarPartidaActiva(usuario))
                 .thenReturn(List.of(partidaDeSesion));
@@ -133,7 +161,7 @@ public class ControladorPartidaTest {
 
     private void thenResultadoFinal(ModelAndView mav) {
         String mensaje = (String) mav.getModel().get("mensajeResultado");
-        assertEquals(mensaje, "Resultado: empate");
+        assertEquals(mensaje, "Resultado: Jugador gana");
     }
 
     private ModelAndView whenSelecionoElBotonPararseObtengoElResultado( MockHttpServletRequest request) {

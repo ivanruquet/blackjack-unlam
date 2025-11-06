@@ -51,14 +51,35 @@ main {
     }
 }
 
-
+ h3{
+color:white;
+}
 .cartas {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
-.carta {
+.manos-divididas {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.mano {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.carta img {
     width: 80px;
-    height: 80px;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .score {

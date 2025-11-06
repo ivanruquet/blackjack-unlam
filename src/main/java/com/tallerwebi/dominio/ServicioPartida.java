@@ -35,7 +35,7 @@ public interface ServicioPartida {
   String mandarEstrategia(Partida partidaActiva, Integer jugadorPuntaje, Integer  puntajeDealer);
   Partida obtenerPartidaActiva(Usuario usuario);
 
-  Integer doblarApuesta(Partida partidaActiva, Jugador jugador);
+  Integer doblarApuesta(Partida partidaActiva, Usuario usuario);
 
   String resultadoDeLaPartida(Integer puntosCrupier, Integer puntosCrupier1);
 
@@ -52,5 +52,7 @@ public interface ServicioPartida {
     ComienzoCartasDTO repartoInicial(Long id);
 
     void bloquearBotones(Partida partida);
-
+    void dividirPartida(Partida partida, List<Map<String, Object>> cartasJugador) throws SaldoInsuficiente;
+    String determinarResultado(Partida partida);
+    String determinarResultadoDividido(Partida partida);
 }

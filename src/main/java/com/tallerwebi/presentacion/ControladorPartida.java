@@ -58,13 +58,17 @@ public class ControladorPartida {
             throws PartidaActivaNoEnApuestaException, PartidaNoCreadaException {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-
         Partida partida = (Partida) session.getAttribute("partida");
+
         servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partida);
         servicioPartida.setBotonesAlCrearPartida(partida);
         ComienzoCartasDTO dto = servicioPartida.repartoInicial(partida.getId());
 
-
+        String deckId = dto.getDeckId();
+        session.setAttribute("deckId", deckId);
+        session.setAttribute("dto", dto);
+        session.setAttribute("cartasJugador", dto.getCartasJugador());
+        session.setAttribute("cartasDealer", dto.getCartasDealer());
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("partida", partida);
@@ -72,67 +76,7 @@ public class ControladorPartida {
         mav.addObject("usuario", usuario);
         mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
         mav.addObject("dto", dto);
-      //  mav.addObject("cartasJugador", dto.getCartasJugador());
-//        mav.addObject("cartasDealer", dto.getCartasDealer());
-//        mav.addObject("puntajeJugador", dto.getPuntajeJugador());
-//        mav.addObject("puntajeDealer", dto.getPuntajeDealer());
-
-
-
         return mav ;
-//---------
-//        try {
-//            servicioPartida.consultarExistenciaDePartidaActiva(usuario);
-//        } catch (PartidaExistenteActivaException e) {
-//            List<Partida> activas = servicioPartida.buscarPartidaActiva(usuario);
-//            partida = activas.get(0);
-//            servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partida);
-//            request.getSession().setAttribute("partida", partida);
-//            //que el saldo del usuario se actualice
-//            //error 500 me sale violacion de restriccio - tabla usuario
-//            // servicioPartida.setearApuesta(usuario, monto, activas.get(0));
-//            //Se reparte cartas
-//        }
-
-
-        //-----------------Con todo esto funcionan los botones (me faltan doblar y dividir)
-//        Partida partida = (Partida) request.getSession().getAttribute("partida");
-//
- //
-
-//        request.getSession().setAttribute("partida", partida);
-//
-//        cartasJugador = new ArrayList<>();
-//        cartasDealer = new ArrayList<>();
-//
-//        var mazo = servicioDeck.crearMazo();
-//        deckId = (String) mazo.get("deck_id");
-//        request.getSession().setAttribute("deckId", deckId);
-//
-//        cartasJugador = servicioDeck.sacarCartas(deckId, 2);
-//        cartasDealer = servicioDeck.sacarCartas(deckId, 2);
-//        int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
-//        int puntajeDealer = servicioPartida.calcularPuntaje(cartasDealer);
-//
-//        partida.getJugador().setPuntaje(puntajeJugador);
-//        partida.getCrupier().setPuntaje(puntajeDealer);
-//
-//
-//        request.getSession().setAttribute("cartasJugador", cartasJugador);
-//        request.getSession().setAttribute("cartasDealer", cartasDealer);
-//        ModelAndView mav = new ModelAndView("juegoConCrupier");
-//        mav.addObject("partida", partida);
-//        mav.addObject("usuario", usuario);
-//        mav.addObject("deckId", deckId);
-//        mav.addObject("jugador", partida.getJugador());
-//        mav.addObject("cartasJugador", cartasJugador);
-//        mav.addObject("cartasDealer", cartasDealer);
-//        mav.addObject("puntajeJugador", puntajeJugador);
-//        mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
-//        mav.addObject("puntajeDealer", puntajeDealer);
-//
- //        return mav;
-        //-------------------
     }
 
 
@@ -149,12 +93,10 @@ public class ControladorPartida {
             servicioPartida.apostar(partida, monto);
             //se agrega el jugador al modelo para que muestre su saldo a la vista -valentina
             modelo.addAttribute("jugador", partida.getJugador());
-            //modelo.addAttribute("usuario", usuario);
             session.setAttribute("partida", partida);
             session.setAttribute("usuario", partida.getJugador().getUsuario());
 
 
-           // session.setAttribute("partida", partida);
             modelo.addAttribute("usuario", partida.getJugador().getUsuario());
             modelo.addAttribute("partida", partida);
             modelo.addAttribute("apuesta", partida.getApuesta());
@@ -176,34 +118,16 @@ public class ControladorPartida {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
-
         ModelMap modelo = new ModelMap();
+        ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
 
-        Jugador jugador = partida.getJugador();
-        int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
-        int puntajeDealer = servicioPartida.calcularPuntaje(cartasDealer);
-
-        List<Map<String, Object>> cartasJugador =
-                (List<Map<String, Object>>) request.getSession().getAttribute("cartasJugador");
-        List<Map<String, Object>> cartasDealer =
-                (List<Map<String, Object>>) request.getSession().getAttribute("cartasDealer");
-
-        partida.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
-        servicioPartida.setBotonesAlCrearPartida(partida);
-        request.getSession().setAttribute("partida", partida);
-        String mensajeEstrategia = servicioPartida.mandarEstrategia(partida, puntajeJugador,  puntajeDealer);
+        String mensajeEstrategia = servicioPartida.mandarEstrategia(partida, dto.getPuntajeJugador(), dto.getPuntajeDealer());
 
         modelo.put("mensajeEstrategia", mensajeEstrategia);
+        modelo.addAttribute("dto", dto);
         modelo.addAttribute("partida", partida);
-        modelo.addAttribute("jugador", jugador);
         modelo.addAttribute("usuario", usuario);
-        modelo.addAttribute("puntajeJugador", puntajeJugador);
-        modelo.addAttribute("puntajeDealer", puntajeDealer);
-        modelo.addAttribute("cartasJugador", cartasJugador);
-        modelo.addAttribute("cartasDealer", cartasDealer);
-        modelo.addAttribute("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
-        request.getSession().setAttribute("partidaActiva", partida);
-
+        modelo.addAttribute("apuesta", partida.getApuesta());
 
         return new ModelAndView("juegoConCrupier", modelo);
     }
@@ -213,49 +137,34 @@ public class ControladorPartida {
     @PostMapping("/doblarApuesta")
     public ModelAndView doblarApuesta(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
+        ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
         ModelMap modelo = new ModelMap();
 
+        Integer apuesta = servicioPartida.doblarApuesta(partida, partida.getJugador().getUsuario());
 
-        Jugador jugador = partida.getJugador();
-        Integer resultado = servicioPartida.doblarApuesta(partida, jugador);
-        modelo.put("resultado", resultado);
-        modelo.addAttribute("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
-
-        request.getSession().setAttribute("partidaActiva", partida);
+        modelo.put("dto", dto);
+        modelo.put("apuesta", apuesta);
+        modelo.put("partida", partida);
+        modelo.put("usuario", partida.getJugador().getUsuario());
         return new ModelAndView("juegoConCrupier", modelo);
-
     }
 
     @PostMapping("/pararse")
     public ModelAndView pararse(HttpServletRequest request){
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
+        ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
         ModelMap modelo = new ModelMap();
 
-        Jugador jugador = partida.getJugador();
-        int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
-        int puntajeDealer = servicioPartida.calcularPuntaje(cartasDealer);
+        String mensajeResultado = servicioPartida.determinarResultado(partida);
 
-        List<Map<String, Object>> cartasJugador =
-                (List<Map<String, Object>>) request.getSession().getAttribute("cartasJugador");
-        List<Map<String, Object>> cartasDealer =
-                (List<Map<String, Object>>) request.getSession().getAttribute("cartasDealer");
-
-        String mensajeResultado= servicioPartida.resultadoDeLaPartida(puntajeDealer, puntajeJugador);
-
-        modelo.put("mensajeResultado", mensajeResultado);
+        modelo.addAttribute("mensajeResultado", mensajeResultado);
+        modelo.addAttribute("dto", dto);
         modelo.addAttribute("partida", partida);
-        modelo.addAttribute("jugador", jugador);
-        modelo.addAttribute("usuario", usuario);
-        modelo.addAttribute("puntajeJugador", puntajeJugador);
-        modelo.addAttribute("puntajeDealer", puntajeDealer);
-        modelo.addAttribute("cartasJugador", cartasJugador);
-        modelo.addAttribute("cartasDealer", cartasDealer);
+        modelo.addAttribute("usuario", partida.getJugador().getUsuario());
         modelo.addAttribute("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
-        request.getSession().setAttribute("partidaActiva", partida);
+//        request.getSession().setAttribute("partidaActiva", partida);
 
         servicioPartida.bloquearBotones(partida);
         return new ModelAndView("juegoConCrupier", modelo);
@@ -263,7 +172,6 @@ public class ControladorPartida {
 
     @PostMapping("/rendirse")
     public ModelAndView rendirse(HttpServletRequest request){
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
         servicioPartida.rendirse(partida, partida.getJugador());
         request.getSession().removeAttribute("partidaActiva");
@@ -273,36 +181,56 @@ public class ControladorPartida {
     @PostMapping("/pedirCarta")
     public ModelAndView pedirCarta(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
         List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) session.getAttribute("cartasJugador");
-        List<Map<String, Object>> cartasDealer = (List<Map<String, Object>>) session.getAttribute("cartasDealer");
         String deckId = (String) session.getAttribute("deckId");
+        ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
 
-        Map<String, Object> cartaNueva = servicioPartida.pedirCarta(
-                partida.getJugador(), cartasJugador, deckId
-        );
-
-        session.setAttribute("cartasJugador", cartasJugador);
-        session.setAttribute("partida", partida);
+        Map<String, Object> cartaNueva = servicioPartida.pedirCarta(partida.getJugador(), cartasJugador, deckId);
 
         int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
+        dto.setPuntajeJugador(puntajeJugador);
         partida.getJugador().setPuntaje(puntajeJugador);
 
+        ModelAndView mav = new ModelAndView("juegoConCrupier");
+        mav.addObject("dto", dto);
+        mav.addObject("usuario", partida.getJugador().getUsuario());
+        mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
+        mav.addObject("cartaNueva", cartaNueva);
+        mav.addObject("partida", partida);
+        return mav;
+
+    }
+
+
+    @PostMapping("dividirPartida")
+    public ModelAndView dividirPartida(HttpServletRequest request) throws SaldoInsuficiente {
+        HttpSession session = request.getSession();
+        Partida partida = (Partida) request.getSession().getAttribute("partida");
+        List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) session.getAttribute("cartasJugador");
+        String deckId = (String) session.getAttribute("deckId");
+        ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
+
+        servicioPartida.dividirPartida(partida, cartasJugador);
+
+        List<Map<String, Object>> mano1 = partida.getMano1();
+        List<Map<String, Object>> mano2 = partida.getMano2();
+
+        Map<String, Object> cartaMano1 = servicioPartida.pedirCarta(partida.getJugador(), mano1, deckId);
+        Map<String, Object> cartaMano2 = servicioPartida.pedirCarta(partida.getJugador(), mano2, deckId);
+
+        partida.setPuntajeMano1(servicioPartida.calcularPuntaje(mano1));
+        partida.setPuntajeMano2(servicioPartida.calcularPuntaje(mano2));
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
-        mav.addObject("jugador", partida.getJugador());
-        mav.addObject("cartasJugador", cartasJugador);
-        mav.addObject("cartasDealer", cartasDealer);
-        mav.addObject("usuario", usuario);
-        mav.addObject("puntajeJugador", puntajeJugador);
-        mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
-        mav.addObject("puntajeDealer", partida.getCrupier().getPuntaje());
-        mav.addObject("ultimaCartaJugador", cartaNueva);
+        mav.addObject("dto", dto);
+        mav.addObject("usuario", partida.getJugador().getUsuario());
+        mav.addObject("puntajeJugador", partida.getJugador().getPuntaje());
+        mav.addObject("cartaMano1", cartaMano1);
+        mav.addObject("cartaMano2", cartaMano2);
         mav.addObject("partida", partida);
 
         return mav;
 
     }
-
 }
