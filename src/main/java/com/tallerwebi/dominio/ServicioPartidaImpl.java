@@ -486,16 +486,14 @@ public class ServicioPartidaImpl implements ServicioPartida {
         if (puntosJugador > 21 && puntosCrupier <= 21) {
             return "Resultado: Superaste los 21, Crupier gana";
         } else if (puntosCrupier > 21 && puntosJugador <= 21) {
-
             return "Resultado: El crupier se paso de 21, Jugador gana";
         } else if (puntosCrupier > 21 && puntosJugador > 21) {
             return "Resultado: Ambos superaron los 21, nadie gana";
         } else if (puntosJugador > puntosCrupier) {
             return "Resultado: Jugador gana";
         } else if (puntosCrupier > puntosJugador) {
-            resul="Crupier gana";
             return "Resultado: Crupier gana";
-        } else {
+        } else if(puntosCrupier == puntosJugador){
             resul="empate";
         }
         return "Resultado: " + resul;
