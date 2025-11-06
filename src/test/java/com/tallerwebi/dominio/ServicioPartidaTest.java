@@ -10,10 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.Part;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,13 +20,18 @@ import static org.mockito.Mockito.when;
 
 public class ServicioPartidaTest {
 
-    RepositorioPartida repositorioPartida = mock(RepositorioPartida.class);
-    ServicioPartidaImpl servicioPartida = new ServicioPartidaImpl(repositorioPartida);
-    ControladorPartida controladorPartida;
+    private RepositorioPartida repositorioPartida;
+    private ServicioDeckOfCards servicioDeckOfCards;
+    private ServicioPartidaImpl servicioPartida;
+    private ControladorPartida controladorPartida;
+    List<Map<String, Object>> cartasJugador = new ArrayList<>();
 
     @BeforeEach
     public void init() {
-        servicioPartida.setRepositorioPartida(repositorioPartida);
+        repositorioPartida = mock(RepositorioPartida.class);
+        servicioDeckOfCards = mock(ServicioDeckOfCards.class);
+        servicioPartida = new ServicioPartidaImpl(repositorioPartida);
+        servicioPartida.setServicioDeckOfCards(servicioDeckOfCards);
         controladorPartida = new ControladorPartida(servicioPartida);
     }
 
@@ -192,7 +194,7 @@ public class ServicioPartidaTest {
         Usuario usuario = givenExisteUnUsuario();
         Partida partidaActiva = givenComienzaUnaPartida(usuario);
         whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        Integer apuestaDoblada= whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(partidaActiva, partidaActiva.getJugador());
+        Integer apuestaDoblada= whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(partidaActiva, usuario);
         thenApuestaDoblada(partidaActiva, partidaActiva.getJugador(), apuestaDoblada);
     }
 
@@ -201,7 +203,7 @@ public class ServicioPartidaTest {
         assertEquals(800.0, jugador.getSaldo(), 0.01);
     }
 
-    private Integer whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(Partida partidaActiva, Jugador jugador) {
+    private Integer whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(Partida partidaActiva, Usuario jugador) {
         Integer resultado= servicioPartida.doblarApuesta(partidaActiva, jugador);
         return resultado;
     }
@@ -246,7 +248,65 @@ public class ServicioPartidaTest {
      //   servicioPartida.apostar(partidaActiva, partidaActiva.getApuesta());
     }
 
+    @Test
+    public void queAlSeleccionarElBotonPedirCartaSeLeAgregueUnaCartaAlJugadorYSeActualiceElPuntaje() {
+        Usuario usuario = givenExisteUnUsuario();
+        Partida partida = givenComienzaUnaPartida(usuario);
+        String deckId = "abc123";
 
+        Map<String, Object> cartaMock = new HashMap<>();
+        cartaMock.put("value", "10");
+        cartaMock.put("suit", "HEARTS");
+        cartaMock.put("image", "urlCarta.png");
+
+        whenElUsuarioPideUnaCarta(partida, deckId, cartaMock);
+        thenSeSumaUnaCartaYSuPuntaje(partida);
+    }
+
+    private void whenElUsuarioPideUnaCarta(Partida partida, String deckId, Map<String, Object> cartaMock) {
+        when(servicioDeckOfCards.sacarCartas(deckId, 1)).thenReturn(Collections.singletonList(cartaMock));
+        servicioPartida.pedirCarta(partida.getJugador(), cartasJugador, deckId);
+    }
+
+    private void thenSeSumaUnaCartaYSuPuntaje(Partida partida) {
+        assertEquals(1, cartasJugador.size());
+        assertTrue(partida.getJugador().getPuntaje() > 0);
+    }
+
+
+
+    @Test
+    public void queAlSeleccionarElBotonDividirPartidaSeCreeMano1YMano2YSeResteSaldo() throws Exception {
+        Usuario usuario = givenExisteUnUsuario();
+        Partida partida = givenComienzaUnaPartida(usuario);
+
+        Map<String, Object> carta1 = new HashMap<>();
+        carta1.put("value", "8");
+        carta1.put("suit", "HEARTS");
+        carta1.put("image", "carta1.png");
+
+        Map<String, Object> carta2 = new HashMap<>();
+        carta2.put("value", "8");
+        carta2.put("suit", "SPADES");
+        carta2.put("image", "carta2.png");
+
+        List<Map<String, Object>> cartasJugador = Arrays.asList(carta1, carta2);
+        whenElUsuarioDivideLaPartida(partida, cartasJugador);
+        thenLaPartidaSeDivideYSeRestaSaldo(partida, cartasJugador);
+    }
+
+    private void whenElUsuarioDivideLaPartida(Partida partida, List<Map<String, Object>> cartasJugador) throws Exception {
+        servicioPartida.dividirPartida(partida, cartasJugador);
+    }
+
+    private void thenLaPartidaSeDivideYSeRestaSaldo(Partida partida, List<Map<String, Object>> cartasJugador) {
+        assertTrue(partida.getManoDividida());
+        assertEquals(1, partida.getMano1().size());
+        assertEquals(1, partida.getMano2().size());
+        assertEquals(900, partida.getJugador().getSaldo());
+        assertNotEquals(partida.getPuntajeMano1(), 0);
+        assertNotEquals(partida.getPuntajeMano2(), 0);
+    }
     //------------------------------------------------------------------------------
 
 
