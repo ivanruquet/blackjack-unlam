@@ -58,8 +58,8 @@ public class ControladorPartida {
             throws PartidaActivaNoEnApuestaException, PartidaNoCreadaException {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-
         Partida partida = (Partida) session.getAttribute("partida");
+
         servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partida);
         servicioPartida.setBotonesAlCrearPartida(partida);
         ComienzoCartasDTO dto = servicioPartida.repartoInicial(partida.getId());
@@ -119,23 +119,14 @@ public class ControladorPartida {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
         ModelMap modelo = new ModelMap();
-        List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) request.getSession().getAttribute("cartasJugador");
-        List<Map<String, Object>> cartasDealer = (List<Map<String, Object>>) request.getSession().getAttribute("cartasDealer");
         ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
 
-        int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
-        int puntajeDealer = servicioPartida.calcularPuntaje(cartasDealer);
-        String mensajeEstrategia = servicioPartida.mandarEstrategia(partida, puntajeJugador, puntajeDealer);
+        String mensajeEstrategia = servicioPartida.mandarEstrategia(partida, dto.getPuntajeJugador(), dto.getPuntajeDealer());
 
         modelo.put("mensajeEstrategia", mensajeEstrategia);
         modelo.addAttribute("dto", dto);
         modelo.addAttribute("partida", partida);
-        modelo.addAttribute("jugador", partida.getJugador());
         modelo.addAttribute("usuario", usuario);
-        modelo.addAttribute("puntajeJugador", puntajeJugador);
-        modelo.addAttribute("puntajeDealer", puntajeDealer);
-        modelo.addAttribute("cartasJugador", cartasJugador);
-        modelo.addAttribute("cartasDealer", cartasDealer);
         modelo.addAttribute("apuesta", partida.getApuesta());
 
         return new ModelAndView("juegoConCrupier", modelo);
@@ -146,51 +137,34 @@ public class ControladorPartida {
     @PostMapping("/doblarApuesta")
     public ModelAndView doblarApuesta(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
-        List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) session.getAttribute("cartasJugador");
-        List<Map<String, Object>> cartasDealer = (List<Map<String, Object>>) session.getAttribute("cartasDealer");
-        ModelMap modelo = new ModelMap();
         ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
+        ModelMap modelo = new ModelMap();
 
-        Integer apuesta = servicioPartida.doblarApuesta(partida, usuario);
+        Integer apuesta = servicioPartida.doblarApuesta(partida, partida.getJugador().getUsuario());
 
-        modelo.addAttribute("dto", dto);
+        modelo.put("dto", dto);
         modelo.put("apuesta", apuesta);
         modelo.put("partida", partida);
-        modelo.put("usuario", usuario);
-        modelo.put("jugador", partida.getJugador());
-        modelo.addAttribute("puntajeJugador", partida.getJugador().getPuntaje());
-        modelo.addAttribute("puntajeDealer", partida.getCrupier().getPuntaje());
-        modelo.put("cartasJugador", cartasJugador);
-        modelo.put("cartasDealer", cartasDealer);
+        modelo.put("usuario", partida.getJugador().getUsuario());
         return new ModelAndView("juegoConCrupier", modelo);
     }
 
     @PostMapping("/pararse")
     public ModelAndView pararse(HttpServletRequest request){
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
-        ModelMap modelo = new ModelMap();
-        List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) request.getSession().getAttribute("cartasJugador");
-        List<Map<String, Object>> cartasDealer = (List<Map<String, Object>>) request.getSession().getAttribute("cartasDealer");
         ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
-
+        ModelMap modelo = new ModelMap();
 
         String mensajeResultado = servicioPartida.determinarResultado(partida);
 
-        modelo.put("mensajeResultado", mensajeResultado);
+        modelo.addAttribute("mensajeResultado", mensajeResultado);
         modelo.addAttribute("dto", dto);
         modelo.addAttribute("partida", partida);
-        modelo.addAttribute("jugador", partida.getJugador());
-        modelo.addAttribute("usuario", usuario);
-        modelo.addAttribute("puntajeJugador", partida.getJugador().getPuntaje());
-        modelo.addAttribute("puntajeDealer", partida.getCrupier().getPuntaje());
-        modelo.addAttribute("cartasJugador", partida);
-        modelo.addAttribute("cartasDealer", cartasDealer);
+        modelo.addAttribute("usuario", partida.getJugador().getUsuario());
         modelo.addAttribute("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
-        request.getSession().setAttribute("partidaActiva", partida);
+//        request.getSession().setAttribute("partidaActiva", partida);
 
         servicioPartida.bloquearBotones(partida);
         return new ModelAndView("juegoConCrupier", modelo);
@@ -198,7 +172,6 @@ public class ControladorPartida {
 
     @PostMapping("/rendirse")
     public ModelAndView rendirse(HttpServletRequest request){
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
         servicioPartida.rendirse(partida, partida.getJugador());
         request.getSession().removeAttribute("partidaActiva");
@@ -208,10 +181,8 @@ public class ControladorPartida {
     @PostMapping("/pedirCarta")
     public ModelAndView pedirCarta(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
         List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) session.getAttribute("cartasJugador");
-        List<Map<String, Object>> cartasDealer = (List<Map<String, Object>>) session.getAttribute("cartasDealer");
         String deckId = (String) session.getAttribute("deckId");
         ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
 
@@ -221,19 +192,12 @@ public class ControladorPartida {
         dto.setPuntajeJugador(puntajeJugador);
         partida.getJugador().setPuntaje(puntajeJugador);
 
-
         ModelAndView mav = new ModelAndView("juegoConCrupier");
-        mav.addObject("jugador", partida.getJugador());
         mav.addObject("dto", dto);
-        mav.addObject("cartasJugador", dto.getCartasJugador());
-        mav.addObject("cartasDealer", dto.getCartasDealer());
-        mav.addObject("usuario", usuario);
-        mav.addObject("puntajeJugador", partida.getJugador().getPuntaje());
+        mav.addObject("usuario", partida.getJugador().getUsuario());
         mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
-        mav.addObject("puntajeDealer", partida.getCrupier().getPuntaje());
         mav.addObject("cartaNueva", cartaNueva);
         mav.addObject("partida", partida);
-
         return mav;
 
     }
@@ -242,10 +206,8 @@ public class ControladorPartida {
     @PostMapping("dividirPartida")
     public ModelAndView dividirPartida(HttpServletRequest request) throws SaldoInsuficiente {
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
         List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) session.getAttribute("cartasJugador");
-        List<Map<String, Object>> cartasDealer = (List<Map<String, Object>>) session.getAttribute("cartasDealer");
         String deckId = (String) session.getAttribute("deckId");
         ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
 
@@ -262,16 +224,10 @@ public class ControladorPartida {
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("dto", dto);
-        mav.addObject("jugador", partida.getJugador());
-        mav.addObject("cartasJugador", cartasJugador);
-        mav.addObject("cartasDealer", cartasDealer);
-        mav.addObject("usuario", usuario);
+        mav.addObject("usuario", partida.getJugador().getUsuario());
         mav.addObject("puntajeJugador", partida.getJugador().getPuntaje());
-        mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
-        mav.addObject("puntajeDealer", partida.getCrupier().getPuntaje());
         mav.addObject("cartaMano1", cartaMano1);
         mav.addObject("cartaMano2", cartaMano2);
-
         mav.addObject("partida", partida);
 
         return mav;

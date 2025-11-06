@@ -434,11 +434,11 @@ public class ServicioPartidaImpl implements ServicioPartida {
         if (partida.getPuntajeMano1() <= 21) {
             if (partida.getPuntajeMano1() > puntajeCrupier || puntajeCrupier > 21) {
                 resultado += "Ganó mano 1. ";
-            } else if (partida.getPuntajeMano1() == puntajeCrupier) {
-                resultado += "Empate mano 1. ";
-            } else {
-                resultado += "Perdió mano 1. ";
             }
+            if (partida.getPuntajeMano1() == puntajeCrupier) {
+                resultado += "Empate mano 1. ";
+            }
+                resultado += "Perdió mano 1. ";
         } else {
             resultado += "Mano 1 se pasó. ";
         }

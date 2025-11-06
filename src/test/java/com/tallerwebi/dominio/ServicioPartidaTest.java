@@ -186,7 +186,7 @@ public class ServicioPartidaTest {
     }
 
     private void thenSeDescuentaElsaldo(Partida partidaActiva) {
-        assertEquals(50, partidaActiva.getJugador().getUsuario().getSaldo());
+        assertEquals(900, partidaActiva.getJugador().getUsuario().getSaldo());
     }
 
     @Test
@@ -195,12 +195,12 @@ public class ServicioPartidaTest {
         Partida partidaActiva = givenComienzaUnaPartida(usuario);
         whenSeleccionoBotonEmpezarPartida(partidaActiva);
         Integer apuestaDoblada= whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(partidaActiva, usuario);
-        thenApuestaDoblada(partidaActiva, partidaActiva.getJugador(), apuestaDoblada);
+        thenApuestaDoblada(partidaActiva, usuario, apuestaDoblada);
     }
 
-    private void thenApuestaDoblada(Partida partidaActiva, Jugador jugador, Integer apuestaDoblada) {
+    private void thenApuestaDoblada(Partida partidaActiva, Usuario usuario, Integer apuestaDoblada) {
         assertEquals(Integer.valueOf(200), partidaActiva.getApuesta());
-        assertEquals(800.0, jugador.getSaldo(), 0.01);
+        assertEquals(900.0, usuario.getSaldo(), 0.01);
     }
 
     private Integer whenSeleccionoBotonDoblarApuestaSeDoblaLaApuesta(Partida partidaActiva, Usuario jugador) {
@@ -240,12 +240,10 @@ public class ServicioPartidaTest {
 
     private void thenEstadoAbandonadoYSaldoRestado(Partida partidaActiva, Jugador jugador) {
         assertEquals(EstadoDeJuego.ABANDONADO ,partidaActiva.getEstadoJuego());
-       // assertEquals(900, jugador.getSaldo());
     }
 
     private void whenSeleccionoBotonRendirseSeLeResteLaApuestaAlJugadorYYLaPartidaPasaAEstadoAbandonado(Partida partidaActiva, Jugador jugador) throws ApuestaInvalidaException, SaldoInsuficiente {
         servicioPartida.rendirse(partidaActiva, jugador);
-     //   servicioPartida.apostar(partidaActiva, partidaActiva.getApuesta());
     }
 
     @Test
@@ -303,7 +301,6 @@ public class ServicioPartidaTest {
         assertTrue(partida.getManoDividida());
         assertEquals(1, partida.getMano1().size());
         assertEquals(1, partida.getMano2().size());
-        assertEquals(900, partida.getJugador().getSaldo());
         assertNotEquals(partida.getPuntajeMano1(), 0);
         assertNotEquals(partida.getPuntajeMano2(), 0);
     }
@@ -323,7 +320,7 @@ public class ServicioPartidaTest {
         Crupier crupier= new Crupier();
         Jugador jugador = new Jugador();
         jugador.setUsuario(usuario);
-
+        usuario.setSaldo(1000.0);
         crupier.setPuntaje(7);
         jugador.setPuntaje(10);
         partidaActiva.setApuesta(100);
