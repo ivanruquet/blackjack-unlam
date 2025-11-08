@@ -224,7 +224,7 @@ public class ServicioPartidaTest {
     private String whenSeleccionoBotonPararseSeComparanLosPuntosYSeDefineUnGanador(Partida partidaActiva) {
         Integer puntosCrupier= partidaActiva.getCrupier().getPuntaje();
         Integer puntosJugador= partidaActiva.getJugador().getPuntaje();
-        String resultado= servicioPartida.resultadoDeLaPartida(puntosCrupier, puntosJugador);
+        String resultado= servicioPartida.resultadoDeLaPartida(partidaActiva, puntosCrupier, puntosJugador);
         partidaActiva.setGanador(resultado);
         return resultado;
     }
@@ -320,7 +320,7 @@ public class ServicioPartidaTest {
         Crupier crupier= new Crupier();
         Jugador jugador = new Jugador();
         jugador.setUsuario(usuario);
-        usuario.setSaldo(1000.0);
+        usuario.setSaldo(1000);
         crupier.setPuntaje(7);
         jugador.setPuntaje(10);
         partidaActiva.setApuesta(100);

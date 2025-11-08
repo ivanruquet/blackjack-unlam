@@ -14,7 +14,7 @@ public class Usuario {
     @Column(unique = true)
     private String email;
     private String password;
-    private Double saldo = 150.0;
+    private Integer saldo = 150;
     private String nombre;
     private String apellido;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -38,8 +38,8 @@ public class Usuario {
     public Boolean getAceptoTerminos() {return aceptoTerminos;}
     public String getRol() {return rol;}
     public void setRol(String rol) {this.rol = rol;}
-    public Double getSaldo() { return saldo; }
-    public void setSaldo(Double saldo) { this.saldo = saldo; }
+    public Integer getSaldo() { return saldo; }
+    public void setSaldo(Integer saldo) { this.saldo = saldo; }
     public Long getId() {
         return id;
     }
