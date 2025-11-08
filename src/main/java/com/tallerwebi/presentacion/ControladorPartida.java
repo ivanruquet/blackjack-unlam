@@ -88,11 +88,10 @@ public class ControladorPartida {
         HttpSession session = request.getSession();
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) request.getSession().getAttribute("partida");
-
+        partida.setBotonEmpezar(true);
         ModelMap modelo = new ModelMap();
         try {
             servicioPartida.apostar(partida, monto);
-            //se agrega el jugador al modelo para que muestre su saldo a la vista -valentina
             modelo.addAttribute("jugador", partida.getJugador());
             session.setAttribute("partida", partida);
             session.setAttribute("usuario", partida.getJugador().getUsuario());
@@ -214,9 +213,10 @@ public class ControladorPartida {
         List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) session.getAttribute("cartasJugador");
         String deckId = (String) session.getAttribute("deckId");
         ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
+        dto.setBotonDividir(true);
 
         servicioPartida.dividirPartida(partida, cartasJugador);
-
+        servicioPartida.doblarApuesta(partida, partida.getJugador().getUsuario());
         List<Map<String, Object>> mano1 = partida.getMano1();
         List<Map<String, Object>> mano2 = partida.getMano2();
 

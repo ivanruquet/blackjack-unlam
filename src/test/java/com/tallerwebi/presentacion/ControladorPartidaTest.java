@@ -34,7 +34,7 @@ public class ControladorPartidaTest {
     }
 
     @Test
-    public void deberiaIrAlJuegoAlResetear() {
+    public void deberiaIrAlJuegoAlResetear() throws PartidaNoCreadaException {
 
         MockHttpServletRequest request = new MockHttpServletRequest();
 

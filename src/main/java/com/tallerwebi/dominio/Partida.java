@@ -28,7 +28,7 @@ public class Partida {
     private boolean manoDividida;
     @OneToOne(cascade = CascadeType.ALL)
     private Jugador jugador;
-
+    private Boolean botonEmpezar;
     @OneToOne(cascade = CascadeType.ALL)
     private Crupier crupier;
 
@@ -50,6 +50,10 @@ public class Partida {
     public Boolean getFichasHabilitadas() {return fichasHabilitadas;}
 
     public Boolean getBotonesDesicionHabilitados() {return botonesDesicionHabilitados;}
+
+    public Boolean getBotonEmpezar() {return botonEmpezar;}
+
+    public void setBotonEmpezar(boolean botonEmpezar) {this.botonEmpezar = botonEmpezar;}
 
     public EstadoDeJuego getEstadoJuego() {
         return estadoJuego;

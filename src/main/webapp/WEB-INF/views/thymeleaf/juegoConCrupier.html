@@ -253,8 +253,8 @@
                     <form th:action="@{/iniciar}" method="post" id="form-apuesta">
                         <input type="hidden" name="empezar" id="inputMonto" th:value="${pozo}">
                         <button class="btn" id="boton" type="submit"
-                                th:classappend="${!partida.fichasHabilitadas} ? ' boton-deshabilitado' : ''"
-                                th:attr="disabled=${!partida.fichasHabilitadas}">Empezar partida</button>
+                                th:classappend="${!partida.botonEmpezar or !partida.fichasHabilitadas} ? ' boton-deshabilitado' : ''"
+                                th:attr="disabled=${!partida.botonEmpezar or !partida.fichasHabilitadas}">Empezar partida</button>
                     </form>
                 </div>
 
