@@ -213,8 +213,7 @@ public class ControladorPartida {
         List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) session.getAttribute("cartasJugador");
         String deckId = (String) session.getAttribute("deckId");
         ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
-        dto.setBotonDividir(true);
-
+        servicioPartida.logicaBotonDividir(partida, cartasJugador, dto);
         servicioPartida.dividirPartida(partida, cartasJugador);
         servicioPartida.doblarApuesta(partida, partida.getJugador().getUsuario());
         List<Map<String, Object>> mano1 = partida.getMano1();
