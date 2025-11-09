@@ -211,12 +211,14 @@ public class ServicioPartidaImpl implements ServicioPartida {
             public Integer doblarApuesta (Partida partidaActiva, Usuario usuario){
                 Integer apuestaOriginal = partidaActiva.getApuesta();
                 Integer nuevaApuesta = (apuestaOriginal * 2);
+                if(usuario.getSaldo()>=nuevaApuesta){
+                    partidaActiva.setApuesta(nuevaApuesta);
+                    usuario.setSaldo(usuario.getSaldo() - apuestaOriginal);
+                    return nuevaApuesta;
+                }
+                return apuestaOriginal;
 
-                partidaActiva.setApuesta(nuevaApuesta);
-                usuario.setSaldo(usuario.getSaldo() - apuestaOriginal);
-
-                return nuevaApuesta;
-            }
+     }
 
             @Override
             public void rendirse (Partida partidaActiva, Jugador jugador){
@@ -514,6 +516,15 @@ public class ServicioPartidaImpl implements ServicioPartida {
         int puntajeCrupier = calcularPuntaje(cartasDealer);
         partida.getCrupier().setPuntaje(puntajeCrupier);
 
+        if(puntajeCrupier<=16){
+            List<Map<String, Object>> nuevasCartas = servicioDeckOfCards.sacarCartas(deckId, 1);
+            cartasDealer.add(nuevasCartas.get(0));
+            int nuevoPuntajeCrupier = calcularPuntaje(cartasDealer);
+            partida.getCrupier().setPuntaje(nuevoPuntajeCrupier);
+        }
         return nuevaCarta.get(0);
     }
+
+
+
 }
