@@ -17,21 +17,21 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 
 public class ControladorPartidaTest {
-
-    RepositorioPartida repositorioPartida = mock(RepositorioPartida.class);
-    ServicioPartidaImpl servicioPartida = new ServicioPartidaImpl(repositorioPartida);
-    ControladorPartida controladorPartida;
+    private ServicioPartida servicioPartida;
+    private ControladorPartida controladorPartida;
 
     @BeforeEach
     public void init() {
-        servicioPartida.setRepositorioPartida(repositorioPartida);
+        servicioPartida = mock(ServicioPartida.class);
         controladorPartida = new ControladorPartida(servicioPartida);
     }
+
 
     @Test
     public void deberiaIrAlJuegoAlResetear() throws PartidaNoCreadaException {
@@ -48,6 +48,16 @@ public class ControladorPartidaTest {
     public void queAlSeleccionarFichasSuValorSeSumeEnElPozoTotal() throws ApuestaInvalidaException, SaldoInsuficiente, PartidaNoCreadaException {
         Usuario usuario = givenExisteUnUsuario();
         Partida partidaActiva = givenComienzaUnaPartida(usuario);
+
+        doAnswer(invocation -> {
+            Partida p = invocation.getArgument(0);
+            Integer monto = invocation.getArgument(1);
+
+            p.setApuesta(p.getApuesta() + monto);
+
+         return null;
+        }).when(servicioPartida).apostar(any(Partida.class), anyInt());
+
         ModelAndView mav = whenSeleccionoFichas(partidaActiva, usuario);
         thenSeSumaElPozo(mav);
     }
@@ -98,25 +108,20 @@ public class ControladorPartidaTest {
 
     private ModelAndView whenGenerarAyuda( MockHttpServletRequest request) {
         Partida partidaDeSesion = (Partida) request.getSession().getAttribute("partida");
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-        List<Map<String, Object>> cartasJugador = new ArrayList<>();
-        Map<String, Object> carta = new HashMap<>();
-        carta.put("value", "5");
-        carta.put("suit", "HEARTS");
-        carta.put("image", "urlCarta.jpg");
-        cartasJugador.add(carta);
-        request.getSession().setAttribute("cartasJugador", cartasJugador);
 
-        List<Map<String, Object>> cartasDealer = new ArrayList<>();
-        Map<String, Object> cartaDealer = new HashMap<>();
-        cartaDealer.put("value", "9");
-        cartaDealer.put("suit", "SPADES");
-        cartaDealer.put("image", "urlDealer.jpg");
-        cartasDealer.add(cartaDealer);
-        request.getSession().setAttribute("cartasDealer", cartasDealer);
+        ComienzoCartasDTO dtoDePrueba = new ComienzoCartasDTO();
 
-        when(repositorioPartida.buscarPartidaActiva(usuario))
-                .thenReturn(List.of(partidaDeSesion));
+        dtoDePrueba.setPuntajeJugador(5);
+        dtoDePrueba.setPuntajeDealer(9);
+
+        request.getSession().setAttribute("dto", dtoDePrueba);
+
+        when(servicioPartida.mandarEstrategia(
+                any(Partida.class),
+                eq(5),
+                eq(9)
+        ))
+                .thenReturn("Pedi una carta, no hay riesgo.");
 
         return controladorPartida.mostrarEstrategia(request);
     }
@@ -222,6 +227,7 @@ public class ControladorPartidaTest {
         Partida partidaActiva = new Partida();
         partidaActiva.setEstadoPartida(EstadoPartida.ACTIVA);
         partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
+        partidaActiva.setApuesta(0);
         Crupier crupier= new Crupier();
         Jugador jugador = new Jugador();
         jugador.setUsuario(usuario);

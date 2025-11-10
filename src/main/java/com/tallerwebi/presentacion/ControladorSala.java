@@ -21,16 +21,17 @@ public class ControladorSala {
 
     private ServicioPartida servicioPartida;
     private RepositorioPartida repositorioPartida;
-
+    private ServicioUsuario servicioUsuario;
 
     public ControladorSala(ServicioPartida servicioPartida) {
         this.servicioPartida = servicioPartida;
     }
 
     @Autowired
-    public ControladorSala(ServicioPartida servicioPartida, RepositorioPartida repositorioPartida) {
+    public ControladorSala(ServicioPartida servicioPartida, RepositorioPartida repositorioPartida, ServicioUsuario servicioUsuario) {
         this.servicioPartida = servicioPartida;
         this.repositorioPartida = repositorioPartida;
+        this.servicioUsuario = servicioUsuario;
     }
 
     @RequestMapping("/sala")
@@ -55,13 +56,17 @@ public class ControladorSala {
         if (usuario == null) {
             return new ModelAndView("redirect:/login");
         }
+        Usuario usuarioActualizado = servicioUsuario.buscarUsuario(usuario.getEmail());
+        session.setAttribute("usuario", usuarioActualizado);
 
         if (crearPartida(request)) return new ModelAndView("sala");
         Partida partida = (Partida) session.getAttribute("partida");
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("partida", partida);
-        mav.addObject("usuario", partida.getJugador().getUsuario());
+       // Usuario u = servicioUsuario.buscarUsuario(partida.getJugador().getUsuario().getEmail());
+         mav.addObject("usuario", usuarioActualizado);
+       // mav.addObject("usuario", partida.getJugador().getUsuario());
         mav.addObject("jugador", partida.getJugador());
         mav.addObject("dto", new ComienzoCartasDTO());
         return mav;

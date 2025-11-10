@@ -48,6 +48,8 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
         sessionFactory.getCurrentSession().update(usuario);
     }
 
+
+
     @Override
     public Usuario buscarPorId(Long userId) {
         final Session session = sessionFactory.getCurrentSession();
