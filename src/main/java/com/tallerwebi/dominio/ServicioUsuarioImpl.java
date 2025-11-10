@@ -25,6 +25,19 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
     }
 
     @Override
+    public void incrementarSaldoDeGanador(Integer saldo, Usuario usuario) {
+        if(usuario != null){
+            usuario.setSaldo(saldo);
+            repositorioUsuario.actualizar(usuario);
+        }
+    }
+
+    @Override
+    public Usuario buscarUsuario(String email) {
+        return repositorioUsuario.buscar(email);
+    }
+
+    @Override
     public void actualizarSaldoDeUsuario(Usuario usuario, Integer montoApuesta) {
         usuario.setSaldo(usuario.getSaldo()-montoApuesta);
         repositorioUsuario.actualizar(usuario);

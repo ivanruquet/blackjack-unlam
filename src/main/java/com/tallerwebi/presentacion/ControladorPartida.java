@@ -57,8 +57,9 @@ public class ControladorPartida {
     public ModelAndView comenzarPartida(HttpServletRequest request)
             throws PartidaActivaNoEnApuestaException, PartidaNoCreadaException {
         HttpSession session = request.getSession();
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+       // Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) session.getAttribute("partida");
+        Usuario u = servicioUsuario.buscarUsuario(partida.getJugador().getUsuario().getEmail());
 
         servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(partida);
         servicioPartida.setBotonesAlCrearPartida(partida);
@@ -74,7 +75,8 @@ public class ControladorPartida {
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("partida", partida);
         mav.addObject("jugador", partida.getJugador());
-        mav.addObject("usuario", usuario);
+      //  mav.addObject("usuario", usuario);
+        mav.addObject("usuario", u);
         mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
         mav.addObject("dto", dto);
         return mav ;
@@ -97,6 +99,9 @@ public class ControladorPartida {
             session.setAttribute("usuario", partida.getJugador().getUsuario());
 
 
+
+         //  Usuario u = servicioUsuario.buscarUsuario(partida.getJugador().getUsuario().getEmail());
+           // modelo.addAttribute("usuario", u);
             modelo.addAttribute("usuario", partida.getJugador().getUsuario());
             modelo.addAttribute("partida", partida);
             modelo.addAttribute("apuesta", partida.getApuesta());
@@ -163,10 +168,13 @@ public class ControladorPartida {
         dto.setPuntajeDealer(partida.getCrupier().getPuntaje());
         String mensajeResultado = servicioPartida.determinarResultado(partida, dto);
 
+
+        Usuario actualizado =  partida.getJugador().getUsuario();
+        session.setAttribute("usuario", actualizado);
+        modelo.addAttribute("usuario",actualizado);
         modelo.addAttribute("mensajeResultado", mensajeResultado);
         modelo.addAttribute("dto", dto);
         modelo.addAttribute("partida", partida);
-        modelo.addAttribute("usuario", partida.getJugador().getUsuario());
         modelo.addAttribute("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
 
         servicioPartida.bloquearBotones(partida);
@@ -207,7 +215,7 @@ public class ControladorPartida {
 
 
     @PostMapping("dividirPartida")
-    public ModelAndView dividirPartida(HttpServletRequest request) throws SaldoInsuficiente {
+    public ModelAndView dividirPartida(HttpServletRequest request) throws SaldoInsuficiente, ApuestaInvalidaException {
         HttpSession session = request.getSession();
         Partida partida = (Partida) request.getSession().getAttribute("partida");
         List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) session.getAttribute("cartasJugador");
@@ -216,7 +224,7 @@ public class ControladorPartida {
         dto.setBotonDividir(true);
 
         servicioPartida.dividirPartida(partida, cartasJugador);
-        servicioPartida.doblarApuesta(partida, partida.getJugador().getUsuario());
+
         List<Map<String, Object>> mano1 = partida.getMano1();
         List<Map<String, Object>> mano2 = partida.getMano2();
 
@@ -226,15 +234,17 @@ public class ControladorPartida {
         partida.setPuntajeMano1(servicioPartida.calcularPuntaje(mano1));
         partida.setPuntajeMano2(servicioPartida.calcularPuntaje(mano2));
 
+        Usuario actualizado = partida.getJugador().getUsuario();
+        session.setAttribute("usuario", actualizado);
         ModelAndView mav = new ModelAndView("juegoConCrupier");
+
         mav.addObject("dto", dto);
         mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
-        mav.addObject("usuario", partida.getJugador().getUsuario());
         mav.addObject("puntajeJugador", partida.getJugador().getPuntaje());
         mav.addObject("cartaMano1", cartaMano1);
         mav.addObject("cartaMano2", cartaMano2);
         mav.addObject("partida", partida);
-
+        mav.addObject("usuario", actualizado);
         return mav;
 
     }
