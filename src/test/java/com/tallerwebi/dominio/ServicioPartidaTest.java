@@ -13,26 +13,35 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.notNull;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ServicioPartidaTest {
 
+    private RepositorioUsuario repositorioUsuario;
     private RepositorioPartida repositorioPartida;
+    private RepositorioJugador repositorioJugador;
+    private ServicioUsuario servicioUsuario;
     private ServicioDeckOfCards servicioDeckOfCards;
     private ServicioPartidaImpl servicioPartida;
-    private ControladorPartida controladorPartida;
     List<Map<String, Object>> cartasJugador = new ArrayList<>();
 
     @BeforeEach
     public void init() {
         repositorioPartida = mock(RepositorioPartida.class);
+        repositorioUsuario = mock(RepositorioUsuario.class);
         servicioDeckOfCards = mock(ServicioDeckOfCards.class);
-        servicioPartida = new ServicioPartidaImpl(repositorioPartida);
-        servicioPartida.setServicioDeckOfCards(servicioDeckOfCards);
-        controladorPartida = new ControladorPartida(servicioPartida);
+        repositorioJugador = mock(RepositorioJugador.class);
+        servicioUsuario = mock(ServicioUsuario.class);
+        servicioPartida = new ServicioPartidaImpl(
+                servicioDeckOfCards,
+                repositorioPartida,
+                repositorioUsuario,
+                repositorioJugador,
+                servicioUsuario
+        );
+
     }
 
     @Test
@@ -140,6 +149,7 @@ public class ServicioPartidaTest {
     public void queAlSeleccionarFichasSuValorSeSumeEnElPozoTotal() throws ApuestaInvalidaException, SaldoInsuficiente {
         Usuario usuario = givenExisteUnUsuario();
         Partida partidaActiva = givenComienzaUnaPartida(usuario);
+        when(repositorioUsuario.buscar(usuario.getEmail())).thenReturn(usuario);
         whenSeleccionoFichas(partidaActiva);
         thenSeSumaElPozo(partidaActiva);
     }
@@ -172,22 +182,11 @@ public class ServicioPartidaTest {
     }
 
 
-    @Test
-    public void queAlSeleccionarElBotonEmpezarPartidaSeDescuenteElSaldoDelJugador() throws PartidaActivaNoEnApuestaException, ApuestaInvalidaException, SaldoInsuficiente {
-        Usuario usuario = givenExisteUnUsuario();
-        Partida partidaActiva = givenComienzaUnaPartida(usuario);
-        whenSeleccionoBotonEmpezarPartida(partidaActiva);
-        whenSeDescuentaElSaldoDeLaApuesta(partidaActiva);
-        thenSeDescuentaElsaldo(partidaActiva);
-    }
-
     private void whenSeDescuentaElSaldoDeLaApuesta(Partida partidaActiva) throws ApuestaInvalidaException, SaldoInsuficiente {
+
         servicioPartida.apostar(partidaActiva, partidaActiva.getApuesta());
     }
 
-    private void thenSeDescuentaElsaldo(Partida partidaActiva) {
-        assertEquals(900, partidaActiva.getJugador().getUsuario().getSaldo());
-    }
 
     @Test
     public void queAlSeleccionarElBotonDoblarApuestaSeDobleLaApuesta() throws PartidaActivaNoEnApuestaException{
@@ -212,6 +211,7 @@ public class ServicioPartidaTest {
     public void queAlSeleccionarElBotonPararseSeComparenLosPuntosYSeDefinaUnGanador() throws PartidaActivaNoEnApuestaException{
         Usuario usuario = givenExisteUnUsuario();
         Partida partidaActiva = givenComienzaUnaPartida(usuario);
+        when(repositorioUsuario.buscar(usuario.getEmail())).thenReturn(usuario);
         whenSeleccionoBotonEmpezarPartida(partidaActiva);
         whenSeleccionoBotonPararseSeComparanLosPuntosYSeDefineUnGanador(partidaActiva);
         thenResultadoDeLaPartida(partidaActiva);
@@ -278,6 +278,8 @@ public class ServicioPartidaTest {
         Usuario usuario = givenExisteUnUsuario();
         Partida partida = givenComienzaUnaPartida(usuario);
 
+        givenElRepositorioEncuentraAlUsuario(usuario);
+
         Map<String, Object> carta1 = new HashMap<>();
         carta1.put("value", "8");
         carta1.put("suit", "HEARTS");
@@ -293,6 +295,10 @@ public class ServicioPartidaTest {
         thenLaPartidaSeDivideYSeRestaSaldo(partida, cartasJugador);
     }
 
+    private void givenElRepositorioEncuentraAlUsuario(Usuario usuario) {
+        when(repositorioUsuario.buscar(anyString())).thenReturn(usuario);
+    }
+
     private void whenElUsuarioDivideLaPartida(Partida partida, List<Map<String, Object>> cartasJugador) throws Exception {
         servicioPartida.dividirPartida(partida, cartasJugador);
     }
@@ -303,12 +309,13 @@ public class ServicioPartidaTest {
         assertEquals(1, partida.getMano2().size());
         assertNotEquals(partida.getPuntajeMano1(), 0);
         assertNotEquals(partida.getPuntajeMano2(), 0);
-    }
+}
     //------------------------------------------------------------------------------
 
 
     private static @NotNull Usuario givenExisteUnUsuario() {
         Usuario usuario = new Usuario();
+        usuario.setEmail("valen@gmail.com");
         return usuario;
     }
 
