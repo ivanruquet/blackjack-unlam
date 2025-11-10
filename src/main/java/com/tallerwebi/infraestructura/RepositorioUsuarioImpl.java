@@ -12,10 +12,13 @@ import org.springframework.stereotype.Repository;
 public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
     private SessionFactory sessionFactory;
-
+    private Usuario usuario;
     @Autowired
     public RepositorioUsuarioImpl(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
+    }
+    public RepositorioUsuarioImpl(Usuario usuario){
+        this.usuario = usuario;
     }
 
     @Override
@@ -43,6 +46,14 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     @Override
     public void actualizar(Usuario usuario) {
         sessionFactory.getCurrentSession().update(usuario);
+    }
+
+    @Override
+    public Usuario buscarPorId(Long userId) {
+        final Session session = sessionFactory.getCurrentSession();
+        return (Usuario) session.createCriteria(Usuario.class)
+                .add(Restrictions.eq("id", userId))
+                .uniqueResult();
     }
 
     @Override
