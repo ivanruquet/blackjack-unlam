@@ -60,9 +60,6 @@
                 <div class="partidasG">0<br>Partidas ganadas</div>
             </div>
 
-            <div class="progreso">
-                <div class="porcentaje">50%</div>
-            </div>
 
             <p>¡Faltan 5 partidas ganadas para subir de nivel!</p>
         </div>
@@ -106,15 +103,6 @@
                     <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20" alt="check"> Completar 100 partidas</li>
                 </ul>
             </div>
-
-            <h2>Recargar saldo</h2>
-            <form th:action="@{/recargas/crear}" method="post" target="_blank">
-                <input type="hidden" name="userId" th:value="${usuario.id}">
-                <button type="submit" name="monto" value="500.0">Recargar $500</button>
-                <button type="submit" name="monto" value="1000.0">Recargar $1000</button>
-                <button type="submit" name="monto" value="2000.0">Recargar $2000</button>
-                <button type="submit" name="monto" value="3000.0">Recargar $3000</button>
-            </form>
 
             <div class="botones">
                 <form th:action="@{/cerrar-sesion}" method="post">
