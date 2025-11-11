@@ -31,6 +31,7 @@ public class Partida {
     private Boolean botonEmpezar;
     @OneToOne(cascade = CascadeType.ALL)
     private Crupier crupier;
+    private ResultadoPartida resultadoPartida;
 
 
     public Partida(){}
@@ -140,4 +141,8 @@ public class Partida {
     }
 
     public Boolean getManoDividida(){return this.manoDividida;}
+
+    public void setResultadoPartida(ResultadoPartida resultadoPartida) {this.resultadoPartida=resultadoPartida;}
+
+    public ResultadoPartida getResultadoPartida() {return this.resultadoPartida;}
 }

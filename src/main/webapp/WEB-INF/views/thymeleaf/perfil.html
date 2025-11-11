@@ -52,12 +52,10 @@
             <div class="estadisticas1">
                 <div class="estadisticas1">
                     <div class="nivel">
-                        <span>1000.0</span>
+                        <p id="saldoDisponible" th:text="'$' + ${usuario != null ? usuario.saldo : 0}">00.00</p>
                         Saldo actual
                     </div>
                 </div>
-                <div class="nivel">0<br>Nivel</div>
-                <div class="partidasG">0<br>Partidas ganadas</div>
             </div>
 
 
@@ -85,12 +83,13 @@
             </div>
         </div>
         <div class="estadisticas">
-            <div class="est">
-                <h3>ESTADÍSTICAS</h3>
-                <p>Partidas totales: </p>
-                <p>Partidas ganadas: </p>
-                <p>Partidas perdidas: </p>
-                <p>Recompensas obtenidas: </p>
+            <div class="estadisticas">
+                <div class="est">
+                    <h3>ESTADÍSTICAS</h3>
+                    <p>Partidas totales: <span th:text="${usuario.partidasTotales}"></span></p>
+                    <p>Partidas ganadas: <span th:text="${usuario.partidasGanadas}"></span></p>
+                    <p>Partidas perdidas: <span th:text="${usuario.partidasPerdidas}"></span></p>
+                </div>
             </div>
 
             <div class="estadisticas">

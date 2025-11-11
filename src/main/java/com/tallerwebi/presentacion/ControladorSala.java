@@ -64,23 +64,12 @@ public class ControladorSala {
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("partida", partida);
-       // Usuario u = servicioUsuario.buscarUsuario(partida.getJugador().getUsuario().getEmail());
          mav.addObject("usuario", usuarioActualizado);
-       // mav.addObject("usuario", partida.getJugador().getUsuario());
         mav.addObject("jugador", partida.getJugador());
         mav.addObject("dto", new ComienzoCartasDTO());
         return mav;
     }
 
-
-
-
-
-    @RequestMapping(path = "/juegoOnline", method = RequestMethod.POST)
-    public ModelAndView irAlJuegoOnline(HttpServletRequest request) {
-        if (crearPartida(request)) return new ModelAndView("sala");
-        return new ModelAndView("juegoOnline");
-    }
 
     private boolean crearPartida(HttpServletRequest request) {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
