@@ -23,7 +23,6 @@ public class ServicioPartidaImpl implements ServicioPartida {
     private RepositorioPartida repositorioPartida;
     private RepositorioUsuario RepositorioUsuario;
     private ServicioUsuario servicioUsuario;
-    //private RepositorioUsuarioImpl repositorioUsuario;
     private RepositorioUsuario repositorioUsuario;
     private RepositorioJugador repositorioJugador;
     private ServicioDeckOfCards servicioDeckOfCards;
@@ -60,17 +59,6 @@ public class ServicioPartidaImpl implements ServicioPartida {
         this.repositorioJugador = repositorioJugador;
         this.servicioUsuario = servicioUsuario;
     }
-
-//    public ServicioPartidaImpl(ServicioDeckOfCards servicioDeckOfCards, RepositorioPartidaImpl respositorioPartida, RepositorioUsuarioImpl repositorioUsuario, RepositorioJugadorImpl repositorioJugador, ServicioUsuario servicioUsuario) {
-//
-//        this.repositorioPartida = respositorioPartida;
-//        this.repositorioUsuario = repositorioUsuario;
-//        this.repositorioJugador = repositorioJugador;
-//        this.servicioUsuario = servicioUsuario;
-//        this.servicioDeckOfCards = servicioDeckOfCards;
-//
-//
-//    }
 
     public ServicioPartidaImpl(RepositorioPartida repositorioPartida, RepositorioJugador repositorioJugador) {
         this.repositorioJugador = repositorioJugador;
@@ -173,7 +161,6 @@ public class ServicioPartidaImpl implements ServicioPartida {
         List<Partida> partidasActivas = repositorioPartida.buscarPartidaActiva(usuario);
         if (!partidasActivas.isEmpty()) {
             for (Partida partidaActiva : partidasActivas) {
-                // ----> AÑADE ESTAS LÍNEAS <----
                 partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.ABANDONADO);
                 partidaActiva.setEstadoPartida(EstadoPartida.INACTIVA);
             }
@@ -373,7 +360,6 @@ public class ServicioPartidaImpl implements ServicioPartida {
 
         @Override
         public void validarPartida (Usuario usuario,int monto) throws ApuestaInvalidaException, SaldoInsuficiente {
-//modificar nombre de metodo(confuso) ->-> validar saldo o algo asi
             if (monto <= 0) {
                 throw new ApuestaInvalidaException("El monto debe ser mayor a 0");
             }
@@ -420,9 +406,6 @@ public class ServicioPartidaImpl implements ServicioPartida {
                 throw new NoSePuedenDividirDosCartasDistintasException("No se puede dividir: las cartas deben tener el mismo valor.");
             }
 
-//        if (jugador.getSaldo() < partida.getApuesta()) {
-//            throw new SaldoInsuficiente("Saldo insuficiente para dividir la apuesta.");
-//        }
 
             this.apostar(partida, partida.getApuesta());
 
@@ -485,6 +468,11 @@ public class ServicioPartidaImpl implements ServicioPartida {
             String resMano2 = (factorMano2 == 2) ? "Ganó mano 2. " : (factorMano2 == 1) ? "Empate mano 2. " : "Perdió mano 2. ";
             String resultado = resMano1 + resMano2;
 
+            if(resMano1.equalsIgnoreCase("Ganó mano 1. ") || resMano1.equalsIgnoreCase("Ganó mano 2. ")){
+                partida.setResultadoPartida(ResultadoPartida.GANO);
+            }else if(resMano1.equalsIgnoreCase("Perdió mano 1. ") || resMano1.equalsIgnoreCase("Perdió mano 2. ")){
+                partida.setResultadoPartida(ResultadoPartida.PERDIO);
+            }
             if (pagoTotalAcumulado > 0) {
                 Usuario usuarioDeDB = repositorioUsuario.buscar(partida.getJugador().getUsuario().getEmail());
                 Integer saldoActual = usuarioDeDB.getSaldo();
@@ -499,47 +487,9 @@ public class ServicioPartidaImpl implements ServicioPartida {
         }
 
 
-////        Integer apuesta= partida.getApuesta() / 2;
-////        Integer ganancia= partida.getJugador().getUsuario().getSaldo() + apuesta;
-//
-//        if (partida.getPuntajeMano1() <= 21) {
-//            if (partida.getPuntajeMano1() > puntajeCrupier || puntajeCrupier > 21) {
-//                realizarPagoDeApuesta(partida, 1.0);
-//                resultado += "Ganó mano 1. ";
-//            }
-//            if (partida.getPuntajeMano1() == puntajeCrupier) {
-//                realizarPagoDeApuesta(partida, 0.5);
-//                resultado += "Empate mano 1. ";
-//            }
-//            if(partida.getPuntajeMano1() < puntajeCrupier){
-//                resultado += "Perdió mano 1. ";
-//            }
-//        } else {
-//            resultado += "Mano 1 se pasó. ";
-//        }
-//
-//        if (partida.getPuntajeMano2() <= 21) {
-//            if (partida.getPuntajeMano2() > puntajeCrupier || puntajeCrupier > 21) {
-//                realizarPagoDeApuesta(partida, 1.0);
-//                resultado += "Ganó mano 2. ";
-//            }
-//            if (partida.getPuntajeMano2() == puntajeCrupier) {
-//                realizarPagoDeApuesta(partida, 0.5);
-//                resultado += "Empate mano 2. ";
-//            }
-//            if(partida.getPuntajeMano2() < puntajeCrupier){
-//                resultado += "Perdió mano 2. ";
-//            }
-//        } else {
-//            resultado += "Mano 2 se pasó. ";
-//        }
-//
-//        return resultado;
-
-
         private int calcularFactorPago ( int puntajeJugador, int puntajeCrupier){
             if (puntajeJugador > 21) {
-                return 0; // Pierde
+                return 0;
             }
             if (puntajeCrupier > 21) {
                 return 2;
@@ -556,17 +506,21 @@ public class ServicioPartidaImpl implements ServicioPartida {
         @Override
         public String resultadoDeLaPartida (Partida partida, Integer puntosCrupier, Integer puntosJugador){
             if (puntosJugador > 21) {
+                partida.setResultadoPartida(ResultadoPartida.PERDIO);
                 return "Resultado: Superaste los 21, Crupier gana";
             }
             if (puntosCrupier > 21) {
                 realizarPagoDeApuesta(partida, 2.0);
+                partida.setResultadoPartida(ResultadoPartida.GANO);
                 return "Resultado: El crupier se paso de 21, Jugador gana";
             }
             if (puntosJugador > puntosCrupier) {
+                partida.setResultadoPartida(ResultadoPartida.GANO);
                 realizarPagoDeApuesta(partida, 2.0);
                 return "Resultado: Jugador gana";
             }
             if (puntosCrupier > puntosJugador) {
+                partida.setResultadoPartida(ResultadoPartida.PERDIO);
                 return "Resultado: Crupier gana";
             }
             realizarPagoDeApuesta(partida, 1.0);
@@ -606,5 +560,16 @@ public class ServicioPartidaImpl implements ServicioPartida {
             return nuevaCarta.get(0);
         }
 
-
+    @Override
+    public String verficarPuntaje(Partida partida, int puntajeJugador) {
+            String mensaje= "Superaste los 21, el crupier gana.";
+            if(puntajeJugador>21){
+              bloquearBotones(partida);
+               return mensaje;
+            }
+        return null ;
     }
+
+
+
+}

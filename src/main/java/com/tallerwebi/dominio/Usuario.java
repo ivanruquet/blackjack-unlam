@@ -20,24 +20,26 @@ public class Usuario {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
     private String username;
-    private String rol;
-    private Boolean aceptoTerminos;
+    private Integer partidasTotales=0;
+    private Integer partidasGanadas=0;
+    private Integer partidasPerdidas=0;
+
     public Usuario(){
 
     }
     public Usuario(String email, String password, String nombre, String apellido, LocalDate fechaNacimiento, String username) {
-    this.email = email;
-    this.password = password;
-    this.nombre = nombre;
-    this.apellido = apellido;
-    this.fechaNacimiento = fechaNacimiento;
-    this.username = username;
+        this.email = email;
+        this.password = password;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fechaNacimiento = fechaNacimiento;
+        this.username = username;
+        this.partidasTotales = 0;
+        this.partidasGanadas = 0;
+        this.partidasPerdidas = 0;
     }
 
-    public void setAceptoTerminos(Boolean aceptoTerminos) {this.aceptoTerminos = aceptoTerminos;}
-    public Boolean getAceptoTerminos() {return aceptoTerminos;}
-    public String getRol() {return rol;}
-    public void setRol(String rol) {this.rol = rol;}
+
     public Integer getSaldo() { return saldo; }
     public void setSaldo(Integer saldo) { this.saldo = saldo; }
     public Long getId() {
@@ -66,4 +68,10 @@ public class Usuario {
     public void setFechaNacimiento(LocalDate fechaNacimiento ) {this.fechaNacimiento = fechaNacimiento;}
     public String getUsername() {return username;}
     public void setUsername(String username) {this.username = username;}
+    public Integer getPartidasTotales() {return partidasTotales;}
+    public void setPartidasTotales(Integer partidasTotales) {this.partidasTotales = partidasTotales;}
+    public Integer getPartidasGanadas() {return partidasGanadas;}
+    public void setPartidasGanadas(Integer partidasGanadas) {this.partidasGanadas = partidasGanadas;}
+    public Integer getPartidasPerdidas() {return partidasPerdidas;}
+    public void setPartidasPerdidas(Integer partidasPerdidas) {this.partidasPerdidas = partidasPerdidas;}
 }

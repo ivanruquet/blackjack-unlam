@@ -99,9 +99,6 @@ public class ControladorPartida {
             session.setAttribute("usuario", partida.getJugador().getUsuario());
 
 
-
-         //  Usuario u = servicioUsuario.buscarUsuario(partida.getJugador().getUsuario().getEmail());
-           // modelo.addAttribute("usuario", u);
             modelo.addAttribute("usuario", partida.getJugador().getUsuario());
             modelo.addAttribute("partida", partida);
             modelo.addAttribute("apuesta", partida.getApuesta());
@@ -166,8 +163,9 @@ public class ControladorPartida {
 
         Map<String, Object> cartaMano2= servicioPartida.entregarCartaAlCrupier(partida, cartasDealer, deckId);
         dto.setPuntajeDealer(partida.getCrupier().getPuntaje());
-        String mensajeResultado = servicioPartida.determinarResultado(partida, dto);
 
+        String mensajeResultado = servicioPartida.determinarResultado(partida, dto);
+        servicioUsuario.registrarResultado(partida.getJugador().getUsuario(), mensajeResultado);
 
         Usuario actualizado =  partida.getJugador().getUsuario();
         session.setAttribute("usuario", actualizado);
@@ -200,11 +198,13 @@ public class ControladorPartida {
         Map<String, Object> cartaNueva = servicioPartida.pedirCarta(partida.getJugador(), cartasJugador, deckId);
 
         int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
+        String mensaje= servicioPartida.verficarPuntaje(partida, puntajeJugador);
         dto.setPuntajeJugador(puntajeJugador);
         partida.getJugador().setPuntaje(puntajeJugador);
 
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("dto", dto);
+        mav.addObject("mensaje", mensaje);
         mav.addObject("usuario", partida.getJugador().getUsuario());
         mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
         mav.addObject("cartaNueva", cartaNueva);
