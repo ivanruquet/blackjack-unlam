@@ -54,16 +54,14 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
 
         if (resultado.equalsIgnoreCase("Resultado: Jugador gana") || resultado.equalsIgnoreCase("Resultado: El crupier se paso de 21, Jugador gana")
         || resultado.equalsIgnoreCase("Ganó mano 1. ") || resultado.equalsIgnoreCase("Ganó mano 2. ")) {
-        if (resultado.equalsIgnoreCase("Resultado: Jugador gana") ||
-                resultado.equalsIgnoreCase("Resultado: El crupier se paso de 21, Jugador gana")
-                || resultado.equalsIgnoreCase("Ganó mano 1. ") || resultado.equalsIgnoreCase("Ganó mano 2. ")) {
             usuario.setPartidasGanadas(usuario.getPartidasGanadas() + 1);
+
         } else if (resultado.equalsIgnoreCase("Resultado: Crupier gana") || resultado.equalsIgnoreCase("Resultado: Superaste los 21, Crupier gana")
                 || resultado.equalsIgnoreCase("Perdió mano 1. ") || resultado.equalsIgnoreCase("Perdió mano 2. ")) {
             usuario.setPartidasPerdidas(usuario.getPartidasPerdidas() + 1);
         }
     }
-    }
+
 
             @Override
             public void actualizarLogros (Usuario usuario){
