@@ -20,11 +20,25 @@ public class Usuario {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
     private String username;
+
     private Integer partidasTotales=0;
     private Integer partidasGanadas=0;
     private Integer partidasPerdidas=0;
     private LocalDate lastLoginDate;
     private Integer racha;
+
+    private String rol;
+    private Boolean aceptoTerminos;
+
+    //
+    private Integer partidasJugadas = 0;
+    private Boolean logro5partidas = false;
+    private Integer manosGanadas = 0;
+    private Boolean logroGanar2Manos = false;
+    private Boolean recompensaReclamada = false;
+    private Integer partidasMeta = 5;
+    private Integer manosMeta = 2;
+
 
     public Usuario(){
 
@@ -73,10 +87,73 @@ public class Usuario {
     public void setFechaNacimiento(LocalDate fechaNacimiento ) {this.fechaNacimiento = fechaNacimiento;}
     public String getUsername() {return username;}
     public void setUsername(String username) {this.username = username;}
+
     public Integer getPartidasTotales() {return partidasTotales;}
     public void setPartidasTotales(Integer partidasTotales) {this.partidasTotales = partidasTotales;}
     public Integer getPartidasGanadas() {return partidasGanadas;}
     public void setPartidasGanadas(Integer partidasGanadas) {this.partidasGanadas = partidasGanadas;}
     public Integer getPartidasPerdidas() {return partidasPerdidas;}
     public void setPartidasPerdidas(Integer partidasPerdidas) {this.partidasPerdidas = partidasPerdidas;}
+
+
+
+
+    public Integer getPartidasJugadas() {
+        return partidasJugadas;
+    }
+
+    public void setPartidasJugadas(Integer partidasJugadas) {
+        this.partidasJugadas = partidasJugadas;
+    }
+
+    public Boolean getLogro5partidas() {
+        return logro5partidas;
+    }
+
+    public void setLogro5partidas(Boolean logro5partidas) {
+        this.logro5partidas = logro5partidas;
+    }
+
+
+    public Boolean getLogroGanar2Manos() {
+        return logroGanar2Manos;
+    }
+
+    public void setLogroGanar2Manos(Boolean logroGanar2Manos) {
+        this.logroGanar2Manos = logroGanar2Manos;
+    }
+
+    public Integer getManosGanadas() {
+        return manosGanadas;
+    }
+
+    public void setManosGanadas(Integer manosGanadas) {
+        this.manosGanadas = manosGanadas;
+    }
+
+    public Boolean getRecompensaReclamada() {
+        return recompensaReclamada != null ? recompensaReclamada : false;
+    }
+
+    public void setRecompensaReclamada(Boolean recompensaReclamada) {
+        this.recompensaReclamada = recompensaReclamada;
+    }
+
+    public Integer getPartidasMeta() {
+        return partidasMeta != null ? partidasMeta : 5;
+    }
+
+    public Integer getManosMeta() {
+        return manosMeta != null ? manosMeta : 2;
+    }
+
+
+    public void setPartidasMeta(Integer partidasMeta) {
+        this.partidasMeta = partidasMeta;
+    }
+
+    public void setManosMeta(Integer manosMeta) {
+        this.manosMeta = manosMeta;
+    }
+
 }

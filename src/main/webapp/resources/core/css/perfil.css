@@ -270,6 +270,50 @@ footer p {
     justify-content: center;
 }
 
+.logro5partidas{
+
+    position: relative;
+    top: 4.5px;
+}
+
+.logroManosGanadas{
+    position: relative;
+    top: 4.5px;
+}
+.btn-recompensa {
+    background-color: gray;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transition: 0.2s;
+    margin-top: 8px;
+}
+
+.btn-recompensa:enabled {
+    background-color: #28a745;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.btn-recompensa:enabled:hover {
+    background-color: #218838;
+    transform: scale(1.03);
+}
+
+
+.recompensa-logro {
+    background-color: #e6ffe6;
+    border-radius: 5px;
+    padding: 2px 6px;
+    font-size: 0.9rem;
+}
+
+
 
 #file {
     display: none;

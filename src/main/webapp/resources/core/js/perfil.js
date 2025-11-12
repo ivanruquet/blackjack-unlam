@@ -34,3 +34,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     console.log("Perfil JS cargado correctamente");
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const btnRecompensa = document.getElementById("btnRecompensa");
+
+    const logro5Partidas = btnRecompensa.dataset.logro5partidas === "true";
+    const logro2Manos = btnRecompensa.dataset.logro2manos === "true";
+    const recompensaReclamada = btnRecompensa.dataset.recompensaReclamada === "true";
+
+    if (logro5Partidas && logro2Manos && !recompensaReclamada) {
+        btnRecompensa.disabled = false;
+        btnRecompensa.style.backgroundColor = "#28a745";
+        btnRecompensa.style.cursor = "pointer";
+    } else {
+        btnRecompensa.disabled = true;
+        btnRecompensa.style.backgroundColor = "gray";
+        btnRecompensa.style.cursor = "not-allowed";
+    }
+});
+
+
+
+

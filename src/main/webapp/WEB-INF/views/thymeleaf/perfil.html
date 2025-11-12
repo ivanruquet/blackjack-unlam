@@ -74,10 +74,41 @@
             <div class="estadisticas">
                 <ul class="logros">
                     <h3>LOGROS</h3>
-                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20" alt="check"> Ganar 1 mano con black jack</li>
-                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20" alt="check"> Apostar la cantidad máxima permitida y ganar</li>
-                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20" alt="check"> Ganar 10 manos consecutivas</li>
-                    <li class="log"> <img th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20" alt="check"> Completar 100 partidas</li>
+                    <li>
+                        <img class="logro5partidas" th:if="${usuario.logro5partidas ?: false}"
+                             th:src="@{/resources/core/images/ic--twotone-check.png}" width="20" height="20" alt="check">
+
+                        <img class="logro5partidas" th:if="${!(usuario.logro5partidas ?: false)}"
+                             th:src="@{/resources/core/images/cuadrado.png}" width="20" height="20" alt="no check">
+
+
+                        <span>Jugar <span th:text="${usuario.partidasMeta}">5</span> partidas</span>
+                    </li>
+
+                    <li>
+                        <img class="logroManosGanadas"
+                             th:if="${usuario.logroGanar2Manos ?: false}"
+                             th:src="@{/resources/core/images/ic--twotone-check.png}"
+                             width="20" height="20" alt="check">
+
+                        <img class="logroManosGanadas"
+                             th:if="${!(usuario.logroGanar2Manos ?: false)}"
+                             th:src="@{/resources/core/images/cuadrado.png}"
+                             width="20" height="20" alt="no check">
+
+                        <span>Ganar <span th:text="${usuario.manosMeta}">2</span> manos</span>
+
+                    </li>
+
+                    <form th:action="@{/reclamar-recompensa}" method="post" id="formRecompensa">
+                        <button type="submit" id="btnRecompensa"
+                                class="btn-recompensa"
+                                th:attr="data-logro5partidas=${usuario.logro5partidas},
+                     data-logro2manos=${usuario.logroGanar2Manos},
+                     data-recompensa-reclamada=${usuario.recompensaReclamada}">
+                            Reclamar recompensa $1000
+                        </button>
+                    </form>
                 </ul>
             </div>
 
@@ -97,6 +128,12 @@
     <img th:src="@{/resources/core/images/logo.png}" alt="logo">
     <p>© TODOS LOS DERECHOS RESERVADOS</p>
 </footer>
+
+<script th:inline="javascript">
+    const imgCuadrado = /*[[@{/resources/core/images/cuadrado.png}]]*/ "";
+    const imgCheck = /*[[@{/resources/core/images/ic--twotone-check.png}]]*/ "";
+</script>
+
 <script th:src="@{/resources/core/js/perfil.js}"></script>
 <script th:src="@{/js/popupCofre.js}"></script>
 </body>
