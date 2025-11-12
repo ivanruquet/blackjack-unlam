@@ -1,8 +1,10 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.RepositorioUsuario;
 import com.tallerwebi.dominio.ServicioLogin;
 import com.tallerwebi.dominio.ServicioUsuario;
 import com.tallerwebi.dominio.Usuario;
+import com.tallerwebi.infraestructura.RepositorioUsuarioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 @Controller
 public class ControladorPerfil {
     private final ServicioLogin servicioLogin;
     private final ServicioUsuario servicioUsuario;
+    @Autowired
+    private RepositorioUsuarioImpl repositorioUsuario;
 
     @Autowired
     public ControladorPerfil(ServicioLogin servicioLogin, ServicioUsuario servicioUsuario) {
@@ -30,7 +35,7 @@ public class ControladorPerfil {
             return new ModelAndView("redirect:/login");
         }
 
-        Usuario usuarioActualizado = servicioLogin.buscarPorEmail(usuarioSesion.getEmail());
+        Usuario usuarioActualizado = servicioUsuario.buscarUsuario(usuarioSesion.getEmail());
         if (usuarioActualizado == null) {
             session.invalidate();
             return new ModelAndView("redirect:/login");
@@ -64,4 +69,42 @@ public class ControladorPerfil {
         session.invalidate();
         return "redirect:/home";
     }
+
+
+
+    @PostMapping("/reclamar-recompensa")
+    @Transactional
+    public String reclamarRecompensa(HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        if (usuario != null &&
+                Boolean.TRUE.equals(usuario.getLogro5partidas()) &&
+                Boolean.TRUE.equals(usuario.getLogroGanar2Manos())) {
+
+            usuario.setSaldo(usuario.getSaldo() + 1000);
+
+            usuario.setPartidasMeta(usuario.getPartidasMeta() * 2);
+            usuario.setManosMeta(usuario.getManosMeta() * 2);
+
+            usuario.setLogro5partidas(false);
+            usuario.setLogroGanar2Manos(false);
+
+            usuario.setRecompensaReclamada(true);
+
+            repositorioUsuario.actualizar(usuario);
+        }
+
+        session.setAttribute("usuario", usuario);
+        return "redirect:/perfil";
+    }
+
+
+
+
+
+
+
+
+
+
 }
