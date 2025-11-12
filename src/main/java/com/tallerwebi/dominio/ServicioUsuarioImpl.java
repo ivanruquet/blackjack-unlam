@@ -94,11 +94,11 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
     @Override
     public void otorgarRecompensaDiaria(Usuario usuario) {
         LocalDate hoy = LocalDate.now();
-        LocalDate ultimoIngreso = usuario.getLastLoginDate();
+        LocalDate ultimoIngreso = usuario.getUltimoIngreso();
 
         if (ultimoIngreso == null || !ultimoIngreso.isEqual(hoy)) {
             usuario.setSaldo((int) (usuario.getSaldo() + RECOMPENSA_DIARIA));
-            usuario.setLastLoginDate(hoy);
+            usuario.setUltimoIngreso(hoy);
         }
 
         if (ultimoIngreso != null && ultimoIngreso.plusDays(1).isEqual(hoy)) {

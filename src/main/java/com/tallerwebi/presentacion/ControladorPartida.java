@@ -167,11 +167,9 @@ public class ControladorPartida {
         servicioUsuario.registrarResultado(partida.getJugador().getUsuario(), mensajeResultado);
 
         Usuario actualizado =  partida.getJugador().getUsuario();
-
-        //facu
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         servicioUsuario.actualizarLogros(usuario);
-        //
+
 
         session.setAttribute("usuario", actualizado);
         modelo.addAttribute("usuario",actualizado);

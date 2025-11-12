@@ -20,17 +20,13 @@ public class Usuario {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
     private String username;
-
     private Integer partidasTotales=0;
     private Integer partidasGanadas=0;
     private Integer partidasPerdidas=0;
-    private LocalDate lastLoginDate;
+    private LocalDate ultimoIngreso;
     private Integer racha;
-
     private String rol;
     private Boolean aceptoTerminos;
-
-    //
     private Integer partidasJugadas = 0;
     private Boolean logro5partidas = false;
     private Integer manosGanadas = 0;
@@ -55,10 +51,12 @@ public class Usuario {
         this.partidasPerdidas = 0;
     }
 
+    public Boolean getAceptoTerminos() { return aceptoTerminos; }
+    public void setAceptoTerminos(Boolean aceptoTerminos) { this.aceptoTerminos = aceptoTerminos; }
     public Integer getRacha() { return racha; }
     public void setRacha(Integer racha) { this.racha = racha; }
-    public LocalDate getLastLoginDate() { return lastLoginDate; }
-    public void setLastLoginDate(LocalDate lastLoginDate) { this.lastLoginDate = lastLoginDate; }
+    public LocalDate getUltimoIngreso() { return ultimoIngreso; }
+    public void setUltimoIngreso(LocalDate ultimoIngreso) { this.ultimoIngreso = ultimoIngreso; }
     public Integer getSaldo() { return saldo; }
     public void setSaldo(Integer saldo) { this.saldo = saldo; }
     public Long getId() {
@@ -94,22 +92,15 @@ public class Usuario {
     public void setPartidasGanadas(Integer partidasGanadas) {this.partidasGanadas = partidasGanadas;}
     public Integer getPartidasPerdidas() {return partidasPerdidas;}
     public void setPartidasPerdidas(Integer partidasPerdidas) {this.partidasPerdidas = partidasPerdidas;}
-
-
-
-
     public Integer getPartidasJugadas() {
         return partidasJugadas;
     }
-
     public void setPartidasJugadas(Integer partidasJugadas) {
         this.partidasJugadas = partidasJugadas;
     }
-
     public Boolean getLogro5partidas() {
         return logro5partidas;
     }
-
     public void setLogro5partidas(Boolean logro5partidas) {
         this.logro5partidas = logro5partidas;
     }
