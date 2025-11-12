@@ -76,7 +76,6 @@ public class HibernateConfig {
 public DataSource dataSource() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-    // Cada test tendrá una base diferente usando UUID
     String dbName = "db_" + java.util.UUID.randomUUID();
 
     dataSource.setDriverClassName("org.hsqldb.jdbcDriver");

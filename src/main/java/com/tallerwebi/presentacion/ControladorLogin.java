@@ -1,6 +1,8 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioLogin;
+import com.tallerwebi.dominio.ServicioUsuario;
+import com.tallerwebi.dominio.ServicioUsuarioImpl;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 public class ControladorLogin {
 
     private ServicioLogin servicioLogin;
+    private ServicioUsuario servicioUsuario;
 
     @Autowired
-    public ControladorLogin(ServicioLogin servicioLogin) {
+    public ControladorLogin(ServicioLogin servicioLogin, ServicioUsuario servicioUsuario) {
         this.servicioLogin = servicioLogin;
+        this.servicioUsuario = servicioUsuario;
     }
 
     @RequestMapping("/login")
@@ -34,16 +38,15 @@ public class ControladorLogin {
     @RequestMapping(path = "/validar-login", method = RequestMethod.POST)
     public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLogin datosLogin, HttpServletRequest request) {
         ModelMap model = new ModelMap();
-
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
             request.getSession().setAttribute("usuario", usuarioBuscado);
+            servicioUsuario.registrarIngreso(usuarioBuscado.getId());
             return new ModelAndView("redirect:/sala");
-        } else {
-            model.put("error", "Usuario o clave incorrecta");
         }
-        return new ModelAndView("login", model);
-    }
+        else { model.put("error", "Usuario o clave incorrecta");
+        }
+        return new ModelAndView("login", model); }
 
     @RequestMapping(path = "/registrarse", method = RequestMethod.POST)
     public ModelAndView registrarme(@ModelAttribute("usuario") Usuario usuario) {

@@ -50,8 +50,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     }
 
 
-
-    @Override
+        @Override
     public Usuario buscarPorId(Long userId) {
         final Session session = sessionFactory.getCurrentSession();
         return (Usuario) session.createCriteria(Usuario.class)
@@ -64,4 +63,11 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
         sessionFactory.getCurrentSession().merge(usuario);
     }
 
+//    @Override public Usuario buscarPorUsernameYPassword(String username, String password) {
+//        final Session session = sessionFactory.getCurrentSession();
+//        return (Usuario) session.createCriteria(Usuario.class)
+//                .add(Restrictions.eq("username", username))
+//                .add(Restrictions.eq("password", password))
+//                .uniqueResult();
+//    }
 }
