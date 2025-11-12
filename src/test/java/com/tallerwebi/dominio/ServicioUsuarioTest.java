@@ -54,7 +54,7 @@ public class ServicioUsuarioTest {
     private Usuario givenUsuarioQueNoIngresoHoy() {
         usuario1.setSaldo(0);
         usuario1.setRacha(0);
-        usuario1.setLastLoginDate(LocalDate.now().minusDays(1));
+        usuario1.setUltimoIngreso(LocalDate.now().minusDays(1));
         return usuario1;
     }
 
@@ -65,7 +65,7 @@ public class ServicioUsuarioTest {
 
     private void thenSeOtorgaRecompensaYSeActualizaFecha(Usuario usuario) {
         assertEquals((int)RECOMPENSA_DIARIA, usuario.getSaldo());
-        assertEquals(LocalDate.now(), usuario.getLastLoginDate());
+        assertEquals(LocalDate.now(), usuario.getUltimoIngreso());
         assertEquals(1, usuario.getRacha());
     }
 
@@ -79,7 +79,7 @@ public class ServicioUsuarioTest {
     private Usuario givenUsuarioQueYaIngresoHoy() {
         usuario1.setSaldo(500);
         usuario1.setRacha(1);
-        usuario1.setLastLoginDate(LocalDate.now());
+        usuario1.setUltimoIngreso(LocalDate.now());
         when(repositorioUsuario.buscarPorId(usuario1.getId())).thenReturn(usuario1);
         return usuario1;
     }

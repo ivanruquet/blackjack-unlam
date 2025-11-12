@@ -506,37 +506,25 @@ public class ServicioPartidaImpl implements ServicioPartida {
         @Override
         public String resultadoDeLaPartida (Partida partida, Integer puntosCrupier, Integer puntosJugador){
             if (puntosJugador > 21) {
-
                 partida.setResultadoPartida(ResultadoPartida.PERDIO);
-
-
                 servicioUsuario.actualizarManosGanadas(partida.getJugador().getUsuario(), false);
-
                 return "Resultado: Superaste los 21, Crupier gana";
             }
             if (puntosCrupier > 21) {
                 realizarPagoDeApuesta(partida, 2.0);
-  partida.setResultadoPartida(ResultadoPartida.GANO);
-
-
+                partida.setResultadoPartida(ResultadoPartida.GANO);
                 servicioUsuario.actualizarManosGanadas(partida.getJugador().getUsuario(), true);
-
                 return "Resultado: El crupier se paso de 21, Jugador gana";
             }
             if (puntosJugador > puntosCrupier) {
                 partida.setResultadoPartida(ResultadoPartida.GANO);
                 realizarPagoDeApuesta(partida, 2.0);
-
                 servicioUsuario.actualizarManosGanadas(partida.getJugador().getUsuario(), true);
                 return "Resultado: Jugador gana";
             }
             if (puntosCrupier > puntosJugador) {
-
                 partida.setResultadoPartida(ResultadoPartida.PERDIO);
-
-
                 servicioUsuario.actualizarManosGanadas(partida.getJugador().getUsuario(), false);
-
                 return "Resultado: Crupier gana";
             }
             realizarPagoDeApuesta(partida, 1.0);
@@ -582,7 +570,9 @@ public class ServicioPartidaImpl implements ServicioPartida {
     public String verficarPuntaje(Partida partida, int puntajeJugador) {
             String mensaje= "Superaste los 21, el crupier gana.";
             if(puntajeJugador>21){
-              bloquearBotones(partida);
+               bloquearBotones(partida);
+                partida.setEstadoPartida(EstadoPartida.INACTIVA);
+                repositorioPartida.guardar(partida);
                return mensaje;
             }
         return null ;
