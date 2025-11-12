@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,12 +25,13 @@ public class ControladorPartida {
     private String deckId;
 
     @Autowired
-    public ControladorPartida(ServicioDeckOfCards servicioDeck,ServicioPartida servicioPartida, ServicioUsuario servicioUsuario) {
+    public ControladorPartida(ServicioDeckOfCards servicioDeck, ServicioPartida servicioPartida, ServicioUsuario servicioUsuario) {
         this.servicioDeck = servicioDeck;
         this.servicioPartida = servicioPartida;
         this.servicioUsuario = servicioUsuario;
 
     }
+
     public ControladorPartida(ServicioPartida servicioPartida) {
         this.servicioPartida = servicioPartida;
     }
@@ -40,7 +42,6 @@ public class ControladorPartida {
         ModelMap modelo = new ModelMap();
         return new ModelAndView("juegoConCrupier", modelo);
     }
-
 
     @PostMapping("/reset")
     public ModelAndView resetearPartida(HttpServletRequest request) {
@@ -57,7 +58,6 @@ public class ControladorPartida {
     public ModelAndView comenzarPartida(HttpServletRequest request)
             throws PartidaActivaNoEnApuestaException, PartidaNoCreadaException {
         HttpSession session = request.getSession();
-       // Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
         Partida partida = (Partida) session.getAttribute("partida");
         Usuario u = servicioUsuario.buscarUsuario(partida.getJugador().getUsuario().getEmail());
 
@@ -75,7 +75,6 @@ public class ControladorPartida {
         ModelAndView mav = new ModelAndView("juegoConCrupier");
         mav.addObject("partida", partida);
         mav.addObject("jugador", partida.getJugador());
-      //  mav.addObject("usuario", usuario);
         mav.addObject("usuario", u);
         mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
         mav.addObject("dto", dto);

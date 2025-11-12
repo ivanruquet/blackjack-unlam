@@ -23,6 +23,8 @@ public class Usuario {
     private Integer partidasTotales=0;
     private Integer partidasGanadas=0;
     private Integer partidasPerdidas=0;
+    private LocalDate lastLoginDate;
+    private Integer racha;
 
     public Usuario(){
 
@@ -39,7 +41,10 @@ public class Usuario {
         this.partidasPerdidas = 0;
     }
 
-
+    public Integer getRacha() { return racha; }
+    public void setRacha(Integer racha) { this.racha = racha; }
+    public LocalDate getLastLoginDate() { return lastLoginDate; }
+    public void setLastLoginDate(LocalDate lastLoginDate) { this.lastLoginDate = lastLoginDate; }
     public Integer getSaldo() { return saldo; }
     public void setSaldo(Integer saldo) { this.saldo = saldo; }
     public Long getId() {
