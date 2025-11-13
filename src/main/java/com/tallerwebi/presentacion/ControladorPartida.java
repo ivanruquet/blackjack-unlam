@@ -40,8 +40,13 @@ public class ControladorPartida {
     @RequestMapping("/juegoConCrupier")
     public ModelAndView iraJuego(HttpServletRequest request) {
         ModelMap modelo = new ModelMap();
+        modelo.addAttribute("dto", new ComienzoCartasDTO());
+        modelo.addAttribute("partida", new Partida());
+        modelo.addAttribute("apuesta", 0);
         return new ModelAndView("juegoConCrupier", modelo);
     }
+
+
 
     @PostMapping("/reset")
     public ModelAndView resetearPartida(HttpServletRequest request) {

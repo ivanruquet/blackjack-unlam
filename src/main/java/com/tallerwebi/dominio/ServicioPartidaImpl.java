@@ -342,23 +342,30 @@ public class ServicioPartidaImpl implements ServicioPartida {
         }
 
 
-        @Override
-        public void resetearPartida (Usuario usuario){
+    @Override
+    public void resetearPartida(Usuario usuario) {
+        List<Partida> partidasActivas = repositorioPartida.buscarPartidaActiva(usuario);
+        if (!partidasActivas.isEmpty()) {
+            Partida partida = partidasActivas.get(0);
 
-            List<Partida> partidasActivas = repositorioPartida.buscarPartidaActiva(usuario);
-            if (!partidasActivas.isEmpty()) {
+            //valores reiniciado
+            partida.setApuesta(0);
+            partida.setBotonEmpezar(false);
+            partida.setBotonesDesicionHabilitados(false);
+            partida.setFichasHabilitadas(true);
+            partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
+            partida.setEstadoPartida(EstadoPartida.ACTIVA);
+            partida.setResultadoPartida(null);
+            partida.setManoDividida(false);
+            partida.setMano1(null);
+            partida.setMano2(null);
 
-                Partida partida = partidasActivas.get(0);
-                partida.setApuesta(0);
-                partida.cambiarEstadoDeJuego(EstadoDeJuego.ABANDONADO);
-                partida.setEstadoPartida(EstadoPartida.INACTIVA);
-
-                repositorioPartida.guardar(partida);
-            }
-
+            repositorioPartida.guardar(partida);
         }
+    }
 
-        @Override
+
+    @Override
         public void validarPartida (Usuario usuario,int monto) throws ApuestaInvalidaException, SaldoInsuficiente {
             if (monto <= 0) {
                 throw new ApuestaInvalidaException("El monto debe ser mayor a 0");
