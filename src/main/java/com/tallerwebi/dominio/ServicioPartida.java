@@ -34,6 +34,6 @@ public interface ServicioPartida {
     String determinarResultado(Partida partida, ComienzoCartasDTO dto);
     String determinarResultadoDividido(Partida partida);
     void logicaBotonDividir(Partida partida, List<Map<String, Object>> cartasJugador, ComienzoCartasDTO dto);
-    Map<String, Object> entregarCartaAlCrupier(Partida partida, List<Map<String, Object>> cartasDealer, String deckId);
+    void entregarCartaAlCrupier(Partida partida, List<Map<String, Object>> cartasDealer, String deckId);
     String verficarPuntaje(Partida partida, int puntajeJugador);
 }

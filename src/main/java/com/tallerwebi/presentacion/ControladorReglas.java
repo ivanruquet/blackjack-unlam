@@ -14,6 +14,4 @@ public class ControladorReglas {
         return new ModelAndView("reglas", modelo);
     }
 
-
-
 }

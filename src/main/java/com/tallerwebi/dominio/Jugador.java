@@ -11,21 +11,16 @@ public class Jugador {
     private Long id;
     @ManyToOne
     private Usuario usuario;
-    private Double saldo = 1000.0;
     private Integer puntaje = 0;
     private String mensajeEstrategia;
 
     public Integer getPuntaje() { return puntaje; }
+
     public void setPuntaje(Integer puntaje) { this.puntaje = puntaje; }
 
     public String getMensajeEstrategia() { return mensajeEstrategia; }
+
     public void setMensajeEstrategia(String mensajeEstrategia) { this.mensajeEstrategia = mensajeEstrategia; }
-
-    public void restarSaldo(Double monto) { this.saldo -= monto; }
-
-    public Double getSaldo() { return saldo;}
-
-    public void setSaldo(Double saldo) { this.saldo = saldo;}
 
     public void setId(Long id) {
         this.id = id;

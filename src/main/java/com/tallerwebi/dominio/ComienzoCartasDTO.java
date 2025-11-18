@@ -46,18 +46,23 @@ public class ComienzoCartasDTO {
     public Boolean getJugadorSePlanto() {return jugadorSePlanto;}
 
     public void setJugadorSePlanto(Boolean jugadorSePlanto) { this.jugadorSePlanto = jugadorSePlanto;}
+
     public String getDeckId() {
         return this.deckId;
     }
+
     public List<Map<String, Object>> getCartasJugador() {
         return this.cartasJugador;
     }
+
     public List<Map<String, Object>> getCartasDealer() {
         return this.cartasDealer;
     }
+
     public int getPuntajeJugador() {
         return this.puntajeJugador;
     }
+
     public int getPuntajeDealer() {
         return this.puntajeDealer;
     }

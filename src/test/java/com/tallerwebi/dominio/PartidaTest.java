@@ -50,9 +50,6 @@ public class PartidaTest {
     }
 
 
-
-
-
 //----------------------------------------------------------------
 
     private void whenCambioElEstadoDeLaPartida(EstadoDeJuego estadoJuego) {
