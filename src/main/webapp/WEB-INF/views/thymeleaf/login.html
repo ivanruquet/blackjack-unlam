@@ -165,7 +165,27 @@
             padding-top: 5px;
             font-weight: normal;
         }
+        footer{
+            width: 100%;
+            height: 170px;
+            background-color: black;
+            color: white;
+            font-family: 'poppins';
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
+
+        #logoFooter{
+            border-right: 1px solid white;
+            padding-right: 5%;
+            width: 20%;
+        }
+        #parrafoFooter{
+            padding-left: 5%;
+        }
 
     </style>
 </head>
@@ -223,12 +243,11 @@
         </div>
     </div>
 
-    <div id="pie-pagina">
-        <div id="elementos-pie">
-            <img th:src="@{/resources/core/images/logo.png}" alt="" id="logo-imagen-pie">
-            <h4>@ Todos los derechos reservados</h4>
-        </div>
-    </div>
+    <footer>
+        <img id="logoFooter" th:src="@{/resources/core/images/logo.png}" alt="logoFooter">
+
+        <p id="parrafoFooter">© Todos los derechos reservados</p>
+    </footer>
 
 </div>
 
