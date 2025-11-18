@@ -92,7 +92,6 @@ public class ControladorDeckTest {
         return redibujarVista();
     }
 
-    // posiblemente este metodo, lo tengamos que mover a la clase Partida
     private int calcularPuntaje(List<Map<String, Object>> cartas) {
         int total = 0;
         int ases = 0;
@@ -112,7 +111,6 @@ public class ControladorDeckTest {
                     total += Integer.parseInt(valor);
             }
         }
-        // Si se pasa de 21, los Ases valen 1
         while (total > 21 && ases > 0) {
             total -= 10;
             ases--;

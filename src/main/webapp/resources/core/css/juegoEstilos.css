@@ -83,16 +83,6 @@ color:white;
 }
 
 .score {
-    /*font-family: 'Poppins';*/
-    /*color: white;*/
-    /*font-weight: 600;*/
-    /*font-size: 24px;*/
-    /*background-color: #360D0D;*/
-    /*border-radius: 3px;*/
-    /*width: 40%;*/
-    /*display: flex;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
     margin-top: 10px;
     font-family: 'Poppins';
     color: white;
@@ -147,6 +137,7 @@ color:white;
     justify-content: center;
     border-radius: 20px;
     margin-bottom: 4%;
+    margin-top: 3%;
 }
 
 #valor-apuesta {
