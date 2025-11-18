@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tallerwebi.dominio.ServicioDeckOfCards;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.*;
 
 @Service
@@ -26,6 +27,7 @@ public class ServicioDeckOfCardsImpl implements ServicioDeckOfCards {
         }
     }
 
+
     @Override
     public List<Map<String, Object>> sacarCartas(String deckId, int cantidad) {
         String url = "https://deckofcardsapi.com/api/deck/" + deckId + "/draw/?count=" + cantidad;
@@ -46,4 +48,20 @@ public class ServicioDeckOfCardsImpl implements ServicioDeckOfCards {
             throw new RuntimeException("Error al parsear JSON", e);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
