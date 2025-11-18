@@ -29,8 +29,10 @@ public class Usuario {
     private Boolean aceptoTerminos;
     private Integer partidasJugadas = 0;
     private Boolean logro5partidas = false;
+
     private Integer manosGanadas = 0;
     private Boolean logroGanar2Manos = false;
+
     private Boolean recompensaReclamada = false;
     private Integer partidasMeta = 5;
     private Integer manosMeta = 2;

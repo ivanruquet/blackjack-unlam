@@ -5,9 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Black Jack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 </head>
-
 
 <body th:style="'background-image: url(' + @{/resources/core/images/background.png} + '); background-size: cover;'">
 <nav>
@@ -17,16 +22,11 @@
         </a>
     </div>
 
-    <div class="menu-icono-perfil">
-            <button class="IconoPerfil">
-                <img th:src="@{/resources/core/images/icono-perfil.png}" alt="Icono perfil">
-            </button>
-    </div>
 
 </nav>
 
 <div class="content"><h2>ÚNETE A LA MESA Y JUEGA AHORA</h2>
-    <h1>BLACK JACK ONLINE: APUESTA, GANA Y DISFRUTA</h1>
+    <h1 id="titulo">BLACK JACK ONLINE: APUESTA, GANA Y DISFRUTA</h1>
     <div class="buttons">
         <a th:href="@{/registro}" class="btn">Registrarse</a>
         <a th:href="@{/login}" class="btn">Iniciar Sesión </a>

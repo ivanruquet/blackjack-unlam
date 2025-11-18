@@ -34,7 +34,15 @@ public class Partida {
     private ResultadoPartida resultadoPartida;
 
 
-    public Partida(){}
+    public Partida(){
+        this.botonEmpezar = true;
+        this.fichasHabilitadas = true;
+        this.botonesDesicionHabilitados = false;
+        this.botonEstrategia = false;
+        this.manoDividida = false;
+        this.apuesta = 0;
+
+    }
 
     public void setGanador(String ganador) {this.ganador = ganador;}
 
