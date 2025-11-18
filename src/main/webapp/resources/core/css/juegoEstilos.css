@@ -313,10 +313,6 @@ color: white;
     to { transform: translateY(0); opacity: 1; }
 }
 
-
-
-
-
 .placeholder-carta {
     display: flex;
     gap: 10px;

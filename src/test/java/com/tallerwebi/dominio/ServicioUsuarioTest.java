@@ -16,13 +16,8 @@ public class ServicioUsuarioTest {
 
     @Test
     public void queSePuedaActualizarElNombreYApellidoDelUsuario() {
-        // Given
         Usuario usuario = givenExisteUsuarioConSusDatos(usuario1);
-
-        // When
         whenActualizoLosDatos(usuario);
-
-        // Then
         thenAparecenModificadosEnElPerfil(usuario);
     }
 
