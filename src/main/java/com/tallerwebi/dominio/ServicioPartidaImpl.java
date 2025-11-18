@@ -552,10 +552,7 @@ public class ServicioPartidaImpl implements ServicioPartida {
             return nuevoSaldo;
         }
 
-        public void setServicioDeckOfCards (ServicioDeckOfCards servicioDeckOfCards){
-            this.servicioDeckOfCards = servicioDeckOfCards;
-        }
-
+        //void
         public Map<String, Object> entregarCartaAlCrupier (Partida
         partida, List < Map < String, Object >> cartasDealer, String deckId){
             List<Map<String, Object>> nuevaCarta = servicioDeckOfCards.sacarCartas(deckId, 1);
@@ -577,14 +574,16 @@ public class ServicioPartidaImpl implements ServicioPartida {
     public String verficarPuntaje(Partida partida, int puntajeJugador) {
             String mensaje= "Superaste los 21, el crupier gana.";
             if(puntajeJugador>21){
-               bloquearBotones(partida);
+                bloquearBotones(partida);
                 partida.setEstadoPartida(EstadoPartida.INACTIVA);
                 repositorioPartida.guardar(partida);
-               return mensaje;
+                return mensaje;
             }
         return null ;
     }
 
-
+    public void setServicioDeckOfCards (ServicioDeckOfCards servicioDeckOfCards){
+        this.servicioDeckOfCards = servicioDeckOfCards;
+    }
 
 }

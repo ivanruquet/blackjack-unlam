@@ -165,7 +165,7 @@ public class ControladorPartida {
         String deckId = (String) session.getAttribute("deckId");
         ModelMap modelo = new ModelMap();
 
-        Map<String, Object> cartaMano2= servicioPartida.entregarCartaAlCrupier(partida, cartasDealer, deckId);
+       servicioPartida.entregarCartaAlCrupier(partida, cartasDealer, deckId);
         dto.setPuntajeDealer(partida.getCrupier().getPuntaje());
 
         String mensajeResultado = servicioPartida.determinarResultado(partida, dto);
