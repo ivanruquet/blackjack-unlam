@@ -47,7 +47,6 @@ public class ControladorPartida {
     }
 
 
-
     @PostMapping("/reset")
     public ModelAndView resetearPartida(HttpServletRequest request) {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
@@ -94,9 +93,8 @@ public class ControladorPartida {
         mav.addObject("usuario", u);
         mav.addObject("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
         mav.addObject("dto", dto);
-        return mav ;
+        return mav;
     }
-
 
 
     @PostMapping("/apostar")
@@ -129,7 +127,6 @@ public class ControladorPartida {
     }
 
 
-
     @PostMapping("/mostrarEstrategia")
     public ModelAndView mostrarEstrategia(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -150,7 +147,6 @@ public class ControladorPartida {
     }
 
 
-
     @PostMapping("/doblarApuesta")
     public ModelAndView doblarApuesta(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -169,7 +165,7 @@ public class ControladorPartida {
 
 
     @PostMapping("/pararse")
-    public ModelAndView pararse(HttpServletRequest request){
+    public ModelAndView pararse(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
         Partida partida = (Partida) request.getSession().getAttribute("partida");
@@ -179,10 +175,13 @@ public class ControladorPartida {
         String deckId = (String) session.getAttribute("deckId");
         ModelMap modelo = new ModelMap();
 
+
         String mensajeResultado = servicioPartida.gestionarTurnoPararse(partida, dto, cartasDealer, cartasJugador, deckId);
+
 
         Usuario usuario = partida.getJugador().getUsuario();
         session.setAttribute("usuario", usuario);
+
 
         modelo.addAttribute("usuario", usuario);
         modelo.addAttribute("mensajeResultado", mensajeResultado);
@@ -196,7 +195,7 @@ public class ControladorPartida {
     }
 
     @PostMapping("/rendirse")
-    public ModelAndView rendirse(HttpServletRequest request){
+    public ModelAndView rendirse(HttpServletRequest request) {
         Partida partida = (Partida) request.getSession().getAttribute("partida");
         servicioPartida.rendirse(partida, partida.getJugador());
         request.getSession().removeAttribute("partidaActiva");
@@ -214,7 +213,7 @@ public class ControladorPartida {
         Map<String, Object> cartaNueva = servicioPartida.pedirCarta(partida.getJugador(), cartasJugador, deckId);
 
         int puntajeJugador = servicioPartida.calcularPuntaje(cartasJugador);
-        String mensaje= servicioPartida.verficarPuntaje(partida, puntajeJugador);
+        String mensaje = servicioPartida.verficarPuntaje(partida, puntajeJugador);
         dto.setPuntajeJugador(puntajeJugador);
         partida.getJugador().setPuntaje(puntajeJugador);
 

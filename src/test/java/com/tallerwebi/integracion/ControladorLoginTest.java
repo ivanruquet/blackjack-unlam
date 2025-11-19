@@ -49,7 +49,6 @@ public class ControladorLoginTest {
 	public void debeRetornarLaPaginaLoginCuandoSeNavegaALaRaiz() throws Exception {
 
 		MvcResult result = this.mockMvc.perform(get("/"))
-				/*.andDo(print())*/
 				.andExpect(status().is3xxRedirection())
 				.andReturn();
 

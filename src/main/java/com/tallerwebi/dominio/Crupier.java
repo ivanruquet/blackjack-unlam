@@ -15,6 +15,7 @@ public class Crupier {
     private Integer puntaje;
 
     public Integer getPuntaje() { return puntaje; }
+
     public void setPuntaje(Integer puntaje) { this.puntaje = puntaje; }
 
 }

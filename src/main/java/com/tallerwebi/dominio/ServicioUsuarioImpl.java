@@ -51,34 +51,33 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         if (usuario.getPartidasGanadas() == null) usuario.setPartidasGanadas(0);
         if (usuario.getPartidasPerdidas() == null) usuario.setPartidasPerdidas(0);
         usuario.setPartidasTotales(usuario.getPartidasTotales() + 1);
-        //repositorioUsuario.actualizar(usuario);
-        if (resultado.equalsIgnoreCase("Resultado: Jugador gana") || resultado.equalsIgnoreCase("Resultado: El crupier se paso de 21, Jugador gana")
-        || resultado.equalsIgnoreCase("Ganó mano 1. ") || resultado.equalsIgnoreCase("Ganó mano 2. ")) {
+
+
+        if (resultado.equalsIgnoreCase("Resultado: Jugador gana") || resultado.equalsIgnoreCase("Resultado: El crupier se paso de 21, Jugador gana") || resultado.equalsIgnoreCase("Ganó mano 1. ") || resultado.equalsIgnoreCase("Ganó mano 2. ")) {
             usuario.setPartidasGanadas(usuario.getPartidasGanadas() + 1);
-           // repositorioUsuario.actualizar(usuario);
-        } else if (resultado.equalsIgnoreCase("Resultado: Crupier gana") || resultado.equalsIgnoreCase("Resultado: Superaste los 21, Crupier gana")
-                || resultado.equalsIgnoreCase("Perdió mano 1. ") || resultado.equalsIgnoreCase("Perdió mano 2. ")) {
+
+        } else if (resultado.equalsIgnoreCase("Resultado: Crupier gana") || resultado.equalsIgnoreCase("Resultado: Superaste los 21, Crupier gana") || resultado.equalsIgnoreCase("Perdió mano 1. ") || resultado.equalsIgnoreCase("Perdió mano 2. ")) {
+
             usuario.setPartidasPerdidas(usuario.getPartidasPerdidas() + 1);
-           // repositorioUsuario.actualizar(usuario);
         }
     }
 
 
-            @Override
-            public void actualizarLogros (Usuario usuario){
+    @Override
+    public void actualizarLogros(Usuario usuario) {
 
-                if (usuario.getPartidasJugadas() == null) {
-                    usuario.setPartidasJugadas(0);
-                }
+        if (usuario.getPartidasJugadas() == null) {
+            usuario.setPartidasJugadas(0);
+        }
 
-                usuario.setPartidasJugadas(usuario.getPartidasJugadas() + 1);
+        usuario.setPartidasJugadas(usuario.getPartidasJugadas() + 1);
 
 
-                if (usuario.getPartidasJugadas() >= usuario.getPartidasMeta()) {
-                    usuario.setLogro5partidas(true);
-                    usuario.setRecompensaReclamada(false);
+        if (usuario.getPartidasJugadas() >= usuario.getPartidasMeta()) {
+            usuario.setLogro5partidas(true);
+            usuario.setRecompensaReclamada(false);
 
-                }
+        }
 
        // repositorioUsuario.actualizar(usuario);
     }
@@ -107,37 +106,36 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         } else {
             usuario.setRacha(1);
         }
-                repositorioUsuario.actualizar(usuario);
+        repositorioUsuario.actualizar(usuario);
+    }
+
+
+    @Override
+    public void actualizarManosGanadas(Usuario usuario, Boolean gano) {
+
+        Usuario usuarioDB = repositorioUsuario.buscar(usuario.getEmail());
+
+        if (gano) {
+            if (usuarioDB.getManosGanadas() == null) {
+                usuarioDB.setManosGanadas(0);
             }
 
+            usuarioDB.setManosGanadas(usuarioDB.getManosGanadas() + 1);
 
 
-            @Override
-            public void actualizarManosGanadas (Usuario usuario, Boolean gano){
-
-                Usuario usuarioDB = repositorioUsuario.buscar(usuario.getEmail());
-
-                if (gano) {
-                    if (usuarioDB.getManosGanadas() == null) {
-                        usuarioDB.setManosGanadas(0);
-                    }
-
-                    usuarioDB.setManosGanadas(usuarioDB.getManosGanadas() + 1);
-
-
-                    if (usuarioDB.getManosGanadas() >= usuarioDB.getManosMeta()) {
-                        usuarioDB.setLogroGanar2Manos(true);
-                        usuarioDB.setRecompensaReclamada(false);
-                    }
-                }
-
-                repositorioUsuario.actualizar(usuarioDB);
-
-                usuario.setManosGanadas(usuarioDB.getManosGanadas());
-                usuario.setLogroGanar2Manos(usuarioDB.getLogroGanar2Manos());
+            if (usuarioDB.getManosGanadas() >= usuarioDB.getManosMeta()) {
+                usuarioDB.setLogroGanar2Manos(true);
+                usuarioDB.setRecompensaReclamada(false);
             }
+        }
 
-             }
+        repositorioUsuario.actualizar(usuarioDB);
+
+        usuario.setManosGanadas(usuarioDB.getManosGanadas());
+        usuario.setLogroGanar2Manos(usuarioDB.getLogroGanar2Manos());
+    }
+
+}
 
 
 

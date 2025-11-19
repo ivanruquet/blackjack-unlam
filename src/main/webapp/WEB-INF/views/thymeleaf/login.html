@@ -218,12 +218,6 @@
                     <p th:text="${error}" style="margin: 0;"></p>
                 </div>
 
-<!--                <form th:action="@{/validar-login}" th:object="${datosLogin}" method="post">-->
-<!--                    <input type="text" th:field="*{email}" placeholder="Ingrese su email...">-->
-<!--                    <input type="password" th:field="*{password}" placeholder="Ingrese su contraseña...">-->
-<!--                    <input type="submit" id="boton-ingresar" value="Ingresar">-->
-<!--                </form>-->
-
                 <form th:action="@{/validar-login}" method="post">
                     <input type="text" name="email" placeholder="Email">
                     <input type="password" name="password" placeholder="Contraseña">
@@ -231,11 +225,6 @@
                 </form>
 
                 <h4 id="subt-registro">¿Nuevo en Black Jack?</h4>
-
-<!--                <form class="botones" th:action="@{/registro}" method="get">-->
-<!--                    <button id="Abrir-cuenta" type="submit">Abrir cuenta</button>-->
-<!--                   -->
-<!--                </form>-->
                 <a id="Abrir-cuenta"  th:href="@{/registro}">
                     ABRIR CUENTA
                 </a>
