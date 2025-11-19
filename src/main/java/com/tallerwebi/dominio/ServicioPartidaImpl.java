@@ -585,18 +585,30 @@ public class ServicioPartidaImpl implements ServicioPartida {
 
             String valor1 = (String) cartasJugador.get(0).get("value");
             String valor2 = (String) cartasJugador.get(1).get("value");
+
+            String valorCarta1 = obtenerValorDeCartasEspeciales(valor1);
+            String valorCarta2 = obtenerValorDeCartasEspeciales(valor2);
+
+
             double saldo = partida.getJugador().getUsuario().getSaldo();
             double apuesta = partida.getApuesta();
 
-            if (valor1.equals(valor2) && saldo >= apuesta) {
+            if (valorCarta1.equals(valorCarta2) && saldo >= apuesta) {
                 dto.setBotonDividir(true);
             } else {
                 dto.setBotonDividir(false);
             }
         }
 
+    private String obtenerValorDeCartasEspeciales(String valor) {
+        if (valor.equals("KING") || valor.equals("QUEEN") || valor.equals("JACK")) {
+            return "10";
+        }
+        return valor;
+    }
 
-        private Integer calcularNuevoSaldo (Usuario usuario, Partida partida, Double factorDeApuesta){
+
+    private Integer calcularNuevoSaldo (Usuario usuario, Partida partida, Double factorDeApuesta){
             Integer nuevoSaldo = (int) ((Integer) usuario.getSaldo() + partida.getApuesta() * factorDeApuesta);
             return nuevoSaldo;
         }
