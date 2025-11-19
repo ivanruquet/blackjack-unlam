@@ -8,5 +8,6 @@ public interface RepositorioUsuario {
     void guardarModificaciones(Usuario usuario);
     void actualizar(Usuario usuario);
     Usuario buscarPorId(Long userId);
+
 }
 

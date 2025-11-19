@@ -52,10 +52,12 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         if (usuario.getPartidasPerdidas() == null) usuario.setPartidasPerdidas(0);
         usuario.setPartidasTotales(usuario.getPartidasTotales() + 1);
 
+
         if (resultado.equalsIgnoreCase("Resultado: Jugador gana") || resultado.equalsIgnoreCase("Resultado: El crupier se paso de 21, Jugador gana") || resultado.equalsIgnoreCase("Ganó mano 1. ") || resultado.equalsIgnoreCase("Ganó mano 2. ")) {
             usuario.setPartidasGanadas(usuario.getPartidasGanadas() + 1);
 
         } else if (resultado.equalsIgnoreCase("Resultado: Crupier gana") || resultado.equalsIgnoreCase("Resultado: Superaste los 21, Crupier gana") || resultado.equalsIgnoreCase("Perdió mano 1. ") || resultado.equalsIgnoreCase("Perdió mano 2. ")) {
+
             usuario.setPartidasPerdidas(usuario.getPartidasPerdidas() + 1);
         }
     }
@@ -77,7 +79,7 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
 
         }
 
-        repositorioUsuario.actualizar(usuario);
+       // repositorioUsuario.actualizar(usuario);
     }
 
 

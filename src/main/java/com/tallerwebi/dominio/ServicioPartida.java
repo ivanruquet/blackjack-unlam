@@ -31,9 +31,10 @@ public interface ServicioPartida {
     ComienzoCartasDTO repartoInicial(Long id);
     void bloquearBotones(Partida partida);
     void dividirPartida(Partida partida, List<Map<String, Object>> cartasJugador) throws SaldoInsuficiente, ApuestaInvalidaException;
-    String determinarResultado(Partida partida, ComienzoCartasDTO dto);
     String determinarResultadoDividido(Partida partida);
     void logicaBotonDividir(Partida partida, List<Map<String, Object>> cartasJugador, ComienzoCartasDTO dto);
-    void entregarCartaAlCrupier(Partida partida, List<Map<String, Object>> cartasDealer, String deckId);
     String verficarPuntaje(Partida partida, int puntajeJugador);
+    String determinarResultado(Partida partida, ComienzoCartasDTO dto, List<Map<String, Object>> cartasJugador);
+    String gestionarTurnoPararse( Partida partida, ComienzoCartasDTO dto, List<Map<String, Object>> cartasDealer, List<Map<String, Object>> cartasJugador, String deckId);
+    void entregarCartaAlCrupier (Partida partida, List < Map < String, Object >> cartasDealer, String deckId);
 }

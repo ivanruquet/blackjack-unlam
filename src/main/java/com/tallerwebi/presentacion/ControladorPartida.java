@@ -50,12 +50,23 @@ public class ControladorPartida {
     @PostMapping("/reset")
     public ModelAndView resetearPartida(HttpServletRequest request) {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
+        HttpSession session = request.getSession();
+        Partida partida = (Partida) session.getAttribute("partida");
 
         if (usuario != null) {
-            servicioPartida.resetearPartida(usuario);
+           servicioPartida.resetearPartida(usuario);
+           //setearla nievamete en la sesion ya que es nueva
+          //  y pasarla al modelo
+            servicioPartida.setBotonesAlCrearPartida(partida);
         }
-        return new ModelAndView("redirect:/juegoConCrupier");
+
+        ModelAndView mav = new ModelAndView("juegoConCrupier");
+       // mav.addObject("partida", partida);
+        return mav;
     }
+
+
+
 
 
     @PostMapping("/iniciar")
@@ -152,35 +163,35 @@ public class ControladorPartida {
         return new ModelAndView("juegoConCrupier", modelo);
     }
 
+
     @PostMapping("/pararse")
     public ModelAndView pararse(HttpServletRequest request) {
         HttpSession session = request.getSession();
+
         Partida partida = (Partida) request.getSession().getAttribute("partida");
         ComienzoCartasDTO dto = (ComienzoCartasDTO) session.getAttribute("dto");
         List<Map<String, Object>> cartasDealer = (List<Map<String, Object>>) session.getAttribute("cartasDealer");
+        List<Map<String, Object>> cartasJugador = (List<Map<String, Object>>) session.getAttribute("cartasJugador");
         String deckId = (String) session.getAttribute("deckId");
         ModelMap modelo = new ModelMap();
 
-        servicioPartida.entregarCartaAlCrupier(partida, cartasDealer, deckId);
-        dto.setPuntajeDealer(partida.getCrupier().getPuntaje());
 
-        String mensajeResultado = servicioPartida.determinarResultado(partida, dto);
-        servicioUsuario.registrarResultado(partida.getJugador().getUsuario(), mensajeResultado);
-
-        Usuario actualizado = partida.getJugador().getUsuario();
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        servicioUsuario.actualizarLogros(usuario);
+        String mensajeResultado = servicioPartida.gestionarTurnoPararse(partida, dto, cartasDealer, cartasJugador, deckId);
 
 
-        session.setAttribute("usuario", actualizado);
-        modelo.addAttribute("usuario", actualizado);
+        Usuario usuario = partida.getJugador().getUsuario();
+        session.setAttribute("usuario", usuario);
+
+
+        modelo.addAttribute("usuario", usuario);
         modelo.addAttribute("mensajeResultado", mensajeResultado);
         modelo.addAttribute("dto", dto);
         modelo.addAttribute("partida", partida);
-        modelo.addAttribute("apuesta", ((Partida) session.getAttribute("partida")).getApuesta());
+        modelo.addAttribute("apuesta", partida.getApuesta());
 
-        servicioPartida.bloquearBotones(partida);
         return new ModelAndView("juegoConCrupier", modelo);
+
+
     }
 
     @PostMapping("/rendirse")
