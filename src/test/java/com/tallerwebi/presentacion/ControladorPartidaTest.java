@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
+import com.tallerwebi.dominio.excepcion.PartidaActivaNoEnApuestaException;
 import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
 import com.tallerwebi.dominio.excepcion.SaldoInsuficiente;
 import org.jetbrains.annotations.NotNull;
@@ -34,13 +35,13 @@ public class ControladorPartidaTest {
 
 
     @Test
-    public void deberiaIrAlJuegoAlResetear() throws PartidaNoCreadaException {
+    public void deberiaIrAlJuegoAlResetear() throws PartidaNoCreadaException, PartidaActivaNoEnApuestaException {
 
         MockHttpServletRequest request = new MockHttpServletRequest();
 
         ModelAndView modelAndView = controladorPartida.resetearPartida(request);
 
-        assertEquals("redirect:/juegoConCrupier", modelAndView.getViewName());
+        assertEquals("juegoConCrupier", modelAndView.getViewName());
 
 }
 

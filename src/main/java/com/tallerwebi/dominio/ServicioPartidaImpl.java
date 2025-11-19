@@ -1,9 +1,6 @@
 package com.tallerwebi.dominio;
 import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
 import com.tallerwebi.dominio.excepcion.*;
-import com.tallerwebi.infraestructura.RepositorioJugadorImpl;
-import com.tallerwebi.infraestructura.RepositorioPartidaImpl;
-import com.tallerwebi.infraestructura.RepositorioUsuarioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +35,6 @@ public class ServicioPartidaImpl implements ServicioPartida {
         this.repositorioUsuario = repositorioUsuario;
     }
 
-    public void setRepositorioPartida(RepositorioPartida repositorioPartida) {
-        this.repositorioPartida = repositorioPartida;
-    }
 
     public ServicioPartidaImpl(ServicioUsuarioImpl servicioUsuario) {
         this.servicioUsuario = servicioUsuario;
@@ -345,23 +339,27 @@ public class ServicioPartidaImpl implements ServicioPartida {
     @Override
     public void resetearPartida(Usuario usuario) {
         List<Partida> partidasActivas = repositorioPartida.buscarPartidaActiva(usuario);
-        if (!partidasActivas.isEmpty()) {
-            Partida partida = partidasActivas.get(0);
-
+        Partida partida = partidasActivas.get(0);
+        if (partida != null) {
             //valores reiniciado
             partida.setApuesta(0);
             partida.setBotonEmpezar(false);
             partida.setBotonesDesicionHabilitados(false);
             partida.setFichasHabilitadas(true);
             partida.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
-            partida.setEstadoPartida(EstadoPartida.ACTIVA);
             partida.setResultadoPartida(null);
             partida.setManoDividida(false);
             partida.setMano1(null);
             partida.setMano2(null);
+            // 3. Reiniciar Puntajes del Jugador y Crupier
+            partida.getJugador().setPuntaje(0);
+            partida.getCrupier().setPuntaje(0);
 
-            repositorioPartida.guardar(partida);
+            // 4. Guardar los cambios en el repositorio
+            repositorioPartida.actualizar(partida);
+
         }
+
     }
 
 
@@ -430,7 +428,8 @@ public class ServicioPartidaImpl implements ServicioPartida {
             partida.setPuntajeMano2(calcularPuntaje(mano2));
         }
 
-        @Override
+
+    @Override
         public void logicaBotonDividir (Partida partida, List < Map < String, Object >> cartasJugador, ComienzoCartasDTO
         dto){
             if (cartasJugador == null || cartasJugador.size() != 2 || dto.getBotonDividir() == true) {
@@ -451,16 +450,17 @@ public class ServicioPartidaImpl implements ServicioPartida {
         }
 
         @Override
-        public String determinarResultado (Partida partida, ComienzoCartasDTO dto){
-            dto.setJugadorSePlanto(true);
-            int puntajeCrupier = partida.getCrupier().getPuntaje();
+    public String determinarResultado(Partida partida, ComienzoCartasDTO dto, List<Map<String, Object>> cartasJugador) {
+        int puntajeFinalJugador = calcularPuntaje(cartasJugador);
+        partida.getJugador().setPuntaje(puntajeFinalJugador);
+        int puntajeCrupier = partida.getCrupier().getPuntaje();
+        dto.setJugadorSePlanto(true);
 
-            if (partida.getManoDividida()) {
-                return determinarResultadoDividido(partida);
-            }
-
-            return resultadoDeLaPartida(partida, puntajeCrupier, partida.getJugador().getPuntaje());
+        if (partida.getManoDividida()) {
+            return determinarResultadoDividido(partida);
         }
+        return resultadoDeLaPartida(partida, puntajeCrupier, puntajeFinalJugador);
+    }
 
         public String determinarResultadoDividido (Partida partida){
             int puntajeCrupier = partida.getCrupier().getPuntaje();
@@ -556,22 +556,24 @@ public class ServicioPartidaImpl implements ServicioPartida {
             this.servicioDeckOfCards = servicioDeckOfCards;
         }
 
-        public Map<String, Object> entregarCartaAlCrupier (Partida
+        public void entregarCartaAlCrupier (Partida
         partida, List < Map < String, Object >> cartasDealer, String deckId){
+
             List<Map<String, Object>> nuevaCarta = servicioDeckOfCards.sacarCartas(deckId, 1);
             cartasDealer.add(nuevaCarta.get(0));
-
             int puntajeCrupier = calcularPuntaje(cartasDealer);
             partida.getCrupier().setPuntaje(puntajeCrupier);
+            repositorioPartida.actualizar(partida);
 
-            if (puntajeCrupier <= 16) {
-                List<Map<String, Object>> nuevasCartas = servicioDeckOfCards.sacarCartas(deckId, 1);
-                cartasDealer.add(nuevasCartas.get(0));
-                int nuevoPuntajeCrupier = calcularPuntaje(cartasDealer);
-                partida.getCrupier().setPuntaje(nuevoPuntajeCrupier);
+            while(puntajeCrupier <= 16){
+                nuevaCarta = servicioDeckOfCards.sacarCartas(deckId, 1);
+                cartasDealer.add(nuevaCarta.get(0));
+                puntajeCrupier = calcularPuntaje(cartasDealer);
+                partida.getCrupier().setPuntaje(puntajeCrupier);
+                repositorioPartida.actualizar(partida);
             }
-            return nuevaCarta.get(0);
         }
+
 
     @Override
     public String verficarPuntaje(Partida partida, int puntajeJugador) {
@@ -584,7 +586,29 @@ public class ServicioPartidaImpl implements ServicioPartida {
             }
         return null ;
     }
+    @Override
+    public String gestionarTurnoPararse(
+            Partida partida,
+            ComienzoCartasDTO dto,
+            List<Map<String, Object>> cartasDealer,
+            List<Map<String, Object>> cartasJugador,
+            String deckId
+    ) {
+        entregarCartaAlCrupier(partida, cartasDealer, deckId);
+        String mensajeResultado = determinarResultado(partida, dto, cartasJugador);
+        dto.setPuntajeDealer(partida.getCrupier().getPuntaje());
+        bloquearBotones(partida);
 
 
+        Usuario usuario = partida.getJugador().getUsuario();
+        servicioUsuario.registrarResultado(usuario, mensajeResultado);
+        servicioUsuario.actualizarLogros(usuario);
 
-}
+        repositorioPartida.actualizar(partida);
+        repositorioUsuario.actualizar(usuario);
+
+        return mensajeResultado;
+    }
+
+    }
+
