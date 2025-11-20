@@ -167,7 +167,7 @@
             </form>
 
         </div>
-
+<div class="apuesta-carta">
     <div class="mesa-apuesta">
         <div class="contenedor-mazo-fichas">
             <div class="contenedor-ficha-apuesta">
@@ -227,7 +227,7 @@
                 <div class="botones">
                     <form th:action="@{/iniciar}" method="post" id="form-apuesta">
                         <input type="hidden" name="empezar" id="inputMonto" th:value="${pozo}">
-                        <button class="btn" id="boton" type="submit"
+                        <button class="btn boton-empezar" id="boton" type="submit"
                                 th:classappend="${!partida.botonEmpezar or !partida.fichasHabilitadas} ? ' boton-deshabilitado' : ''"
                                 th:attr="disabled=${!partida.botonEmpezar or !partida.fichasHabilitadas}">Empezar partida</button>
                     </form>
@@ -280,6 +280,7 @@
                 </div>
             </div>
         </section>
+</div>
     </div>
 </main>
 
