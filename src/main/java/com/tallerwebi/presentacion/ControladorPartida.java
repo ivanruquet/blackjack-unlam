@@ -47,28 +47,6 @@ public class ControladorPartida {
     }
 
 
-    @PostMapping("/reset")
-    public ModelAndView resetearPartida(HttpServletRequest request) {
-        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-        HttpSession session = request.getSession();
-        Partida partida = (Partida) session.getAttribute("partida");
-
-        if (usuario != null) {
-           servicioPartida.resetearPartida(usuario);
-           //setearla nievamete en la sesion ya que es nueva
-          //  y pasarla al modelo
-            servicioPartida.setBotonesAlCrearPartida(partida);
-        }
-
-        ModelAndView mav = new ModelAndView("juegoConCrupier");
-       // mav.addObject("partida", partida);
-        return mav;
-    }
-
-
-
-
-
     @PostMapping("/iniciar")
     public ModelAndView comenzarPartida(HttpServletRequest request)
             throws PartidaActivaNoEnApuestaException, PartidaNoCreadaException {

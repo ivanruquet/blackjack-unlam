@@ -35,16 +35,6 @@ public class ControladorPartidaTest {
 
 
     @Test
-
-    public void deberiaIrAlJuegoAlResetear() throws PartidaNoCreadaException {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        ModelAndView modelAndView = controladorPartida.resetearPartida(request);
-        assertEquals("juegoConCrupier", modelAndView.getViewName());
-
-
-    }
-
-    @Test
     public void queAlSeleccionarFichasSuValorSeSumeEnElPozoTotal() throws ApuestaInvalidaException, SaldoInsuficiente, PartidaNoCreadaException {
         Usuario usuario = givenExisteUnUsuario();
         Partida partidaActiva = givenComienzaUnaPartida(usuario);
