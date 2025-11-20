@@ -111,7 +111,7 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
 
 
 
-            @Override
+    @Override
             public void actualizarManosGanadas (Usuario usuario, Boolean gano){
 
                 Usuario usuarioDB = repositorioUsuario.buscar(usuario.getEmail());

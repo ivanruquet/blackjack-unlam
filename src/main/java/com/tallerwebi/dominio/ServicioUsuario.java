@@ -11,4 +11,5 @@ public interface ServicioUsuario {
     void actualizarManosGanadas (Usuario usuario, Boolean gano);
     void registrarIngreso(Long idUsuario);
     void otorgarRecompensaDiaria(Usuario usuario);
+
 }

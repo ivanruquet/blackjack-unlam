@@ -20,7 +20,9 @@
     </div>
 
     <div class="menu-icono-perfil">
-        <ul class="opcionesNav">
+        <ul class="opcionesNav" style="flex-direction: row; gap: 15px">
+            <li><a class="botonPlay" th:href="@{/cargarSaldo}">Cargar Saldo</a>
+            </li>
             <li><a href="reglas.html" target="_blank">Reglas del juego</a></li>
         </ul>
         <a th:href="@{/perfil}">

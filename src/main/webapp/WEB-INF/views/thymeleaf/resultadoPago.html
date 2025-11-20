@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado del Pago</title>
+
+    <link >
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f3f3;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .caja {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 420px;
+            margin: 0 auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        a:hover {
+            background: #0069d9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="caja">
+
+    <h1 th:text="${mensaje}"></h1>
+
+
+    <a th:href="@{/sala}">Volver</a>
+</div>
+
+</body>
+</html>

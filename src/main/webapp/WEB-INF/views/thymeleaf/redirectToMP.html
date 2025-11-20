@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirigiendo...</title>
+</head>
+<body>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var url = /*[[${initPoint}]]*/ "";
+  if (url && url !== "") {
+    window.location.href = url;
+  }
+  /*]]>*/
+</script>
+
+</body>
+</html>
