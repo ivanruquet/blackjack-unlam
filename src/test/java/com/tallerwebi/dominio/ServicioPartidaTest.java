@@ -28,14 +28,8 @@ public class ServicioPartidaTest {
         servicioDeckOfCards = mock(ServicioDeckOfCards.class);
         repositorioJugador = mock(RepositorioJugador.class);
         servicioUsuario = mock(ServicioUsuario.class);
-        servicioPartida = new ServicioPartidaImpl(
-                servicioDeckOfCards,
-                repositorioPartida,
-                repositorioUsuario,
-                repositorioJugador,
-                servicioUsuario
-        );
-
+        servicioPartida = new ServicioPartidaImpl( servicioDeckOfCards, repositorioPartida, repositorioUsuario,
+                repositorioJugador, servicioUsuario);
     }
 
     @Test
