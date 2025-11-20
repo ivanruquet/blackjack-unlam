@@ -112,10 +112,6 @@ public class ControladorSaldo {
             String transactionAmountStr = allRequestParams.get("transaction_amount");
             Double monto = transactionAmountStr != null ? Double.valueOf(transactionAmountStr) : 0.0;
 
-            if (jugador != null && monto > 0) {
-                jugador.setSaldo(jugador.getSaldo() + monto);
-                servicioJugador.modificarJugador(jugador);
-            }
         }
 
         modelo.put("mensaje", "Pago aprobado correctamente!");
