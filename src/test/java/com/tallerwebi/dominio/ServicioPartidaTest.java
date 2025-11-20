@@ -1,15 +1,9 @@
 package com.tallerwebi.dominio;
 
 import com.tallerwebi.dominio.excepcion.*;
-import com.tallerwebi.infraestructura.RepositorioPartidaImpl;
-import com.tallerwebi.infraestructura.RepositorioUsuarioImpl;
-import com.tallerwebi.presentacion.ControladorPartida;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import javax.servlet.http.Part;
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,14 +28,8 @@ public class ServicioPartidaTest {
         servicioDeckOfCards = mock(ServicioDeckOfCards.class);
         repositorioJugador = mock(RepositorioJugador.class);
         servicioUsuario = mock(ServicioUsuario.class);
-        servicioPartida = new ServicioPartidaImpl(
-                servicioDeckOfCards,
-                repositorioPartida,
-                repositorioUsuario,
-                repositorioJugador,
-                servicioUsuario
-        );
-
+        servicioPartida = new ServicioPartidaImpl( servicioDeckOfCards, repositorioPartida, repositorioUsuario,
+                repositorioJugador, servicioUsuario);
     }
 
     @Test

@@ -10,7 +10,6 @@ public interface ServicioPartida {
     void apostar(Partida partida, Integer monto) throws ApuestaInvalidaException, SaldoInsuficiente;
     void setBotonesAlCrearPartida(Partida partida);
     void apostar(Usuario usuario, int monto);
-    void resetearPartida(Usuario usuario);
     void validarPartida(Usuario usuario, int monto) throws ApuestaInvalidaException, SaldoInsuficiente;
     void setearApuesta(Usuario usuario, Integer apuesta);
     Map<String, Object> pedirCarta(Jugador jugador, List<Map<String, Object>> cartasJugador, String deckId);
