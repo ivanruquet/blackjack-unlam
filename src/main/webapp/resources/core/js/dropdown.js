@@ -3,11 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuPerfil = document.getElementById("menuPerfil");
 
     botonPerfil.addEventListener("click", (e) => {
-        e.stopPropagation(); // evita que se cierre al instante
+        e.stopPropagation();
         menuPerfil.classList.toggle("show");
     });
 
-    // Cerrar si se hace clic fuera
     document.addEventListener("click", () => {
         menuPerfil.classList.remove("show");
     });

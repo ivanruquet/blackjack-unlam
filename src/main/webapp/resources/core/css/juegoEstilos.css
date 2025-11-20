@@ -1,5 +1,6 @@
 main {
     height: 100%;
+    width:100%
 }
 
 .iconos-section-crupier {
@@ -13,7 +14,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+
     gap: 12px;
     padding-right: 45px;
 }
@@ -28,7 +29,7 @@ main {
     max-width: 200px;
     margin: 10px 0;
     position: relative;
-
+    font-family:"Poppins";
     animation: subirYDesaparecer 3s ease forwards;
 }
 
@@ -83,16 +84,6 @@ color:white;
 }
 
 .score {
-    /*font-family: 'Poppins';*/
-    /*color: white;*/
-    /*font-weight: 600;*/
-    /*font-size: 24px;*/
-    /*background-color: #360D0D;*/
-    /*border-radius: 3px;*/
-    /*width: 40%;*/
-    /*display: flex;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
     margin-top: 10px;
     font-family: 'Poppins';
     color: white;
@@ -136,7 +127,7 @@ color:white;
 
 .pozo-de-apuesta {
     font-family: 'Poppins';
-    color: white;
+    color: #fac800;
     font-size: 30px;
     background-color: #360D0D;
     width: 12%;
@@ -145,8 +136,11 @@ color:white;
     align-items: center;
     flex-direction: row;
     justify-content: center;
-    border-radius: 20px;
-    margin-bottom: 4%;
+    border-radius: 25px;
+    margin-bottom: 2%;
+    margin-right: 35px;
+    margin-top: 2%;
+    gap : 6px;
 }
 
 #valor-apuesta {
@@ -161,13 +155,14 @@ color:white;
 .contenedor-desiciones {
     border: 1px solid white;
     border-radius: 30px;
-    padding: 15px 25px;
-    width: 35%;
+    padding: 15px 25px 5px 25px;
+    width: auto;
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
     flex-wrap: wrap;
     gap: 10px;
+    margin-top: 2%;
 
 }
 
@@ -270,7 +265,7 @@ form {
 .mesa-apuesta {
     display: flex;
     flex-direction: row;
-    padding-bottom: 10px;
+    padding-top: 55px;
 }
 
 .contenedor-mazo-fichas {
@@ -306,6 +301,8 @@ form {
 
 .texto-descripcion{
 color: white;
+    font-family:"Poppins";
+    font-size: 14px;
 }
 
 .cartas { display:flex; gap:10px; justify-content:center; margin:10px; }
@@ -322,10 +319,6 @@ color: white;
     to { transform: translateY(0); opacity: 1; }
 }
 
-
-
-
-
 .placeholder-carta {
     display: flex;
     gap: 10px;
@@ -340,4 +333,29 @@ color: white;
     border: 1px dashed #aaa;
 }
 
+.boton-empezar{
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+}
+
+#carta-oculta-dealer img{
+    width: 80px;
+    height: 111px;
+}
+
+
+.apuesta-carta{
+
+    width: 100%;
+    display: flex;
+    align-items:center;
+    margin-top: 3%;
+}
+
+#sectionJugador{
+    position: absolute;
+    left: 52%;
+    transform: translateX(-50%);
+    margin-left: 5px;
+}
 

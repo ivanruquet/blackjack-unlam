@@ -29,7 +29,6 @@ public class ControladorDeckTest {
 
     @GetMapping("/test-deck")
     public ModelAndView iniciarPartida() {
-        //  Reiniciar estado completamente
         cartasJugador = new ArrayList<>();
         cartasDealer = new ArrayList<>();
         ultimaCartaJugador = null;
@@ -38,7 +37,6 @@ public class ControladorDeckTest {
         juegoTerminado = false;
         deckId = null;
 
-        //  Crear nuevo mazo
         var mazo = servicioDeck.crearMazo();
         deckId = (String) mazo.get("deck_id");
 
@@ -61,7 +59,6 @@ public class ControladorDeckTest {
 
     @PostMapping("/pedir")
     public ModelAndView pedirCarta() {
-        //  si no hay mazo o ya se terminó el juego, reiniciamos
         if (deckId == null || juegoTerminado) return iniciarPartida();
 
         var nuevaCarta = servicioDeck.sacarCartas(deckId, 1).get(0);
@@ -92,7 +89,6 @@ public class ControladorDeckTest {
         return redibujarVista();
     }
 
-    // posiblemente este metodo, lo tengamos que mover a la clase Partida
     private int calcularPuntaje(List<Map<String, Object>> cartas) {
         int total = 0;
         int ases = 0;
@@ -112,7 +108,6 @@ public class ControladorDeckTest {
                     total += Integer.parseInt(valor);
             }
         }
-        // Si se pasa de 21, los Ases valen 1
         while (total > 21 && ases > 0) {
             total -= 10;
             ases--;
@@ -148,7 +143,6 @@ public class ControladorDeckTest {
         mav.addObject("mensaje", mensaje);
         mav.addObject("juegoTerminado", juegoTerminado);
 
-        // enviar la última carta pedida para poder resaltarla si querés
         mav.addObject("ultimaCartaJugador", ultimaCartaJugador);
 
         return mav;

@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.ApuestaInvalidaException;
+import com.tallerwebi.dominio.excepcion.PartidaActivaNoEnApuestaException;
 import com.tallerwebi.dominio.excepcion.PartidaNoCreadaException;
 import com.tallerwebi.dominio.excepcion.SaldoInsuficiente;
 import org.jetbrains.annotations.NotNull;
@@ -34,15 +35,14 @@ public class ControladorPartidaTest {
 
 
     @Test
+
     public void deberiaIrAlJuegoAlResetear() throws PartidaNoCreadaException {
-
         MockHttpServletRequest request = new MockHttpServletRequest();
-
         ModelAndView modelAndView = controladorPartida.resetearPartida(request);
+        assertEquals("juegoConCrupier", modelAndView.getViewName());
 
-        assertEquals("redirect:/juegoConCrupier", modelAndView.getViewName());
 
-}
+    }
 
     @Test
     public void queAlSeleccionarFichasSuValorSeSumeEnElPozoTotal() throws ApuestaInvalidaException, SaldoInsuficiente, PartidaNoCreadaException {
@@ -55,7 +55,7 @@ public class ControladorPartidaTest {
 
             p.setApuesta(p.getApuesta() + monto);
 
-         return null;
+            return null;
         }).when(servicioPartida).apostar(any(Partida.class), anyInt());
 
         ModelAndView mav = whenSeleccionoFichas(partidaActiva, usuario);
@@ -76,9 +76,9 @@ public class ControladorPartidaTest {
     }
 
     @Test
-    public void queAlSeleccionarEstrategiaMuestreLaAyudaParaElUsuario(){
+    public void queAlSeleccionarEstrategiaMuestreLaAyudaParaElUsuario() {
         Usuario usuario = givenExisteUnUsuario();
-        Partida partidaActiva= givenComienzaUnaPartida(usuario);
+        Partida partidaActiva = givenComienzaUnaPartida(usuario);
         MockHttpServletRequest request = givenExisteUnaSesionConUsuarioYPartida(usuario, partidaActiva);
         ModelAndView modelo = whenGenerarAyuda(request);
         thenMostrarAyuda(modelo, "Pedi una carta, no hay riesgo.");
@@ -106,7 +106,7 @@ public class ControladorPartidaTest {
         assertEquals(mensaje, mensajeObtenido);
     }
 
-    private ModelAndView whenGenerarAyuda( MockHttpServletRequest request) {
+    private ModelAndView whenGenerarAyuda(MockHttpServletRequest request) {
         Partida partidaDeSesion = (Partida) request.getSession().getAttribute("partida");
 
         ComienzoCartasDTO dtoDePrueba = new ComienzoCartasDTO();
@@ -126,97 +126,6 @@ public class ControladorPartidaTest {
         return controladorPartida.mostrarEstrategia(request);
     }
 
-//    @Test
-//    public void queAlSeleccionarElBotonDoblarApuestaSeDobleLaApuestaEnElPozo(){
-//        Usuario usuario = givenExisteUnUsuario();
-//        Partida partidaActiva= givenComienzaUnaPartida(usuario);
-//        whenSeleccionoBotonEmpezarPartida(partidaActiva);
-//        MockHttpServletRequest request = givenExisteUnaSesionConUsuarioYPartida(usuario, partidaActiva);
-//        ModelAndView mav= whenSelecionoElBotonDoblarApuestaSeDoblaYRestaElSaldoDelUsuario(request);
-//        thenApuestaFinal(mav);
-//    }
-//
-//    private void thenApuestaFinal(ModelAndView mav) {
-//        assertEquals("juegoConCrupier", mav.getViewName());
-//        assertTrue(mav.getModel().containsKey("resultado"));
-//        Double resultadoObtenido = (Double) mav.getModel().get("resultado");
-//        Double apuestaEsperada = 600.0;
-//        assertEquals(apuestaEsperada, resultadoObtenido);
-//    }
-//
-//    private ModelAndView whenSelecionoElBotonDoblarApuestaSeDoblaYRestaElSaldoDelUsuario(MockHttpServletRequest request) {
-//        Partida partidaDeSesion = (Partida) request.getSession().getAttribute("partida");
-//        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-//
-//        when(repositorioPartida.buscarPartidaActiva(usuario))
-//                .thenReturn(List.of(partidaDeSesion));
-//
-//        return controladorPartida.doblarApuesta(request);
-//    }
-//
-//    @Test
-//    public void queAlSeleccionarElBotonPararseSeDefinaElResultadoDeLaPartida(){
-//        Usuario usuario = givenExisteUnUsuario();
-//        Partida partidaActiva= givenComienzaUnaPartida(usuario);
-//        whenSeleccionoBotonEmpezarPartida(partidaActiva);
-//        MockHttpServletRequest request = givenExisteUnaSesionConUsuarioYPartida(usuario, partidaActiva);
-//        ModelAndView mav= whenSelecionoElBotonPararseObtengoElResultado(request);
-//        thenResultadoFinal(mav);
-//    }
-//
-//    private void thenResultadoFinal(ModelAndView mav) {
-//        String mensaje = (String) mav.getModel().get("mensajeResultado");
-//        assertEquals(mensaje, "Resultado: Jugador gana");
-//    }
-//
-//    private ModelAndView whenSelecionoElBotonPararseObtengoElResultado( MockHttpServletRequest request) {
-//        Partida partidaDeSesion = (Partida) request.getSession().getAttribute("partida");
-//        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario");
-//
-//        when(repositorioPartida.buscarPartidaActiva(usuario))
-//                .thenReturn(List.of(partidaDeSesion));
-//
-//        return controladorPartida.pararse(request);
-//    }
-
-
-//        @Test
-//    public void apostarMontoValidoDeberiaRegistrarApuesta() throws Exception {
-//            Usuario usuario = givenExisteUnUsuario();
-//            Partida partidaComenzada= givenExisteUnaPartidaActiva();
-//            Partida partidaActiva= givenComienzaUnaPartida(partidaComenzada, usuario);
-//            whenSeleccionoBotonEmpezarPartida(partidaActiva);
-//        MockHttpServletRequest request = new MockHttpServletRequest();
-//        request.getSession().setAttribute("usuario", usuario);
-//        request.getSession().setAttribute("partida", partidaActiva);
-//        ModelAndView mv = controladorPartida.apostar(request, 500);
-//        assertEquals("juegoConCrupier", mv.getViewName());
-//        assertEquals(usuario.getSaldo(), mv.getModel().get("saldo"));
-//    }
-
-//    @Test
-//    public void queAlSeleccionarElBotonRendirseEnvieAlUsuarioALaVistaSala(){
-//        Usuario usuario = givenExisteUnUsuario();
-//        Partida partidaActiva= givenComienzaUnaPartida(usuario);
-//        whenSeleccionoBotonEmpezarPartida(partidaActiva);
-//        ModelAndView vista= whenSeleccionoElBotonRendirseSeTerminaLaPartidaYcambiaDeVista();
-//        thenVistaAlcual(vista);
-//    }
-//
-//    private void thenVistaAlcual(ModelAndView vista) {
-//        assertEquals("redirect:/sala", vista.getViewName());
-//    }
-//
-//    private ModelAndView whenSeleccionoElBotonRendirseSeTerminaLaPartidaYcambiaDeVista() {
-//        MockHttpServletRequest request = new MockHttpServletRequest();
-//        return controladorPartida.rendirse(request);
-//    }
-
-
-
-
-
-    //-------------------------
     private static @NotNull Usuario givenExisteUnUsuario() {
         Usuario usuario = new Usuario();
         return usuario;
@@ -228,11 +137,9 @@ public class ControladorPartidaTest {
         partidaActiva.setEstadoPartida(EstadoPartida.ACTIVA);
         partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
         partidaActiva.setApuesta(0);
-        Crupier crupier= new Crupier();
+        Crupier crupier = new Crupier();
         Jugador jugador = new Jugador();
         jugador.setUsuario(usuario);
-        jugador.getSaldo();
-
         crupier.setPuntaje(7);
         jugador.setPuntaje(10);
         partidaActiva.setJugador(jugador);
@@ -242,7 +149,6 @@ public class ControladorPartidaTest {
 
     private void whenSeleccionoBotonEmpezarPartida(Partida partidaActiva) {
         partidaActiva.setApuesta(200);
-//        servicioPartida.setBotonesAlComenzarPartida(partidaActiva);
         partidaActiva.cambiarEstadoDeJuego(EstadoDeJuego.JUEGO);
     }
 

@@ -51,7 +51,7 @@ public class ControladorPerfil {
     @PostMapping("/editar-Atributos")
     public String editarAtributos(@RequestParam String nombre, @RequestParam String apellido,
                                   @RequestParam String username,
-                               HttpSession session) {
+                                  HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if (usuario != null) {
             usuario.setNombre(nombre);
@@ -69,7 +69,6 @@ public class ControladorPerfil {
         session.invalidate();
         return "redirect:/home";
     }
-
 
 
     @PostMapping("/reclamar-recompensa")
@@ -97,14 +96,4 @@ public class ControladorPerfil {
         session.setAttribute("usuario", usuario);
         return "redirect:/perfil";
     }
-
-
-
-
-
-
-
-
-
-
 }

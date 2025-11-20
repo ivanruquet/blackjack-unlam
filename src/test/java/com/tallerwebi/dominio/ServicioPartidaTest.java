@@ -77,17 +77,6 @@ public class ServicioPartidaTest {
         assertNotNull(servicioPartida.instanciarPartida(j));
     }
 
-//    @Test
-//    public void queSePuedaCambiarElEstadoDeJuegoDeUnaPartida() throws PartidaActivaNoEnApuestaException {
-//        Partida p = new Partida();
-//        p.cambiarEstadoDeJuego(EstadoDeJuego.APUESTA);
-//        Long idDePrueba = 2L;
-//        when(repositorioPartida.buscarPartidaPorId(any(Long.class)))
-//                .thenReturn(p);
-//        servicioPartida.cambiarEstadoDeJuegoAJuegoDeUnaPartida(idDePrueba);
-//        assertEquals(EstadoDeJuego.JUEGO, p.getEstadoJuego());
-//    }
-
     @Test
     public void queCalculeCorrectamenteElPuntajeDeCartasNumericas() {
         List<Map<String, Object>> cartas = new ArrayList<>();
@@ -335,16 +324,5 @@ public class ServicioPartidaTest {
         partidaActiva.setCrupier(crupier);
         return partidaActiva;
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

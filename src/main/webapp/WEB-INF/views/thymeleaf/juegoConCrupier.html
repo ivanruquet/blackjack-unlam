@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
-
 <div th:if="${mensajeExito}" class="alert alert-success" role="alert">
     <span th:text="${mensajeExito}"></span>
 </div>
@@ -42,30 +41,8 @@
     <div class="iconos-section-crupier">
         <div class="saldo">
             <p class="saldoDiponible">SALDO DISPONIBLE</p>
-<!--            <p id="saldoDisponible" th:text="'$' + ${jugador != null ? jugador.saldo : 0}">00.00</p>-->
             <p id="saldoDisponible" th:text="'$' + ${usuario != null ? usuario.saldo : 0}">00.00</p>
         </div>
-
-<!--        <section class="cartas-score" id="sectionCrupier">-->
-<!--            <div class="cartas">-->
-<!--                <div class="carta"></div>-->
-<!--                <div class="carta"></div>-->
-<!--                &lt;!&ndash; <img-->
-<!--                  src="ImgBlackJack/tarjeta-de-corazon (2) 1.png"-->
-<!--                  alt="dos de corazones"-->
-<!--                />-->
-<!--                <img src="ImgBlackJack/cartaoculta (3).png" alt="carta oculta" /> &ndash;&gt;-->
-<!--            </div>-->
-        <!--                <div class="cartas">-->
-<!--                    <div class="carta" th:each="carta : ${dto.cartasDealer}">-->
-<!--                        <img th:src="${carta.image}" alt="Carta del dealer"/>-->
-<!--                    </div>-->
-
-<!--                    <div th:if="${#lists.isEmpty(dto.cartasDealer)}" class="placeholder-carta">-->
-<!--                        <div class="carta"></div>-->
-<!--                        <div class="carta"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
         <section class="cartas-score" id="sectionCrupier">
         <div class="cartas" id="contenedor-cartas-dealer">
 
@@ -190,15 +167,9 @@
             </form>
 
         </div>
-
+<div class="apuesta-carta">
     <div class="mesa-apuesta">
         <div class="contenedor-mazo-fichas">
-<!--            <img-->
-<!--                    th:src="@{/resources/core/images/mazo final 1.png}"-->
-<!--                    id="mazo"-->
-<!--                    alt="mazo de cartas">-->
-
-
             <div class="contenedor-ficha-apuesta">
                 <div class="contenedor-ficha-apuesta">
 
@@ -256,7 +227,7 @@
                 <div class="botones">
                     <form th:action="@{/iniciar}" method="post" id="form-apuesta">
                         <input type="hidden" name="empezar" id="inputMonto" th:value="${pozo}">
-                        <button class="btn" id="boton" type="submit"
+                        <button class="btn boton-empezar" id="boton" type="submit"
                                 th:classappend="${!partida.botonEmpezar or !partida.fichasHabilitadas} ? ' boton-deshabilitado' : ''"
                                 th:attr="disabled=${!partida.botonEmpezar or !partida.fichasHabilitadas}">Empezar partida</button>
                     </form>
@@ -309,6 +280,7 @@
                 </div>
             </div>
         </section>
+</div>
     </div>
 </main>
 
@@ -317,7 +289,6 @@
 
     <p id="parrafoFooter">© Todos los derechos reservados</p>
 </footer>
-
 <script src="resources/core/js/botonesJuego.js"></script>
 </body>
 </html>
